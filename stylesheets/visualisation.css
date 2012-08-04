@@ -3,24 +3,25 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  font-family: "Share", sans-serif; }
 
 #tooltip {
   font-size: 12px;
-  font-family: "Helvetica Neue", Helvetica;
   position: absolute;
   padding: 5px;
   z-index: 100000; }
-
-#tooltip div {
-  background-color: #000;
-  color: #fff;
-  color: #fff;
-  padding: 5px 8px 4px 8px;
-  text-align: left;
-  border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px; }
+  #tooltip div {
+    background-color: #000;
+    color: #fff;
+    color: #fff;
+    padding: 5px 8px 4px 8px;
+    text-align: left;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px; }
+    #tooltip div span {
+      font-weight: bold; }
 
 #sidebar {
   position: absolute;
@@ -35,7 +36,6 @@ html, body {
   background-color: #fff;
   height: 100%; }
   #sidebar h1, #sidebar h2 {
-    font-family: "Share", sans-serif;
     font-weight: normal;
     text-align: center;
     color: #e61414;

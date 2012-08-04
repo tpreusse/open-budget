@@ -24,9 +24,10 @@ $(function() {
 
         $tipInner.html(
             '<strong>'+d.name+'</strong><br />'+
-            valueLabel+'CHF '+formatCHF(d.value)+' '+formatDiffPercent(d.diff)+'%'/*+'<br />'+
+            valueLabel+'CHF '+formatCHF(d.value)+' <span>'+formatDiffPercent(d.diff)+'%</span>'/*+'<br />'+
             valueLabel+'CHF '+formatCHF(d.value2)+' '+formatDiffPercent(d.diff)+'%'*/
         );
+        $tipInner.find('span').css('color', d.stroke);
         $tip.show();
     });
     $(document).on('mouseout', 'svg circle', function(){
@@ -77,7 +78,7 @@ $(function() {
         }
 
         var diffPercent = function(value, value2) {
-            var diff = value2 - value;
+            var diff = value - value2;
             return d3.round(diff / (value2 / 100), 2);
         }
 
@@ -92,29 +93,29 @@ $(function() {
 
             var node = {
                 'name': datum.name,
+                'id': datum.number+type,
                 'value': values.value,
                 'value2': values.value2,
-                'diff': diffPercent(values.value2, values.value),
+                'diff': diffPercent(values.value, values.value2),
                 'type': type,
                 'key': key,
-                'depth': depth
+                'depth': depth,
+                'children': []
             }
 
             if(depth) {
                 node.parent = parent;
+                parent.children.push(node);
             }
             else {
-                node.parent = centers[type];
+                node.center = centers[type];
+
+                rootNodes.push(node);
+
                 totals[type].value += values.value;
                 totals[type].value2 += values.value2;
             }
-
             nodes.push(node);
-            while(depth > nodeDepth) {
-                nodeDepth += 1;
-                nodesByDepth[nodeDepth] = [];
-            }
-            nodesByDepth[depth].push(node);
 
             return node;
         };
@@ -136,30 +137,21 @@ $(function() {
             };
         };
 
+        var rootNodes = [];
         var nodes = [];
-        var nodesByDepth = [];
-        var nodeDepth = -1;
 
         $.each(data, function(key, directorate) {
             directorateNodes = createNodes(key, directorate);
             $.each(directorate.agencies, function(key, agency) {
                 agencyNodes = createNodes(key, agency, directorateNodes);
-                /*$.each(agency['product_groups'], function(key, productGroup) {
+                $.each(agency['product_groups'], function(key, productGroup) {
                     productGroupNodes = createNodes(key, productGroup, agencyNodes);
                     $.each(productGroup.products, function(key, product) {
                         createNodes(key, product, productGroupNodes);
                     });
-                });*/
+                });
             });
         });
-        
-        //diff without surplus
-        var diffAccessor = function(d) {
-            return d.diff;
-        };
-
-        var diffMax = d3.max(nodes, diffAccessor);
-        var diffMin = d3.min(nodes, diffAccessor);
 
         var surplus = d3.round(totals.revenue.value - totals['gross_cost'].value, 2);
         var surplus2 = d3.round(totals.revenue.value2 - totals['gross_cost'].value2, 2);
@@ -168,12 +160,14 @@ $(function() {
             'name': surplus < 0 ? 'Defizit' : 'Überschuss',
             'value': surplus,
             'value2': surplus2,
-            'diff': diffPercent(surplus2, surplus),
+            'diff': diffPercent(surplus, surplus2),
             'type': 'surplus',
-            'parent': centers['surplus']
+            'depth': 0,
+            'center': centers['surplus'],
+            'id': 'surplus'
         };
+        rootNodes.push(surplusNode);
         nodes.push(surplusNode);
-        nodesByDepth[0].push(surplusNode);
         
         var valueAccessor = function(d) {
             return d.value;
@@ -185,6 +179,13 @@ $(function() {
         var radiusScale = d3.scale.sqrt()
             .domain([0, d3.max([max, Math.abs(min)])]);
         
+        var diffAccessor = function(d) {
+            return d.diff;
+        };
+
+        var diffMax = d3.max(rootNodes, diffAccessor);
+        var diffMin = d3.min(rootNodes, diffAccessor);
+
         var colorScale = d3.scale.linear()
             .domain([diffMin, 0, diffMax])
             .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
@@ -192,20 +193,24 @@ $(function() {
 
         $.each(nodes, function(index, d) {
             var rgb = d3.rgb(colorScale(d.diff));
-            d.fill = 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.3)';
+            d.fill = 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',1)';
             d.stroke = rgb.darker().toString();
         });
 
         var svg = d3.select('body').select('svg');
         var force = d3.layout.force()
-            .nodes(nodes)
+            .nodes(rootNodes)
             .gravity(0.0)
             .friction(0.9)
             .charge(0)
             .alpha(0.5)
             .start();
-        
-        var $window = $(window), $svg = $('svg'), $sidebar = $('#sidebar');
+
+        var circlesCollections = [];
+
+        var $window = $(window), 
+            $svg = $('svg'), 
+            $sidebar = $('#sidebar');
         $window.resize(function() {
             var width = $body.width() - $sidebar.outerWidth(), 
                 height = $body.height();
@@ -220,37 +225,50 @@ $(function() {
             centers['revenue'].x = width / 4 * 3;
             centers['revenue'].y = height / 2;
             
-            radiusScale.range([0, width / (nodesByDepth[0].length / 1.5)]);
-            $.each(nodes, function(index, d) {
+            radiusScale.range([0, width / (rootNodes.length / 1.5)]);
+            var i = 0,
+                nodesLength = nodes.length,
+                d;
+            while(i < nodesLength) {
+                d = nodes[i];
                 d.radius = radiusScale(d.value);
-            });
+                i += 1;
+            }
             
-            nodeCirles.transition().duration(2000).attr('r', function(d) { return d.radius; });
+            var circlesCollectionsLength = circlesCollections.length;
+            i = 0;
+            while(i < circlesCollectionsLength) {
+                circlesCollections[i].transition().duration(2000).attr('r', function(d) { return d.radius; });
+                i += 1;
+            }
             force.resume();
         });
             
-        var nodeCirles = svg.selectAll('circle')
-            .data(nodes);
+        var rootNodeCircles = svg.selectAll('circle.directorate')
+            .data(rootNodes);
+
+        circlesCollections.push(rootNodeCircles);
             
-        /*var nodeGs = svg.selectAll('g.directorate')
-            .data(nodes);
+        var rootNodeGs = svg.selectAll('g.directorate')
+            .data(rootNodes);
         
-        nodeGs.enter()
-            .append('g')
-            .attr('transform', function(d) { return 'translate('+d.x+','+d.y+')'; })
-            .append('circle').attr('r', function(d) { return 0; });*/
-        
-        nodeCirles.enter()
+        rootNodeCircles.enter()
             .append('circle')
-            .attr('class', function(d) { return d.type; })
+            .attr('class', function(d) { return 'directorate'; })
             .attr('cx', function(d) { return d.x; })
             .attr('cy', function(d) { return d.y; })
             .attr('r', function(d) { return 0; })
             .style('fill', function(d) { return d.fill; })
             .style('stroke', function(d) { return d.stroke; })
             .call(force.drag);
-        
-        $window.resize();
+
+        var gTransform = function(d) {
+            return 'translate('+(d.x-d.radius)+','+(d.y-d.radius)+')';
+        };
+        rootNodeGs.enter()
+            .append('g')
+            .attr('transform', gTransform)
+            .attr('class', function(d) { return 'directorate id-'+d.id; })
         
         var collide = function(node) {
             var r = node.radius + 16,
@@ -278,36 +296,91 @@ $(function() {
                     || y2 < ny1;
             };
         };
+
+        $window.resize();
         
         force.on('tick', function(e) {
-            var depth = 0,
-                nodes, nodesLength, q, i, k, o, c;
-            while(nodeDepth >= depth) {
-                nodes = nodesByDepth[depth];
-                nodesLength = nodes.length;
-                q = d3.geom.quadtree(nodes);
-                i = 0;
-                n = nodes.length;
-                k = e.alpha * 0.1;
+            var q, i, k, o, c, nodes = rootNodes, nodesLength = rootNodes.length;
 
-                while (i < n) {
-                    o = nodes[i];
-                    c = o.parent;
+            q = d3.geom.quadtree(rootNodes);
+            i = 0;
+            k = e.alpha * 0.1;
 
-                    o.x += (c.x - o.x) * k;
-                    o.y += (c.y - o.y) * k;
+            while (i < nodesLength) {
+                o = nodes[i];
+                c = o.center;
 
-                    if(depth == 0)
-                    q.visit(collide(o));
-                    
-                    i += 1;
-                }
+                o.x += (c.x - o.x) * k;
+                o.y += (c.y - o.y) * k;
 
-                depth += 1;
+                q.visit(collide(o));
+                
+                i += 1;
             }
             
-            nodeCirles.attr('cx', function(d) { return d.x; }).attr('cy', function(d) { return d.y; });
-            //nodeGs.attr('transform', function(d) { return 'translate('+d.x+','+d.y+')'; });
+            rootNodeCircles.attr('cx', function(d) { return d.x; }).attr('cy', function(d) { return d.y; });
+            rootNodeGs.attr('transform', gTransform);
         });
+
+        setTimeout(function() {
+
+        var i = 0,
+            rootNodesLength = rootNodes.length;
+        for(i = 0; i < rootNodesLength; i+= 1) {
+            (function() {
+                var node = rootNodes[i],
+                    children = node.children;
+
+                if(!children || !children.length) {
+                    return;
+                }
+
+                var nodeRadius = node.radius,
+                    nodeSize = nodeRadius * 2;
+
+                var g = svg.select('g.id-'+node.id);
+
+                g.attr('width', nodeSize).attr('height', nodeSize);
+                
+                var childrenCircles = g.selectAll('circle')
+                    .data(children);
+
+                var force = d3.layout.force()
+                    .nodes(children)
+                    .gravity(-0.01)
+                    .friction(0.9)
+                    .charge(function(d) { return -Math.pow(d.radius, 2.0) / 16; });
+
+                circlesCollections.push(childrenCircles);
+
+                childrenCircles.enter()
+                    .append('circle')
+                    .attr('class', function(d) { return d.type; })
+                    .attr('cx', function(d) { return d.x; })
+                    .attr('cy', function(d) { return d.y; })
+                    .attr('r', function(d) { return 0; })
+                    .style('fill', function(d) { return d.fill; })
+                    .style('stroke', function(d) { return d.stroke; });
+
+                var damper = 0.1,
+                    move_towards_center = function(alpha) {
+                        return function(d) {
+                            var c = nodeRadius;
+                            d.x += (c - d.x) * (damper + 0.02) * alpha;
+                            d.y += (c - d.y) * (damper + 0.02) * alpha;
+                        }
+                    };
+
+                force.on('tick', function(e) {
+                    childrenCircles.each(move_towards_center(e.alpha))
+                        .attr('cx', function(d) { return d.x; })
+                        .attr('cy', function(d) { return d.y; });
+                }).start();
+            })();
+        }
+
+        $window.resize();
+
+        }, 1500);
     });
 });
