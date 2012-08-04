@@ -1,0 +1,119 @@
+html, body {
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+}
+
+
+#tooltip {
+  font-size:12px;
+  font-family:"Helvetica Neue", Helvetica;
+  position:absolute;
+  padding:5px;
+  z-index:100000;
+}
+
+#tooltip div {
+  background-color:#000;
+  color:#fff;
+  color:#fff;
+  padding:5px 8px 4px 8px;
+  text-align:left;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+}
+
+$openDataRed:#E61414;
+$font:"Share",sans-serif;
+
+#sidebar {
+  position:absolute;
+  top:0;
+  right:0;
+  z-index:1;
+  min-width:300px;
+  width:20%;
+  max-width:500px;
+  padding:0 20px;
+
+  box-shadow:0 0 20px 1px #ddd;
+  background-color:#fff;
+
+  height:100%;
+
+
+  h1, h2 {
+    font-family:$font;
+    font-weight:normal;
+    text-align:center;
+    color:$openDataRed;
+    margin:0;
+  }
+
+  h1 {
+    margin-top:20px;
+    font-size:30px;
+    line-height:41px;
+  }
+
+  h2 {
+    font-size:20px;
+    line-height:30px;
+  }
+
+  #opendatach {
+    position:absolute;
+    bottom:15px;
+    right:0px;
+    width:100%;
+    text-align:center;
+
+    img {
+      height:60px;
+      border:0;
+    }
+  }
+}
+
+svg {
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:0;
+  display:block;
+
+  background-color:#f9f9f9;
+
+  rect {
+    fill:#fff;
+  }
+
+  g {
+    
+  }
+
+  g circle {
+    fill:#fff;
+  }
+
+  circle {
+    fill:transparent;
+    stroke:#000;
+    stroke-width:1;
+  }
+
+  circle:hover {
+    stroke-width:2;
+  }
+
+  circle.surplus {
+    stroke-width:2;
+  }
+
+  circle.surplus:hover {
+    stroke-width:4;
+  }
+}
