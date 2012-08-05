@@ -344,7 +344,7 @@ $(function() {
 
                 var g = svg.select('g.id-'+node.id);
 
-                g.attr('width', nodeSize).attr('height', nodeSize);
+                g.attr('width', nodeSize).attr('height', nodeSize).classed('blur', 1);
                 node.computedRadius = nodeRadius;
 
                 var childrenCircles = g.selectAll('circle')
@@ -390,9 +390,10 @@ $(function() {
                 force.stop();
 
                 childrenCircles
-                        .attr('cx', function(d) { return d.x; })
-                        .attr('cy', function(d) { return d.y; })
-                        .transition().duration(500).style('opacity', 1);
+                    .attr('cx', function(d) { return d.x; })
+                    .attr('cy', function(d) { return d.y; });
+                
+                g.transition().duration(500).style('opacity', 0.5);
             })();
         }
 

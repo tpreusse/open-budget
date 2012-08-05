@@ -66,17 +66,13 @@ svg {
   background-color: #f9f9f9; }
   svg rect {
     fill: #fff; }
-  svg g {
-    opacity: 0.5; }
+  svg g.blur {
+    opacity: 0;
+    pointer-events: none; }
   svg circle {
     fill: transparent;
     stroke: #000;
     stroke-width: 1; }
-    svg circle.blur {
-      fill: #fff;
-      stroke: rgba(0, 0, 0, 0.1);
-      pointer-events: none;
-      opacity: 0; }
   svg circle:hover {
     stroke-width: 2; }
   svg circle.surplus {
