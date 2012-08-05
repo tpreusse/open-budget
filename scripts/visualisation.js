@@ -238,9 +238,10 @@ $(function() {
             var circlesCollectionsLength = circlesCollections.length;
             i = 0;
             while(i < circlesCollectionsLength) {
-                circlesCollections[i].transition().duration(2000).attr('r', function(d) { return d.radius; });
+                circlesCollections[i].attr('r', function(d) { return d.radius; });
                 i += 1;
             }
+            svg.selectAll('g').attr('transform', gTransform);
             force.resume();
         });
             
@@ -263,7 +264,10 @@ $(function() {
             .call(force.drag);
 
         var gTransform = function(d) {
-            return 'translate('+(d.x-d.radius)+','+(d.y-d.radius)+')';
+            var radius = d.radius,
+                computedRadius = d.computedRadius,
+                scale = computedRadius ? radius / computedRadius : 1;
+            return 'translate('+(d.x-radius)+','+(d.y-radius)+') scale('+scale+')';
         };
         rootNodeGs.enter()
             .append('g')
@@ -341,7 +345,8 @@ $(function() {
                 var g = svg.select('g.id-'+node.id);
 
                 g.attr('width', nodeSize).attr('height', nodeSize);
-                
+                node.computedRadius = nodeRadius;
+
                 var childrenCircles = g.selectAll('circle')
                     .data(children);
 
@@ -387,7 +392,7 @@ $(function() {
                 childrenCircles
                         .attr('cx', function(d) { return d.x; })
                         .attr('cy', function(d) { return d.y; })
-                        .transition().duration(2000).style('opacity', 1);
+                        .transition().duration(500).style('opacity', 1);
             })();
         }
 
