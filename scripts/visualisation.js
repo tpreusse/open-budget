@@ -346,41 +346,53 @@ $(function() {
                     .data(children);
 
                 var force = d3.layout.force()
-                    .nodes(children)
+                    .size([nodeSize, nodeSize])
                     .gravity(-0.01)
                     .friction(0.9)
-                    .charge(function(d) { return -Math.pow(d.radius, 2.0) / 16; });
+                    .alpha(0.01)
+                    .charge(function(d) { return -Math.pow(d.radius, 2.0) / 16; })
+                    .nodes(children);
 
-                circlesCollections.push(childrenCircles);
+                //circlesCollections.push(childrenCircles);
 
                 childrenCircles.enter()
                     .append('circle')
-                    .attr('class', function(d) { return d.type; })
+                    .attr('class', function(d) { return 'blur '+d.type; })
                     .attr('cx', function(d) { return d.x; })
                     .attr('cy', function(d) { return d.y; })
-                    .attr('r', function(d) { return 0; })
-                    .style('fill', function(d) { return d.fill; })
-                    .style('stroke', function(d) { return d.stroke; });
+                    .attr('r', function(d) { return d.radius; })
+                    .style('fill', function(d) { return d.parent.fill; })
+                    .style('stroke', function(d) { return d.parent.stroke; });
+                
+                childrenCircles.sort(function(a, b) {
+                    return b.radius - a.radius;
+                });
 
-                var damper = 0.1,
+                var damper = 0.11,
                     move_towards_center = function(alpha) {
                         return function(d) {
-                            var c = nodeRadius;
-                            d.x += (c - d.x) * (damper + 0.02) * alpha;
-                            d.y += (c - d.y) * (damper + 0.02) * alpha;
+                            var c = nodeRadius, da = (damper + 0.02) * alpha;
+                            d.x += (c - d.x) * da;
+                            d.y += (c - d.y) * da;
                         }
                     };
 
                 force.on('tick', function(e) {
                     childrenCircles.each(move_towards_center(e.alpha))
-                        .attr('cx', function(d) { return d.x; })
-                        .attr('cy', function(d) { return d.y; });
                 }).start();
+                var tickI, tickIMax = children.length * 6;
+                for(tickI = 0; tickI < tickIMax; tickI+=1) force.tick();
+                force.stop();
+
+                childrenCircles
+                        .attr('cx', function(d) { return d.x; })
+                        .attr('cy', function(d) { return d.y; })
+                        .transition().duration(2000).style('opacity', 1);
             })();
         }
 
         $window.resize();
 
-        }, 1500);
+        }, 2000);
     });
 });

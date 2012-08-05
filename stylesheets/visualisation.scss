@@ -95,17 +95,20 @@ svg {
   }
 
   g {
-    
-  }
-
-  g circle {
-    fill:#fff;
+    opacity:0.5;
   }
 
   circle {
     fill:transparent;
     stroke:#000;
     stroke-width:1;
+
+    &.blur {
+      fill:#fff;
+      stroke:rgba(0,0,0,0.1);
+      pointer-events:none;
+      opacity:0;
+    }
   }
 
   circle:hover {
