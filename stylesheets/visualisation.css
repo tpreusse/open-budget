@@ -28,7 +28,7 @@ html, body {
   top: 0;
   right: 0;
   z-index: 1;
-  min-width: 300px;
+  min-width: 400px;
   width: 20%;
   max-width: 500px;
   padding: 0 20px;
@@ -47,6 +47,20 @@ html, body {
   #sidebar h2 {
     font-size: 20px;
     line-height: 30px; }
+  #sidebar #search {
+    display: block;
+    margin: 20px auto 30px;
+    position: relative;
+    width: 166px;
+    font-weight: normal;
+    text-align: center;
+    border-radius: 20px; }
+    #sidebar #search input {
+      padding-left: 20px; }
+    #sidebar #search label {
+      position: absolute;
+      top: 8px;
+      left: 3px; }
   #sidebar #opendatach {
     position: absolute;
     bottom: 15px;
@@ -68,6 +82,8 @@ svg {
     fill: #fff; }
   svg g.blur {
     opacity: 0;
+    pointer-events: none; }
+  svg .disabled {
     pointer-events: none; }
   svg circle {
     fill: transparent;

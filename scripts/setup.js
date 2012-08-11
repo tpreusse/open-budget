@@ -1,1 +1,1 @@
-window.TPOpenBudget = {};
+window.OpenBudget = {};

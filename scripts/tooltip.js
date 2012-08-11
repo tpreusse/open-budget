@@ -1,4 +1,4 @@
-TPOpenBudget.tooltip = (function() {
+OpenBudget.tooltip = (function() {
     var $body = $('body');
     var formatCHF = d3.format(',f');
     var formatDiffPercent = d3.format('+.2');
@@ -21,11 +21,11 @@ TPOpenBudget.tooltip = (function() {
         }
 
         $tipInner.html(
-            '<strong>'+d.name+'</strong><br />'+
-            valueLabel+'CHF '+formatCHF(d.value)+' <span>'+formatDiffPercent(d.diff)+'%</span>'/*+'<br />'+
+            '<span class="name">'+d.name+'</span><br />'+
+            valueLabel+'CHF '+formatCHF(d.value)+' <span class="percent">'+formatDiffPercent(d.diff)+'%</span>'/*+'<br />'+
             valueLabel+'CHF '+formatCHF(d.value2)+' '+formatDiffPercent(d.diff)+'%'*/
         );
-        $tipInner.find('span').css('color', d.stroke);
+        $tipInner.find('span.percent').css('color', d.stroke);
         $tip.show();
     });
     $(document).on('mouseout', 'svg circle', function(){

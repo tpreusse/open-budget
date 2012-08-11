@@ -1,4 +1,4 @@
-TPOpenBudget.nodes = (function() {
+OpenBudget.nodes = (function() {
     var centers = {
         'revenue': {x:0,y:0},
         'surplus': {x:0,y:0},
@@ -107,9 +107,25 @@ TPOpenBudget.nodes = (function() {
         surplus2,
         surplusNode;
 
-    var radiusScale;
+    var radiusScale = d3.scale.sqrt(),
+        radiusScaleFactor = 1;
 
-    return {
+
+    var stuffForce = d3.layout.force()
+        .gravity(-0.01)
+        .friction(0.9)
+        .alpha(0.01)
+        .charge(function(d) { return -Math.pow(d.radius, 2.0) / 16; });
+
+    var moveTowardsCenter = function(alpha, parentRadius) {
+        return function(d) {
+            var c = parentRadius, da = 0.13 * alpha;
+            d.x += (c - d.x) * da;
+            d.y += (c - d.y) * da;
+        }
+    };
+
+    var fn = {
         load: function(loadCallback) {
             d3.json('data/bern-budget2013.json', function(data) {
                 $.each(data, function(key, directorate) {
@@ -148,8 +164,7 @@ TPOpenBudget.nodes = (function() {
                 var max = d3.max(nodes, valueAccessor);
                 var min = d3.min(nodes, valueAccessor);
                 
-                radiusScale = d3.scale.sqrt()
-                    .domain([0, d3.max([max, Math.abs(min)])]);
+                radiusScale.domain([0, d3.max([max, Math.abs(min)])]);
                 
                 var diffAccessor = function(d) {
                     return d.diff;
@@ -165,11 +180,11 @@ TPOpenBudget.nodes = (function() {
 
                 $.each(nodes, function(index, d) {
                     var rgb = d3.rgb(colorScale(d.diff));
-                    d.fill = 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',1)';
+                    d.fill = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
                     d.stroke = rgb.darker().toString();
                 });
 
-                loadCallback(rootNodes);
+                loadCallback(rootNodes, data);
             });
         },
         resize: function(width, height) {
@@ -181,14 +196,64 @@ TPOpenBudget.nodes = (function() {
             centers['revenue'].y = height / 2;
 
             radiusScale.range([0, width / (rootNodes.length / 1.5)]);
+            fn.calculateRadius();
+        },
+        calculateRadius: function() {
             var i = 0,
                 nodesLength = nodes.length,
                 d;
             while(i < nodesLength) {
                 d = nodes[i];
-                d.radius = radiusScale(d.value);
+                d.radius = radiusScale(d.value) * radiusScaleFactor;
                 i += 1;
             }
-        }
+        },
+        setRadiusScaleFactor: function(scaleFactor) {
+            radiusScaleFactor = scaleFactor;
+        },
+        stuffChildren: function(node) {
+            var children = node.children || {},
+                childrenLength = children.length,
+                nodeRadius = node.radius,
+                nodeSize = nodeRadius * 2;
+
+            if(!childrenLength || node.stuffedChildrenRadius) {
+                return;
+            }
+
+            stuffForce.size([nodeSize, nodeSize]).nodes(children);
+
+            stuffForce.on('tick', function(e) {
+                var i = 0, 
+                    c = children, 
+                    cl = childrenLength, 
+                    f = moveTowardsCenter(e.alpha, nodeRadius), 
+                    d;
+
+                while(i < cl) {
+                    d = c[i];
+                    f(d);
+                    i += 1;
+                }
+            }).start();
+
+            var tickI, tickIMax = childrenLength * 6;
+            for(tickI = 0; tickI < tickIMax; tickI+=1) stuffForce.tick();
+            stuffForce.stop();
+
+            var i = 0, d;
+            while(i < childrenLength) {
+                d = children[i];
+                d.sx = d.x;
+                d.sy = d.y;
+                d.sr = d.radius;
+                i += 1;
+            }
+
+            node.stuffedChildrenRadius = nodeRadius;
+        },
+        centers: centers
     };
+
+    return fn;
 })();
