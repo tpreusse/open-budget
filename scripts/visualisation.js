@@ -269,7 +269,7 @@ $(function() {
                 stackLevel = level.all[stackLevelId];
                 if(!stackLevel.hidden) {
                     stackLevel.hidden = true;
-                    svg.selectAll('.l-'+stackLevelId).filter(helpers.reject(stackLevel.parent))
+                    svg.selectAll('.l-'+stackLevelId+':not(#g-'+stackLevel.parent.id+')')
                         .transition().duration(750)
                         .style('opacity', 0);
                 }
@@ -282,13 +282,17 @@ $(function() {
 
             if(level.stack.length > 1) {
                 var stackLevelId = level.stack[level.stack.length - 2],
-                    stackLevel = level.all[stackLevelId];
+                    stackLevel = level.all[stackLevelId],
+                    stackLevelParentId = stackLevel.parent.id;
 
                 if(stackLevel.hidden) {
                     stackLevel.hidden = false;
-                    svg.selectAll('.l-'+stackLevelId).filter(helpers.reject(stackLevel.parent))
+                    svg.selectAll('.l-'+stackLevelId+':not(#g-'+stackLevelParentId+')')
                         .transition().duration(750)
-                        .style('opacity', 0.3);
+                        .style('opacity', 0.2);
+                    svg.select('#c-'+stackLevelParentId)
+                        .transition().duration(750)
+                        .style('opacity', 0.8);
                 }
             }
 
