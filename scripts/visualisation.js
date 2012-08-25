@@ -240,11 +240,6 @@ $(function() {
                             .attr('r', helpers.r)
                             .style('fill', function(d) { return d.parent.fill; })
                             .style('stroke', function(d) { return d.parent.stroke; });
-                    
-                    // smallest = last dom element = on top
-                    childrenCircles.sort(function(a, b) {
-                        return b.radius - a.radius;
-                    });
 
                     // g.transition().duration(500).style('opacity', 0.5);
                 }, 10);
@@ -338,24 +333,24 @@ $(function() {
 
             var transitionSpeed = d3.event.altKey ? 7500 : 750;
 
-            cNode.parentNode.appendChild(cNode);
+            // cNode.parentNode.appendChild(cNode);
             gNode.parentNode.appendChild(gNode);
 
             c.transition().duration(transitionSpeed)
-                .attr('cx', helpers.cx)
-                .attr('cy', helpers.cy)
-                .attr('r', helpers.r)
-                .style('opacity', 0)
-                .style('fill', function(d) { return '#ffffff'; })
-                .style('stroke', function(d) { return grayscale(d.stroke); });
+                // .attr('cx', helpers.cx)
+                // .attr('cy', helpers.cy)
+                // .attr('r', helpers.r)
+                .style('opacity', 0.8)
+                // .style('fill', function(d) { return '#ffffff'; })
+                // .style('stroke', function(d) { return grayscale(d.stroke); });
 
             disabledCircles.transition().duration(transitionSpeed)
                 // .style('fill', function(d) { return grayscale(d.fill); })
                 // .style('stroke', function(d) { return grayscale(d.stroke); })
-                .style('opacity', 0.3);
+                .style('opacity', 0.2);
 
             disabledGroups.transition().duration(75)
-                .style('opacity', 0.3);
+                .style('opacity', 0.2);
 
             g.attr('clip-path', '').classed('blur', 0);
             g.transition().duration(transitionSpeed)
@@ -480,10 +475,6 @@ $(function() {
                 .remove();
 
             vis.setActiveNodes(newLevel);
-
-            childrenCircles.sort(function(a, b) {
-                return b.radius - a.radius;
-            });
 
             childrenCircles.transition().duration(hideSpeed)
                 .attr('r', function(d) { return d.sr; })

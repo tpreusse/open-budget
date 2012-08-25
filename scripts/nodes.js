@@ -130,6 +130,10 @@ OpenBudget.nodes = (function() {
         }
     };
 
+    var valueSort = function(a, b) {
+        return b.value - a.value;
+    };
+
     var fn = {
         load: function(loadCallback) {
             d3.json('data/bern-budget2013.json', function(data) {
@@ -162,6 +166,17 @@ OpenBudget.nodes = (function() {
                 rootNodes.push(surplusNode);
                 nodes.push(surplusNode);
                 
+                var recursiveSort = function(nodes) {
+                    nodes.sort(valueSort);
+                    $.each(nodes, function(key, value) {
+                        if(value.children) {
+                            recursiveSort(value.children);
+                        }
+                    });
+                }
+                recursiveSort(nodes);
+
+
                 var valueAccessor = function(d) {
                     return d.value;
                 };
