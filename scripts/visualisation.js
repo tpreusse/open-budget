@@ -7,6 +7,7 @@ $(function() {
         $body = $('body');
 
     var svg = d3.select('body').select('svg'),
+        defs = svg.select('defs'),
         svgWidth,
         svgHeight;
 
@@ -16,9 +17,10 @@ $(function() {
         .charge(0)
         .alpha(0.5);
 
-    var activeNodes = d3.select(), 
-        activeNodesCircles = d3.select(), 
-        activeNodesGroups = d3.select();
+    var activeNodes = d3.select(),
+        activeNodesCircles = d3.select(),
+        activeNodesGroups = d3.select(),
+        activeNodesClipPaths = d3.select();
 
     var grayscale = function(color) {
         var hsl = d3.hsl(color);
@@ -82,15 +84,16 @@ $(function() {
     };
 
     var vis = {
-        setActiveNodes: function(nodes, circles, groups) {
+        setActiveNodes: function(aLevel) {
             if(activeNodesCircles) {
                 activeNodesCircles
                     .on('mousedown.drag', null)
                     .on('touchstart.drag', null);
             }
-            activeNodes = nodes;
-            activeNodesCircles = circles || d3.select();
-            activeNodesGroups = groups || d3.select();
+            activeNodes = aLevel.nodes;
+            activeNodesCircles = aLevel.circles || d3.select();
+            activeNodesGroups = aLevel.groups || d3.select();
+            activeNodesClipPaths = aLevel.clipPaths || d3.select();
 
             force.nodes(activeNodes)
             activeNodesCircles.call(force.drag);
@@ -108,8 +111,12 @@ $(function() {
             
             nodes.resize(svgWidth, svgHeight);
             
-            activeNodesCircles.attr('r', function(d) { return d.radius; });
-            svg.selectAll('g').attr('transform', helpers.transform);
+            activeNodesCircles.attr('r', helpers.r);
+            activeNodesClipPaths.selectAll('circle')
+                .attr('r', helpers.computedRadius)
+                .attr('cx', helpers.computedRadius)
+                .attr('cy', helpers.computedRadius);
+            activeNodesGroups.attr('transform', helpers.transform);
 
             force.resume();
         }
@@ -135,6 +142,12 @@ $(function() {
         cy: function(d) {
             return d.y;
         },
+        r: function(d) {
+            return d.radius;
+        },
+        computedRadius: function(d) {
+            return d.computedRadius || d.radius;
+        },
         classWithParent: function(parentId, suffix) {
             suffix = suffix ? ' ' + suffix : '';
             return 'p-' + parentId + suffix;
@@ -145,6 +158,7 @@ $(function() {
         cid: function(d) { return 'c-' + d.id; },
         gid: function(d) { return 'g-' + d.id; },
         clipPathId: function(d) { return 'clip-path-' + d.id; },
+        clipPathUrl: function(d) { return 'url(#'+helpers.clipPathId(d)+')'; },
         reject: function(dd) {
             return function(d) {
                 return d == dd ? null : this;
@@ -177,17 +191,25 @@ $(function() {
             var nodeCircles = parentSelection.selectAll('circle.p-' + parentId + ', circle.l-' + levelId)
                 .data(levelNodes);
 
+            var clipPaths = defs.selectAll('clipPath.l-' + levelId)
+                .data(levelNodes);
+
             var nodeGroups = parentSelection.selectAll('g.p-' + parentId+', g.l-' + levelId)
                 .data(levelNodes);
 
-            nodeCircles.enter().append('circle').attr('id', helpers.cid);
+            nodeCircles.enter()
+                .append('circle').attr('id', helpers.cid);
             nodeCircles.attr('class', helpers.classWithParentAndLevel(parentId, levelId));
 
-            nodeGroups.enter().append('g').attr('id', helpers.gid);
+            clipPaths.enter()
+                .append('clipPath').attr('id', helpers.clipPathId)
+                    .append('circle');
+            clipPaths.attr('class', helpers.classWithParentAndLevel(parentId, levelId));
+
+            nodeGroups.enter()
+                .append('g').attr('id', helpers.gid);
             nodeGroups.attr('class', helpers.classWithParentAndLevel(parentId, levelId))
-                .attr('clip-path', function(d) {
-                    return 'url(#'+helpers.clipPathId(d)+')';
-                });
+                .attr('clip-path', helpers.clipPathUrl);
 
             nodeGroups.each(function(d) {
                 var children = d.children || {},
@@ -211,13 +233,13 @@ $(function() {
 
                     childrenCircles.enter()
                         .append('circle')
-                        .attr('id', helpers.cid)
-                        .attr('class', helpers.classWithParent(parentId, 'blur'))
-                        .attr('cx', function(d) { return d.x; })
-                        .attr('cy', function(d) { return d.y; })
-                        .attr('r', function(d) { return d.radius; })
-                        .style('fill', function(d) { return d.parent.fill; })
-                        .style('stroke', function(d) { return d.parent.stroke; });
+                            .attr('id', helpers.cid)
+                            .attr('class', helpers.classWithParent(parentId, 'blur'))
+                            .attr('cx', helpers.cx)
+                            .attr('cy', helpers.cy)
+                            .attr('r', helpers.r)
+                            .style('fill', function(d) { return d.parent.fill; })
+                            .style('stroke', function(d) { return d.parent.stroke; });
                     
                     // smallest = last dom element = on top
                     childrenCircles.sort(function(a, b) {
@@ -231,7 +253,8 @@ $(function() {
             level.all[levelId] = {
                 'nodes': levelNodes, 
                 'circles': nodeCircles, 
-                'groups': nodeGroups
+                'groups': nodeGroups,
+                'clipPaths': clipPaths
             };
             return levelId;
         },
@@ -319,9 +342,9 @@ $(function() {
             gNode.parentNode.appendChild(gNode);
 
             c.transition().duration(transitionSpeed)
-                .attr("cx", helpers.cx)
-                .attr("cy", helpers.cy)
-                .attr("r", function(d) { return d.radius; })
+                .attr('cx', helpers.cx)
+                .attr('cy', helpers.cy)
+                .attr('r', helpers.r)
                 .style('opacity', 0)
                 .style('fill', function(d) { return '#ffffff'; })
                 .style('stroke', function(d) { return grayscale(d.stroke); });
@@ -334,15 +357,12 @@ $(function() {
             disabledGroups.transition().duration(75)
                 .style('opacity', 0.3);
 
-            g.classed('blur', 0);
+            g.attr('clip-path', '').classed('blur', 0);
             g.transition().duration(transitionSpeed)
                 .attr('transform', helpers.centerTransform)
                 .style('opacity', 1);
 
-            var childrenCircles = g.selectAll('circle'),
-                childrenGroups = theLevel.groups;
-
-            vis.setActiveNodes(children, childrenCircles, childrenGroups);
+            vis.setActiveNodes(theLevel);
 
             force.on('tick', forceTick);
             force.start();
@@ -352,20 +372,21 @@ $(function() {
 
             var childrenTransitionSpeed = Math.floor(transitionSpeed / 2);
 
-            childrenCircles.transition().duration(transitionSpeed)
-                .attr('r', function(d) { return d.radius; })
-                .attr('cx', function(d) { return d.x; })
-                .attr('cy', function(d) { return d.y; })
+            theLevel.circles.transition().duration(transitionSpeed)
+                .attr('r', helpers.r)
+                .attr('cx', helpers.cx)
+                .attr('cy', helpers.cy)
                 .style('fill', function(d) { return d.fill; })
                 .style('stroke', function(d) { return d.stroke; });
 
-            childrenGroups.transition().duration(transitionSpeed)
+            theLevel.groups.transition().duration(transitionSpeed)
                 .attr('transform', helpers.transform);
 
             setTimeout(function() {
                 force.on('tick', forceTickAndSet);
                 force.start();
 
+                vis.resize();
                 g.selectAll('g').transition().duration(75).style('opacity', 0.5);
             }, transitionSpeed);
         }
@@ -392,7 +413,7 @@ $(function() {
         //     $sidebarTableBody.append($tr);
         // });
 
-        // $window.resize(vis.resize);
+        $window.resize(vis.resize);
 
         var levelId = level.setup(rootNodes, 'root');
         var theLevel = level.all[levelId];
@@ -400,7 +421,7 @@ $(function() {
         var rootNodeCircles = theLevel.circles,
             rootNodeGroups = theLevel.groups;
 
-        vis.setActiveNodes(rootNodes, rootNodeCircles, rootNodeGroups);
+        vis.setActiveNodes(theLevel);
         force.start();
 
         rootNodeCircles
@@ -418,7 +439,7 @@ $(function() {
 
         /*rootNodeCircles.attr('r', function(d) { return 0; });
         rootNodeCircles.transition().duration(2000)
-            .attr('r', function(d) { return d.radius; });*/
+            .attr('r', helpers.r);*/
 
         force.on('tick', forceTickAndSet);
         level.push(levelId);
@@ -444,9 +465,9 @@ $(function() {
 
             var hideSpeed = d3.event.altKey ? 7500 : 750;
             newLevel.circles.transition().duration(hideSpeed)
-                .attr("cx", helpers.cx)
-                .attr("cy", helpers.cy)
-                .attr("r", function(d) { return d.radius; })
+                .attr('cx', helpers.cx)
+                .attr('cy', helpers.cy)
+                .attr('r', helpers.r)
                 .style('opacity', 1)
                 .style('fill', function(d) { return d.fill; })
                 .style('stroke', function(d) { return d.stroke; });
@@ -458,7 +479,7 @@ $(function() {
                 .style('opacity', 0)
                 .remove();
 
-            vis.setActiveNodes(newLevel.nodes, newLevel.circles, newLevel.groups);
+            vis.setActiveNodes(newLevel);
 
             childrenCircles.sort(function(a, b) {
                 return b.radius - a.radius;
@@ -481,8 +502,13 @@ $(function() {
 
             var fadeInSpeed = d3.event.altKey ? 750 : 75;
             newLevel.groups.classed('blur', 1).transition().delay(hideSpeed - fadeInSpeed).duration(fadeInSpeed)
+                .attr('clip-path', helpers.clipPathUrl)
                 .style('opacity', 0.5);
                 //.attr('transform', helpers.transform);
+
+            setTimeout(function() {
+                vis.resize();
+            }, hideSpeed);
         });
     });
 });
