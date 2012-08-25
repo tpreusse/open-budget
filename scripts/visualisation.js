@@ -16,12 +16,15 @@ $(function() {
         .charge(0)
         .alpha(0.5);
 
-    var xScale = d3.scale.linear(),
-        yScale = d3.scale.linear();
-
     var activeNodes = d3.select(), 
         activeNodesCircles = d3.select(), 
         activeNodesGroups = d3.select();
+
+    var grayscale = function(color) {
+        var hsl = d3.hsl(color);
+        hsl.s = 0;
+        return hsl.toString();
+    };
 
     var collide = function(node) {
         var r = node.radius + 16,
@@ -51,14 +54,14 @@ $(function() {
     };
 
     var forceTick = function(e) {
-        var q, i, k, o, c, nodes = activeNodes, nodesLength = activeNodes.length;
+        var q, i, k, o, c, aN = activeNodes, aNL = activeNodes.length;
 
-        q = d3.geom.quadtree(activeNodes);
+        q = d3.geom.quadtree(aN);
         i = 0;
         k = e.alpha * 0.1;
 
-        while (i < nodesLength) {
-            o = nodes[i];
+        while (i < aNL) {
+            o = aN[i];
             c = o.center || {x: o.parent.radius, y: o.parent.radius};
 
             o.x += (c.x - o.x) * k;
@@ -75,7 +78,7 @@ $(function() {
         activeNodesCircles
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
-        activeNodesGroups.attr('transform', vis.transform());
+        activeNodesGroups.attr('transform', helpers.transform);
     };
 
     var vis = {
@@ -99,9 +102,6 @@ $(function() {
             if(typeof svgSizeCallback == 'function') {
                 svgSizeCallback();
             }
-
-            xScale.range([0, svgWidth]);
-            yScale.range([0, svgHeight]);
         
             svg.attr('width', svgWidth).attr('height', svgHeight);
             force.size([svgWidth, svgHeight]);
@@ -109,53 +109,267 @@ $(function() {
             nodes.resize(svgWidth, svgHeight);
             
             activeNodesCircles.attr('r', function(d) { return d.radius; });
-            svg.selectAll('g').attr('transform', vis.transform());
+            svg.selectAll('g').attr('transform', helpers.transform);
 
             force.resume();
+        }
+    };
+
+    var helpers = {
+        transform: function(d) {
+            var radius = d.radius,
+                computedRadius = d.computedRadius,
+                scale = computedRadius ? radius / computedRadius : 1;
+            return 'translate(' + (d.x - radius) + ',' + (d.y - radius) + ') scale(' + scale + ')';
         },
-        transform: function(scaleX, scaleY) {
-            if(typeof scaleX == 'function' && typeof scaleY == 'function') {
-                return function(d) {
-                    var radius = d.radius,
-                        computedRadius = d.computedRadius,
-                        scale = computedRadius ? radius / computedRadius : 1;
-                    return 'translate('+(scaleX(d.x)-radius)+','+(scaleY(d.y)-radius)+') scale('+scale+')';
-                }
-            }
-            else {
-                return function(d) {
-                    var radius = d.radius,
-                        computedRadius = d.computedRadius,
-                        scale = computedRadius ? radius / computedRadius : 1;
-                    return 'translate('+(d.x-radius)+','+(d.y-radius)+') scale('+scale+')';
-                }
-            }
+        centerTransform: function(d) {
+            var radius = d.radius,
+                parent = d.parent,
+                center = parent ? {x: parent.centerRadius, y: parent.centerRadius} : nodes.centers['middle'];
+            d.centerRadius = radius;
+            return 'translate(' + (center.x - radius) + ',' + (center.y - radius) + ') scale(1)';
         },
-        cx: function(scale) {
-            if(typeof scale == 'function') {
-                return function(d) {
-                    return scale(d.x);
-                };
-            }
-            else {
-                return function(d) {
-                    return d.x;
-                };
-            }
+        cx: function(d) {
+            return d.x;
         },
-        cy: function(scale) {
-            if(typeof scale == 'function') {
-                return function(d) {
-                    return scale(d.y);
-                };
-            }
-            else {
-                return function(d) {
-                    return d.y;
-                };
+        cy: function(d) {
+            return d.y;
+        },
+        classWithParent: function(parentId, suffix) {
+            suffix = suffix ? ' ' + suffix : '';
+            return 'p-' + parentId + suffix;
+        },
+        classWithParentAndLevel: function(parentId, level) {
+            return helpers.classWithParent(parentId, 'l-' + level);
+        },
+        cid: function(d) { return 'c-' + d.id; },
+        gid: function(d) { return 'g-' + d.id; },
+        clipPathId: function(d) { return 'clip-path-' + d.id; },
+        reject: function(dd) {
+            return function(d) {
+                return d == dd ? null : this;
             }
         }
     }
+
+    var level = {
+        stack: [],
+        all: [],
+        current: function() {
+            return level.getAtStackPos(level.stack.length - 1);
+        },
+        getAtStackPos: function(i) {
+            return level.all[level.stack[i]];
+        },
+        setup: function(levelNodes, parent) {
+            var levelId = level.all.length,
+                parentId;
+
+            if(typeof parent == 'string') {
+                parentId = parent;
+                parentSelection = svg;
+            }
+            else {
+                parentId = parent.id;
+                parentSelection = d3.select('#g-' + parentId);
+            }
+
+            var nodeCircles = parentSelection.selectAll('circle.p-' + parentId + ', circle.l-' + levelId)
+                .data(levelNodes);
+
+            var nodeGroups = parentSelection.selectAll('g.p-' + parentId+', g.l-' + levelId)
+                .data(levelNodes);
+
+            nodeCircles.enter().append('circle').attr('id', helpers.cid);
+            nodeCircles.attr('class', helpers.classWithParentAndLevel(parentId, levelId));
+
+            nodeGroups.enter().append('g').attr('id', helpers.gid);
+            nodeGroups.attr('class', helpers.classWithParentAndLevel(parentId, levelId))
+                .attr('clip-path', function(d) {
+                    return 'url(#'+helpers.clipPathId(d)+')';
+                });
+
+            nodeGroups.each(function(d) {
+                var children = d.children || {},
+                    childrenLength = children.length;
+
+                if(childrenLength < 2) {
+                    return;
+                }
+
+                setTimeout(function() {
+                    var parentId = d.id;
+
+                    nodes.stuffChildren(d);
+                    d.computedRadius = d.stuffedChildrenRadius;
+
+                    var g = d3.select('#g-' + d.id);
+                    g.classed('blur', 1);
+
+                    var childrenCircles = g.selectAll('circle')
+                        .data(children);
+
+                    childrenCircles.enter()
+                        .append('circle')
+                        .attr('id', helpers.cid)
+                        .attr('class', helpers.classWithParent(parentId, 'blur'))
+                        .attr('cx', function(d) { return d.x; })
+                        .attr('cy', function(d) { return d.y; })
+                        .attr('r', function(d) { return d.radius; })
+                        .style('fill', function(d) { return d.parent.fill; })
+                        .style('stroke', function(d) { return d.parent.stroke; });
+                    
+                    // smallest = last dom element = on top
+                    childrenCircles.sort(function(a, b) {
+                        return b.radius - a.radius;
+                    });
+
+                    // g.transition().duration(500).style('opacity', 0.5);
+                }, 10);
+            });
+
+            level.all[levelId] = {
+                'nodes': levelNodes, 
+                'circles': nodeCircles, 
+                'groups': nodeGroups
+            };
+            return levelId;
+        },
+        push: function(levelId, parent) {
+            var curLevel = level.current();
+            if(curLevel) {
+                curLevel.parent = parent;
+            }
+
+            level.stack.push(levelId);
+
+            var theLevel = level.all[levelId];
+
+            var i, stackToHide = level.stack.length - 2, stackLevelId, stackLevel;
+            for(i = 0; i < stackToHide; i += 1) {
+                stackLevelId = level.stack[i];
+                stackLevel = level.all[stackLevelId];
+                if(!stackLevel.hidden) {
+                    stackLevel.hidden = true;
+                    svg.selectAll('.l-'+stackLevelId).filter(helpers.reject(stackLevel.parent))
+                        .transition().duration(750)
+                        .style('opacity', 0);
+                }
+            }
+
+            theLevel.circles.on('click', level.zoom);
+        },
+        pop: function() {
+            var levelId = level.stack.pop();
+
+            if(level.stack.length > 1) {
+                var stackLevelId = level.stack[level.stack.length - 2],
+                    stackLevel = level.all[stackLevelId];
+
+                if(stackLevel.hidden) {
+                    stackLevel.hidden = false;
+                    svg.selectAll('.l-'+stackLevelId).filter(helpers.reject(stackLevel.parent))
+                        .transition().duration(750)
+                        .style('opacity', 0.3);
+                }
+            }
+
+            return level.all[levelId];
+        },
+        zoom: function(e) {
+            var d = this.__data__,
+                c = d3.select(this),
+                cNode = this,
+                g = d3.select('#g-' + d.id),
+                gNode = g.node(),
+                children = d.children;
+
+            if(d.depth+1 < level.stack.length) return;
+            d3.event.stopPropagation();
+            force.stop();
+
+            if(!children || children.length < 2) {
+                return;
+            }
+
+            var curLevel = level.current(),
+                levelId = level.setup(children, d),
+                theLevel = level.all[levelId];
+
+            level.push(levelId, d);
+            
+            // curLevel.circles.each(function(d) { d.fixed = true; });
+
+            var newRadius = (Math.min(svgWidth, svgHeight) / 2) - 200;
+            var unscaledRadius = d.unscaledRadius;
+            var scaleFactor = newRadius / unscaledRadius;
+
+            var filter = helpers.reject(d),
+                disabledCircles = curLevel.circles.filter(filter),
+                disabledGroups = curLevel.groups.filter(filter);
+
+            nodes.setRadiusScaleFactor(scaleFactor);
+            nodes.calculateRadius();
+
+            d.computedRadius = undefined;
+
+            var transitionSpeed = d3.event.altKey ? 7500 : 750;
+
+            cNode.parentNode.appendChild(cNode);
+            gNode.parentNode.appendChild(gNode);
+
+            c.transition().duration(transitionSpeed)
+                .attr("cx", helpers.cx)
+                .attr("cy", helpers.cy)
+                .attr("r", function(d) { return d.radius; })
+                .style('opacity', 0)
+                .style('fill', function(d) { return '#ffffff'; })
+                .style('stroke', function(d) { return grayscale(d.stroke); });
+
+            disabledCircles.transition().duration(transitionSpeed)
+                // .style('fill', function(d) { return grayscale(d.fill); })
+                // .style('stroke', function(d) { return grayscale(d.stroke); })
+                .style('opacity', 0.3);
+
+            disabledGroups.transition().duration(75)
+                .style('opacity', 0.3);
+
+            g.classed('blur', 0);
+            g.transition().duration(transitionSpeed)
+                .attr('transform', helpers.centerTransform)
+                .style('opacity', 1);
+
+            var childrenCircles = g.selectAll('circle'),
+                childrenGroups = theLevel.groups;
+
+            vis.setActiveNodes(children, childrenCircles, childrenGroups);
+
+            force.on('tick', forceTick);
+            force.start();
+            var tickI, tickIMax = 50;
+            for(tickI = 0; tickI < tickIMax; tickI+=1) force.tick();
+            force.stop();
+
+            var childrenTransitionSpeed = Math.floor(transitionSpeed / 2);
+
+            childrenCircles.transition().duration(transitionSpeed)
+                .attr('r', function(d) { return d.radius; })
+                .attr('cx', function(d) { return d.x; })
+                .attr('cy', function(d) { return d.y; })
+                .style('fill', function(d) { return d.fill; })
+                .style('stroke', function(d) { return d.stroke; });
+
+            childrenGroups.transition().duration(transitionSpeed)
+                .attr('transform', helpers.transform);
+
+            setTimeout(function() {
+                force.on('tick', forceTickAndSet);
+                force.start();
+
+                g.selectAll('g').transition().duration(75).style('opacity', 0.5);
+            }, transitionSpeed);
+        }
+    };
 
     nodes.load(function(rootNodes, data) {
         // var $sidebarTableBody = $('#sidebar table tbody');
@@ -178,208 +392,97 @@ $(function() {
         //     $sidebarTableBody.append($tr);
         // });
 
-        $window.resize(vis.resize);
-            
-        var rootNodeCircles = svg.selectAll('circle.directorate')
-            .data(rootNodes);
-        
-        var rootNodeGroups = svg.selectAll('g.directorate')
-            .data(rootNodes);
-        
+        // $window.resize(vis.resize);
+
+        var levelId = level.setup(rootNodes, 'root');
+        var theLevel = level.all[levelId];
+
+        var rootNodeCircles = theLevel.circles,
+            rootNodeGroups = theLevel.groups;
+
         vis.setActiveNodes(rootNodes, rootNodeCircles, rootNodeGroups);
         force.start();
 
-        rootNodeCircles.enter()
-            .append('circle')
-            .attr('class', function(d) { return 'directorate'; })
-            .attr('cx', vis.cx())
-            .attr('cy', vis.cy())
-            .attr('r', function(d) { return 0; })
+        rootNodeCircles
+            .attr('cx', helpers.cx)
+            .attr('cy', helpers.cy)
             .style('fill', function(d) { return d.fill; })
             .style('stroke', function(d) { return d.stroke; })
             .call(force.drag);
 
-        rootNodeGroups.enter()
-            .append('g')
-            .attr('transform', vis.transform())
-            .attr('class', function(d) { return 'directorate id-'+d.id; })
+        rootNodeGroups
+            .attr('transform', helpers.transform)
+            .style('opacity', 0.5);
 
         vis.resize();
+
+        /*rootNodeCircles.attr('r', function(d) { return 0; });
+        rootNodeCircles.transition().duration(2000)
+            .attr('r', function(d) { return d.radius; });*/
 
         force.on('tick', forceTickAndSet);
+        level.push(levelId);
 
-        //child forces
-        setTimeout(function() {
-
-        var i = 0,
-            rootNodesLength = rootNodes.length;
-        for(i = 0; i < rootNodesLength; i+= 1) {
-            (function() {
-                var node = rootNodes[i],
-                    children = node.children;
-
-                if(!children || !children.length) {
-                    return;
-                }
-
-                nodes.stuffChildren(node);
-                node.computedRadius = node.stuffedChildrenRadius;
-
-                var g = svg.select('g.id-'+node.id);
-                g.classed('blur', 1);
-
-                var childrenCircles = g.selectAll('circle')
-                    .data(children);
-
-                childrenCircles.enter()
-                    .append('circle')
-                    .attr('class', function(d) { return 'blur '+d.type; })
-                    .attr('cx', function(d) { return d.x; })
-                    .attr('cy', function(d) { return d.y; })
-                    .attr('r', function(d) { return d.radius; })
-                    .style('fill', function(d) { return d.parent.fill; })
-                    .style('stroke', function(d) { return d.parent.stroke; });
-                
-                childrenCircles.sort(function(a, b) {
-                    return b.radius - a.radius;
-                });
-
-                g.transition().duration(500).style('opacity', 0.5);
-            })();
-        }
-
-        vis.resize();
-
-        }, 2000);
-
-        //zoom
-
-        var grayscale = function(color) {
-            var hsl = d3.hsl(color);
-            hsl.s = 0;
-            hsl.l += 0.2;
-            return hsl.toString();
-        };
-
-        var activeGroup;
+        // zoom out
         d3.select(window).on("click", function() {
-            if(!activeGroup) return;
+            if(level.stack.length < 2) return;
             force.stop();
 
-            nodes.setRadiusScaleFactor(1);
+            var popLevel = level.pop(),
+                newLevel = level.current();
+
+            var newActiveParent = newLevel.nodes[0].parent,
+                scaleFactor;
+            if(newActiveParent) {
+                scaleFactor = ((Math.min(svgWidth, svgHeight) / 2) - 200) / newActiveParent.unscaledRadius;
+            }
+            else {
+                scaleFactor = 1;
+            }
+            nodes.setRadiusScaleFactor(scaleFactor);
             nodes.calculateRadius();
 
             var hideSpeed = d3.event.altKey ? 7500 : 750;
-            rootNodeCircles.transition().duration(hideSpeed)
-                .attr("cx", vis.cx())
-                .attr("cy", vis.cy())
+            newLevel.circles.transition().duration(hideSpeed)
+                .attr("cx", helpers.cx)
+                .attr("cy", helpers.cy)
                 .attr("r", function(d) { return d.radius; })
+                .style('opacity', 1)
                 .style('fill', function(d) { return d.fill; })
                 .style('stroke', function(d) { return d.stroke; });
 
-            var childrenCircles = activeGroup.selectAll('circle');
+            var childrenCircles = popLevel.circles,
+                childrenGroups = popLevel.groups;
+
+            childrenGroups.transition().duration(75)
+                .style('opacity', 0)
+                .remove();
+
+            vis.setActiveNodes(newLevel.nodes, newLevel.circles, newLevel.groups);
+
+            childrenCircles.sort(function(a, b) {
+                return b.radius - a.radius;
+            });
 
             childrenCircles.transition().duration(hideSpeed)
                 .attr('r', function(d) { return d.sr; })
-                .attr('cx', function(d) { return d.sx; })
-                .attr('cy', function(d) { return d.sy; })
+                .attr('cx', function(d) { d.x = d.sx; return d.x; })
+                .attr('cy', function(d) { d.y = d.sy; return d.y; })
                 .style('fill', function(d) { return d.parent.fill; })
                 .style('stroke', function(d) { return d.parent.stroke; });
 
-            setTimeout(function() {
-                vis.setActiveNodes(rootNodes, rootNodeCircles, rootNodeGroups);
-            }, hideSpeed);
-
+            var activeGroup = d3.select('#g-' + popLevel.nodes[0].parent.id);
             activeGroup.each(function(d) {
                 d.computedRadius = d.stuffedChildrenRadius;
             });
 
             activeGroup.transition().duration(hideSpeed)
-                .attr('transform', vis.transform());
+                .attr('transform', helpers.transform);
 
             var fadeInSpeed = d3.event.altKey ? 750 : 75;
-            rootNodeGroups.classed('blur', 1).transition().delay(hideSpeed - fadeInSpeed).duration(fadeInSpeed)
+            newLevel.groups.classed('blur', 1).transition().delay(hideSpeed - fadeInSpeed).duration(fadeInSpeed)
                 .style('opacity', 0.5);
-                //.attr('transform', vis.transform());
-
-            activeGroup = null;
-        });
-        rootNodeCircles.on('click', function(e) {
-            if(activeGroup) return;
-            d3.event.stopPropagation();
-            force.stop();
-
-            var d = this.__data__,
-                c = d3.select(this),
-                g = d3.select('g.id-'+d.id),
-                children = d.children;
-
-            if(!children || !children.length) {
-                return;
-            }
-            
-            //rootNodeCircles.each(function(d) { d.fixed = true; });
-
-            var newRadius = (Math.min(svgWidth, svgHeight) / 2) - 200;
-            var scaleFactor = newRadius / d.radius;
-
-            xScale.domain([d.x - d.radius*1.83, d.x + d.radius*1.83]);
-            yScale.domain([d.y - d.radius*1.83, d.y + d.radius*1.83]);
-
-            var filter = function(dd) {
-                    return dd == d ? null : this;
-                },
-                disabledCircles = rootNodeCircles.filter(filter),
-                disabledGroups = rootNodeGroups.filter(filter);
-
-            nodes.setRadiusScaleFactor(scaleFactor);
-            nodes.calculateRadius();
-
-            d.computedRadius = undefined;
-
-            var transitionSpeed = d3.event.altKey ? 7500 : 750;
-
-            rootNodeCircles.transition().duration(transitionSpeed)
-                .attr("cx", vis.cx(xScale))
-                .attr("cy", vis.cy(yScale))
-                .attr("r", function(d) { return d.radius; })
-                .style('fill', function(d) { return '#ffffff'; })
-                .style('stroke', function(d) { return grayscale(d.stroke); });
-
-            disabledGroups.transition().duration(75)
-                .style('opacity', 0);
-
-            g.classed('blur', 0);
-            g.transition().duration(transitionSpeed)
-                .attr('transform', vis.transform(xScale, yScale))
-                .style('opacity', 1);
-
-            var childrenCircles = g.selectAll('circle');
-
-            vis.setActiveNodes(children, childrenCircles);
-
-            force.on('tick', forceTick);
-            force.start();
-            var tickI, tickIMax = 50;
-            for(tickI = 0; tickI < tickIMax; tickI+=1) force.tick();
-            force.stop();
-
-            var childrenTransitionSpeed = Math.floor(transitionSpeed / 2);
-
-            childrenCircles.transition().duration(transitionSpeed)
-                .attr('r', function(d) { return d.radius; })
-                .attr('cx', function(d) { return d.x; })
-                .attr('cy', function(d) { return d.y; })
-                .style('fill', function(d) { return d.fill; })
-                .style('stroke', function(d) { return d.stroke; });
-
-            setTimeout(function() {
-                force.on('tick', forceTickAndSet);
-                force.start();
-            }, transitionSpeed);
-
-            activeGroup = g;
-
+                //.attr('transform', helpers.transform);
         });
     });
 });

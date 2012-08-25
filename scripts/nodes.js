@@ -1,8 +1,8 @@
 OpenBudget.nodes = (function() {
     var centers = {
-        'revenue': {x:0,y:0},
-        'surplus': {x:0,y:0},
-        'gross_cost': {x:0,y:0}
+        'right': {x:0,y:0},
+        'middle': {x:0,y:0},
+        'left': {x:0,y:0}
     };
     
     var totals = {
@@ -41,6 +41,10 @@ OpenBudget.nodes = (function() {
     }
 
     var diffPercent = function(value, value2) {
+        if(!value2) {
+            // ToDo: verify edge cases
+            return 100;
+        }
         var diff = value - value2;
         return d3.round(diff / (value2 / 100), 2);
     }
@@ -56,7 +60,6 @@ OpenBudget.nodes = (function() {
 
         var node = {
             'name': datum.name,
-            'id': datum.number+type,
             'value': values.value,
             'value2': values.value2,
             'diff': diffPercent(values.value, values.value2),
@@ -68,10 +71,12 @@ OpenBudget.nodes = (function() {
 
         if(depth) {
             node.parent = parent;
+            node.id = parent.id + '-' + datum.number;
             parent.children.push(node);
         }
         else {
-            node.center = centers[type];
+            node.center = centers[type == 'gross_cost' ? 'left' : 'right'];
+            node.id = type + '-' + datum.number;
 
             rootNodes.push(node);
 
@@ -151,7 +156,7 @@ OpenBudget.nodes = (function() {
                     'diff': diffPercent(surplus, surplus2),
                     'type': 'surplus',
                     'depth': 0,
-                    'center': centers['surplus'],
+                    'center': centers['middle'],
                     'id': 'surplus'
                 };
                 rootNodes.push(surplusNode);
@@ -188,12 +193,12 @@ OpenBudget.nodes = (function() {
             });
         },
         resize: function(width, height) {
-            centers['surplus'].x = width / 2;
-            centers['surplus'].y = height / 2;
-            centers['gross_cost'].x = width / 4;
-            centers['gross_cost'].y = height / 2;
-            centers['revenue'].x = width / 4 * 3;
-            centers['revenue'].y = height / 2;
+            centers['middle'].x = width / 2;
+            centers['middle'].y = height / 2;
+            centers['left'].x = width / 4;
+            centers['left'].y = height / 2;
+            centers['right'].x = width / 4 * 3;
+            centers['right'].y = height / 2;
 
             radiusScale.range([0, width / (rootNodes.length / 1.5)]);
             fn.calculateRadius();
@@ -201,10 +206,13 @@ OpenBudget.nodes = (function() {
         calculateRadius: function() {
             var i = 0,
                 nodesLength = nodes.length,
-                d;
+                d,
+                r;
             while(i < nodesLength) {
                 d = nodes[i];
-                d.radius = radiusScale(d.value) * radiusScaleFactor;
+                r = radiusScale(d.value);
+                d.unscaledRadius = r;
+                d.radius = r * radiusScaleFactor;
                 i += 1;
             }
         },
@@ -238,6 +246,7 @@ OpenBudget.nodes = (function() {
             }).start();
 
             var tickI, tickIMax = childrenLength * 6;
+            if(tickIMax < 50) tickIMax = 50;
             for(tickI = 0; tickI < tickIMax; tickI+=1) stuffForce.tick();
             stuffForce.stop();
 
