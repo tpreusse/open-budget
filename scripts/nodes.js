@@ -150,21 +150,21 @@ OpenBudget.nodes = (function() {
                     });
                 });
 
-                surplus = d3.round(totals.revenue.value - totals['gross_cost'].value, 2);
-                surplus2 = d3.round(totals.revenue.value2 - totals['gross_cost'].value2, 2);
+                // surplus = d3.round(totals.revenue.value - totals['gross_cost'].value, 2);
+                // surplus2 = d3.round(totals.revenue.value2 - totals['gross_cost'].value2, 2);
                 
-                surplusNode = {
-                    'name': surplus < 0 ? 'Defizit' : 'Überschuss',
-                    'value': surplus,
-                    'value2': surplus2,
-                    'diff': diffPercent(surplus, surplus2),
-                    'type': 'surplus',
-                    'depth': 0,
-                    'center': centers['middle'],
-                    'id': 'surplus'
-                };
-                rootNodes.push(surplusNode);
-                nodes.push(surplusNode);
+                // surplusNode = {
+                //     'name': surplus < 0 ? 'Defizit' : 'Überschuss',
+                //     'value': surplus,
+                //     'value2': surplus2,
+                //     'diff': diffPercent(surplus, surplus2),
+                //     'type': 'surplus',
+                //     'depth': 0,
+                //     'center': centers['middle'],
+                //     'id': 'surplus'
+                // };
+                // rootNodes.push(surplusNode);
+                // nodes.push(surplusNode);
                 
                 var recursiveSort = function(nodes) {
                     nodes.sort(valueSort);
