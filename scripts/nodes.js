@@ -185,16 +185,9 @@ OpenBudget.nodes = (function() {
                 var min = d3.min(nodes, valueAccessor);
                 
                 radiusScale.domain([0, d3.max([max, Math.abs(min)])]);
-                
-                var diffAccessor = function(d) {
-                    return d.diff;
-                };
-
-                var diffMax = d3.max(rootNodes, diffAccessor);
-                var diffMin = d3.min(rootNodes, diffAccessor);
 
                 var colorScale = d3.scale.linear()
-                    .domain([diffMin, 0, diffMax])
+                    .domain([-100, 0, 100]).clamp(true)
                     .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
                     //.range(['rgb(255,77,77)', 'rgb(255,255,230)', 'rgb(77,255,77)']);
 

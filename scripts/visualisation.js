@@ -163,6 +163,9 @@ $(function() {
             return function(d) {
                 return d == dd ? null : this;
             }
+        },
+        diffAccessor: function(d) {
+            return d.diff;
         }
     }
 
@@ -187,6 +190,21 @@ $(function() {
                 parentId = parent.id;
                 parentSelection = d3.select('#g-' + parentId);
             }
+
+            // level specific color scale
+            // var diffMax = d3.max(levelNodes, helpers.diffAccessor);
+            // var diffMin = d3.min(levelNodes, helpers.diffAccessor);
+
+            // var colorScale = d3.scale.linear()
+            //     .domain([diffMin, 0, diffMax])
+            //     .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
+            //     //.range(['rgb(255,77,77)', 'rgb(255,255,230)', 'rgb(77,255,77)']);
+
+            // $.each(levelNodes, function(index, d) {
+            //     var rgb = d3.rgb(colorScale(d.diff));
+            //     d.fill = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+            //     d.stroke = rgb.darker().toString();
+            // });
 
             var nodeCircles = parentSelection.selectAll('circle.p-' + parentId + ', circle.l-' + levelId)
                 .data(levelNodes);
@@ -250,6 +268,7 @@ $(function() {
                 'circles': nodeCircles, 
                 'groups': nodeGroups,
                 'clipPaths': clipPaths
+                // 'colorScale': colorScale
             };
             return levelId;
         },
@@ -345,13 +364,17 @@ $(function() {
                 // .attr('cy', helpers.cy)
                 // .attr('r', helpers.r)
                 .style('opacity', 0.8)
-                // .style('fill', function(d) { return '#ffffff'; })
-                // .style('stroke', function(d) { return grayscale(d.stroke); });
+                .style('fill', function(d) { return grayscale(d.fill); })
+                .style('stroke', function(d) { return grayscale(d.stroke); });
 
             disabledCircles.transition().duration(transitionSpeed)
-                // .style('fill', function(d) { return grayscale(d.fill); })
-                // .style('stroke', function(d) { return grayscale(d.stroke); })
+                .style('fill', function(d) { return grayscale(d.fill); })
+                .style('stroke', function(d) { return grayscale(d.stroke); })
                 .style('opacity', 0.2);
+
+            disabledGroups.selectAll('circle').transition().duration(transitionSpeed)
+                .style('fill', function(d) { return grayscale(d.parent.fill); })
+                .style('stroke', function(d) { return grayscale(d.parent.stroke); })
 
             disabledGroups.transition().duration(75)
                 .style('opacity', 0.2);
@@ -487,10 +510,15 @@ $(function() {
                 .style('fill', function(d) { return d.parent.fill; })
                 .style('stroke', function(d) { return d.parent.stroke; });
 
-            var activeGroup = d3.select('#g-' + popLevel.nodes[0].parent.id);
-            activeGroup.each(function(d) {
-                d.computedRadius = d.stuffedChildrenRadius;
-            });
+            var activeGroup = d3.select('#g-' + popLevel.nodes[0].parent.id)
+                activeGroupD = activeGroup.datum();
+
+            activeGroupD.computedRadius = activeGroupD.stuffedChildrenRadius;
+
+            newLevel.groups.filter(helpers.reject(activeGroupD)).selectAll('circle')
+                .transition().duration(hideSpeed)
+                    .style('fill', function(d) { return d.parent.fill; })
+                    .style('stroke', function(d) { return d.parent.stroke; });
 
             activeGroup.transition().duration(hideSpeed)
                 .attr('transform', helpers.transform);
