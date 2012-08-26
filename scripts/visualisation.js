@@ -192,19 +192,19 @@ $(function() {
             }
 
             // level specific color scale
-            // var diffMax = d3.max(levelNodes, helpers.diffAccessor);
-            // var diffMin = d3.min(levelNodes, helpers.diffAccessor);
+            var diffMax = d3.max(levelNodes, helpers.diffAccessor);
+            var diffMin = d3.min(levelNodes, helpers.diffAccessor);
 
-            // var colorScale = d3.scale.linear()
-            //     .domain([diffMin, 0, diffMax])
-            //     .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
-            //     //.range(['rgb(255,77,77)', 'rgb(255,255,230)', 'rgb(77,255,77)']);
+            var colorScale = d3.scale.linear()
+                .domain([diffMin, 0, diffMax])
+                .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
+                //.range(['rgb(255,77,77)', 'rgb(255,255,230)', 'rgb(77,255,77)']);
 
-            // $.each(levelNodes, function(index, d) {
-            //     var rgb = d3.rgb(colorScale(d.diff));
-            //     d.fill = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
-            //     d.stroke = rgb.darker().toString();
-            // });
+            $.each(levelNodes, function(index, d) {
+                var rgb = d3.rgb(colorScale(d.diff));
+                d.fill = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+                d.stroke = rgb.darker().toString();
+            });
 
             var nodeCircles = parentSelection.selectAll('circle.p-' + parentId + ', circle.l-' + levelId)
                 .data(levelNodes);
@@ -267,8 +267,8 @@ $(function() {
                 'nodes': levelNodes, 
                 'circles': nodeCircles, 
                 'groups': nodeGroups,
-                'clipPaths': clipPaths
-                // 'colorScale': colorScale
+                'clipPaths': clipPaths,
+                'colorScale': colorScale
             };
             return levelId;
         },
