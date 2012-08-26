@@ -85,6 +85,13 @@ svg {
     pointer-events: none; }
   svg .disabled {
     pointer-events: none; }
+  svg text {
+    text-transform: uppercase;
+    font-family: "Share", sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    opacity: 0.8;
+    text-shadow: white(1) 0 1px 0; }
   svg circle {
     fill: transparent;
     stroke: #000;
