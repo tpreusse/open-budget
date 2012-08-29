@@ -19,17 +19,19 @@ $(function() {
             },
             cleanIdFromTr: function(tr) {
                 return $.trim($(tr).attr('id').replace(/^tr-/, ''));
+            },
+            removeCircleHighlight: function() {
+                highlightedCircles.classed('hover', 0);
             }
         };
 
         var highlightedCircles = d3.select();
         $tBody.on('mouseover', 'tr', function() {
+            helpers.removeCircleHighlight();
+
             var cleanId = helpers.cleanIdFromTr(this);
-            highlightedCircles.classed('hover', 0);
             highlightedCircles = d3.selectAll('svg circle#c-revenue-'+cleanId+', svg circle#c-gross_cost-'+cleanId).classed('hover', 1);
-        }).on('mouseout', 'tr', function() {
-            highlightedCircles.classed('hover', 0);
-        });
+        }).on('mouseout', 'tr', helpers.removeCircleHighlight);
 
         var fn = {
             labelOfDepth: [
@@ -114,6 +116,7 @@ $(function() {
                             if(firstDataSet.nodes[type].depth < 3) {
                                 $tBody.find('tr').click(function() {
                                     d3.select('#c-'+type+'-'+helpers.cleanIdFromTr(this)).each(function(d, i) {
+                                        helpers.removeCircleHighlight();
                                         OpenBudget.visualisation.zoomIn.apply(this, [d, i]);
                                     });
                                 }).css('cursor', 'pointer');
