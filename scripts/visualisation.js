@@ -126,7 +126,7 @@ $(function() {
                     var fontSize = vis.labelFontSize / helpers.scale(d);
                     var radius = helpers.computedRadius(d) - fontSize;
                     if(radius < fontSize*2) return null;
-                    return 'M'+fontSize+','+(radius+fontSize)+' a'+radius+','+radius+' 0 1,1 0,0.1 z'; 
+                    return 'M'+fontSize+','+(radius+fontSize)+' a'+radius+','+radius+' 0 1,1 '+(radius)+','+(radius); 
                 });
             activeNodesText
                 .style('font-size', function(d) {
