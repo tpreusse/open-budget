@@ -20,7 +20,8 @@ $(function() {
     var activeNodes = d3.select(),
         activeNodesCircles = d3.select(),
         activeNodesGroups = d3.select(),
-        activeNodesClipPaths = d3.select();
+        activeNodesClipPaths = d3.select(),
+        activeNodesTextPaths = d3.select();
 
     var grayscale = function(color) {
         var hsl = d3.hsl(color);
@@ -95,10 +96,13 @@ $(function() {
             activeNodesCircles = aLevel.circles || d3.select();
             activeNodesGroups = aLevel.groups || d3.select();
             activeNodesClipPaths = aLevel.clipPaths || d3.select();
+            activeNodesTextPaths = aLevel.textPaths || d3.select();
+            activeNodesText = aLevel.text || d3.select();
 
             force.nodes(activeNodes);
             activeNodesCircles.call(force.drag);
         },
+        labelFontSize: 11,
         resize: function(svgSizeCallback) {
             svgWidth = $body.width() - $sidebar.outerWidth();
             svgHeight = $body.height();
@@ -117,12 +121,17 @@ $(function() {
                 .attr('r', helpers.computedRadius)
                 .attr('cx', helpers.computedRadius)
                 .attr('cy', helpers.computedRadius);
-                // text path
-                // .attr('d', function(d) { 
-                //     var radius = helpers.computedRadius(d) - 15;
-                //     if(radius < 10) return null;
-                //     return 'M15,'+(radius+15)+' a'+radius+','+radius+' 0 1,1 0,0.1 z'; 
-                // })
+            activeNodesTextPaths
+                .attr('d', function(d) {
+                    var fontSize = vis.labelFontSize / helpers.scale(d);
+                    var radius = helpers.computedRadius(d) - fontSize;
+                    if(radius < fontSize*2) return null;
+                    return 'M'+fontSize+','+(radius+fontSize)+' a'+radius+','+radius+' 0 1,1 0,0.1 z'; 
+                });
+            activeNodesText
+                .style('font-size', function(d) {
+                    return vis.labelFontSize / helpers.scale(d);
+                });
             activeNodesGroups.attr('transform', helpers.transform);
 
             force.resume();
@@ -130,11 +139,12 @@ $(function() {
     };
 
     var helpers = {
+        scale: function(d) {
+            return d.computedRadius ? d.radius / d.computedRadius : 1;
+        },
         transform: function(d) {
-            var radius = d.radius,
-                computedRadius = d.computedRadius,
-                scale = computedRadius ? radius / computedRadius : 1;
-            return 'translate(' + (d.x - radius) + ',' + (d.y - radius) + ') scale(' + scale + ')';
+            var radius = d.radius;
+            return 'translate(' + (d.x - radius) + ',' + (d.y - radius) + ') scale(' + helpers.scale(d) + ')';
         },
         centerTransform: function(d) {
             var radius = d.radius,
@@ -177,6 +187,11 @@ $(function() {
         gid: function(d) { return 'g-' + d.id; },
         clipPathId: function(d) { return 'clip-path-' + d.id; },
         clipPathUrl: function(d) { return 'url(#'+helpers.clipPathId(d)+')'; },
+        textPathId: function(d) { return 'text-path-' + d.id; },
+        textPathHref: function(d) { return '#'+helpers.textPathId(d); },
+        name: function(d) {
+            return d.name;
+        },
         reject: function(dd) {
             return function(d) {
                 return d == dd ? null : this;
@@ -230,6 +245,9 @@ $(function() {
             var clipPaths = defs.selectAll('clipPath.l-' + levelId)
                 .data(levelNodes);
 
+            var textPaths = defs.selectAll('path.l-' + levelId)
+                .data(levelNodes);
+
             var nodeGroups = parentSelection.selectAll('g.p-' + parentId+', g.l-' + levelId)
                 .data(levelNodes);
 
@@ -242,8 +260,15 @@ $(function() {
                     .append('circle');
             clipPaths.attr('class', helpers.classWithParentAndLevel(parentId, levelId));
 
-            nodeGroups.enter()
-                .append('g').attr('id', helpers.gid);
+            textPaths.enter()
+                .append('path')
+                .attr('id', helpers.textPathId)
+                .attr('class', helpers.classWithParentAndLevel(parentId, levelId));
+
+            var nodeGroupsEnter = nodeGroups.enter()
+                .append('g')
+                .attr('id', helpers.gid);
+
             nodeGroups.attr('class', helpers.classWithParentAndLevel(parentId, levelId))
                 .attr('clip-path', helpers.clipPathUrl);
 
@@ -279,11 +304,18 @@ $(function() {
                 // g.transition().duration(500).style('opacity', 0.7);
             });
 
+            var nodeText = nodeGroupsEnter.append('text')
+                .append('textPath')
+                .attr('xlink:href', helpers.textPathHref)
+                .text(helpers.name);
+
             level.all[levelId] = {
                 'nodes': levelNodes, 
                 'circles': nodeCircles, 
                 'groups': nodeGroups,
-                'clipPaths': clipPaths
+                'clipPaths': clipPaths,
+                'text': nodeText,
+                'textPaths': textPaths
                 // 'colorScale': colorScale
             };
             return levelId;
@@ -386,6 +418,9 @@ $(function() {
                 .style('opacity', 0.8)
                 .style('fill', function(d) { return grayscale(d.fill); })
                 .style('stroke', function(d) { return grayscale(d.stroke); });
+
+            g.select('text').transition().duration(70)
+                .style('opacity', 0);
 
             disabledCircles.transition().duration(transitionSpeed)
                 .style('fill', function(d) { return grayscale(d.fill); })
@@ -493,6 +528,9 @@ $(function() {
                 .attr('clip-path', helpers.clipPathUrl)
                 .style('opacity', 0.7);
                 //.attr('transform', helpers.transform);
+
+            activeGroup.select('text').transition().delay(hideSpeed - fadeInSpeed).duration(fadeInSpeed)
+                .style('opacity', 0.6);
 
             setTimeout(function() {
                 vis.resize();

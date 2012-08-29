@@ -180,9 +180,8 @@ svg {
     text-transform:uppercase;
     font-family:$font;
     font-weight:bold;
-    font-size:15px;
 
-    opacity:0.8;
+    opacity:0.6;
 
     @include letterpress;
   }
