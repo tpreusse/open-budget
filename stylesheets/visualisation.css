@@ -6,6 +6,11 @@ html, body {
   overflow: hidden;
   font-family: "Share", sans-serif; }
 
+a {
+  color: #e61414; }
+  a:hover {
+    color: #b71010; }
+
 #tooltip {
   font-size: 12px;
   position: absolute;
@@ -27,7 +32,7 @@ html, body {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 1;
+  z-index: 2;
   min-width: 400px;
   width: 20%;
   max-width: 500px;
@@ -49,18 +54,37 @@ html, body {
     line-height: 30px; }
   #sidebar #search {
     display: block;
-    margin: 20px auto 30px;
+    margin: 20px auto 0;
     position: relative;
     width: 166px;
     font-weight: normal;
     text-align: center;
     border-radius: 20px; }
     #sidebar #search input {
-      padding-left: 20px; }
+      padding-left: 24px;
+      width: auto; }
     #sidebar #search label {
       position: absolute;
-      top: 8px;
-      left: 3px; }
+      top: 6px;
+      left: 6px; }
+      #sidebar #search label i {
+        opacity: 0.8; }
+  #sidebar .breadcrumb, #sidebar table {
+    opacity: 0; }
+  #sidebar .breadcrumb {
+    margin-top: 20px;
+    margin-bottom: -20px;
+    padding: 8px;
+    background-color: transparent;
+    font-size: 16px; }
+    #sidebar .breadcrumb li:last-child {
+      font-weight: bold; }
+  #sidebar table {
+    margin-top: 20px; }
+    #sidebar table .n2013, #sidebar table .n2012, #sidebar table .diff {
+      text-align: right; }
+    #sidebar table .diff {
+      font-weight: bold; }
   #sidebar #opendatach {
     position: absolute;
     bottom: 15px;
@@ -91,7 +115,7 @@ svg {
     font-weight: bold;
     font-size: 15px;
     opacity: 0.8;
-    text-shadow: white(1) 0 1px 0; }
+    text-shadow: white 0 1px 0; }
   svg circle {
     fill: transparent;
     stroke: #000;
@@ -102,3 +126,11 @@ svg {
     stroke-width: 2; }
   svg circle.surplus:hover {
     stroke-width: 4; }
+
+#notsupported {
+  margin: 20px 40px;
+  text-align: center; }
+  #notsupported .try {
+    cursor: pointer;
+    font-size: 10px;
+    color: gray; }

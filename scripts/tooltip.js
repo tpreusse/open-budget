@@ -31,4 +31,4 @@ OpenBudget.tooltip = (function() {
     $(document).on('mouseout', 'svg circle', function(){
         $tip.hide();
     });
-})()
+})();

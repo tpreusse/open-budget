@@ -297,6 +297,8 @@ $(function() {
 
             var theLevel = level.all[levelId];
 
+            OpenBudget.table.show(theLevel.nodes);
+
             var i, stackToHide = level.stack.length - 2, stackLevelId, stackLevel;
             for(i = 0; i < stackToHide; i += 1) {
                 stackLevelId = level.stack[i];
@@ -329,6 +331,8 @@ $(function() {
                         .style('opacity', 0.8);
                 }
             }
+
+            OpenBudget.table.show(level.current().nodes);
 
             return level.all[levelId];
         },
@@ -495,59 +499,57 @@ $(function() {
         }
     };
 
-    nodes.loadFromCache(function(rootNodes) {
-        // var $sidebarTableBody = $('#sidebar table tbody');
-        // var $trTemplate = $sidebarTableBody.find('tr').detach();
-        // $.each(data, function(key, directorate) {
-        //     var $tr = $trTemplate.clone();
-        //     if(
-        //         !directorate.gross_cost || 
-        //         !directorate.gross_cost.budgets || 
-        //         !directorate.revenue || 
-        //         !directorate.revenue.budgets || 
-        //         !directorate.net_cost || 
-        //         !directorate.net_cost.budgets
-        //     ) 
-        //         return;
+    var init = function() {
+        nodes.loadFromCache(function(rootNodes) {
+            $window.resize(vis.resize);
 
-        //     $tr.find('td:eq(0)').text(directorate.name.replace('Direktion für ', ''));
-        //     $tr.find('td:eq(1)').text(d3.round(directorate.gross_cost.budgets['2013']));
-        //     $tr.find('td:eq(2)').text(d3.round(directorate.revenue.budgets['2013']));
-        //     $sidebarTableBody.append($tr);
-        // });
+            var levelId = level.setup(rootNodes, 'root');
+            var theLevel = level.all[levelId];
 
-        $window.resize(vis.resize);
+            var rootNodeCircles = theLevel.circles,
+                rootNodeGroups = theLevel.groups;
 
-        var levelId = level.setup(rootNodes, 'root');
-        var theLevel = level.all[levelId];
+            vis.setActiveNodes(theLevel);
+            force.start();
 
-        var rootNodeCircles = theLevel.circles,
-            rootNodeGroups = theLevel.groups;
+            rootNodeCircles
+                .attr('cx', helpers.cx)
+                .attr('cy', helpers.cy)
+                .style('fill', function(d) { return d.fill; })
+                .style('stroke', function(d) { return d.stroke; })
+                .call(force.drag);
 
-        vis.setActiveNodes(theLevel);
-        force.start();
+            rootNodeGroups
+                .attr('transform', helpers.transform)
+                .style('opacity', 0.7);
 
-        rootNodeCircles
-            .attr('cx', helpers.cx)
-            .attr('cy', helpers.cy)
-            .style('fill', function(d) { return d.fill; })
-            .style('stroke', function(d) { return d.stroke; })
-            .call(force.drag);
+            vis.resize();
 
-        rootNodeGroups
-            .attr('transform', helpers.transform)
-            .style('opacity', 0.7);
+            /*rootNodeCircles.attr('r', function(d) { return 0; });
+            rootNodeCircles.transition().duration(2000)
+                .attr('r', helpers.r);*/
 
-        vis.resize();
+            force.on('tick', forceTickAndSet);
+            level.push(levelId);
 
-        /*rootNodeCircles.attr('r', function(d) { return 0; });
-        rootNodeCircles.transition().duration(2000)
-            .attr('r', helpers.r);*/
+            // zoom out
+            d3.select(window).on("click", level.zoomOut);
+        });
+    };
 
-        force.on('tick', forceTickAndSet);
-        level.push(levelId);
 
-        // zoom out
-        d3.select(window).on("click", level.zoomOut);
-    });
+    if(!(!!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect)) {
+        $sidebar.append('<div id="notsupported"><h2>Browser inkompatibel</h2><p>Leider unterstüzt ihr Browser kein SVG.<br /><br />Wir empfehlen die neuste Version von <span class="recommendation"></span>.</p><div class="try">trotzdem versuchen</div></div>');
+        // maybe OS dependant but Safari currently sucks
+        $('#notsupported .recommendation').html('<a href="https://www.google.com/chrome" target="_blank">Google Chrome</a> oder <a href="http://www.mozilla.org/firefox/" target="_blank">Firefox</a>');
+
+        $('#notsupported .try').click(function(){
+            $('#notsupported').fadeOut();
+            init();
+        });
+    }
+    else {
+        init();
+    }
+    
 });

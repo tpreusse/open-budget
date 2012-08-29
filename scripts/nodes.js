@@ -64,19 +64,18 @@ OpenBudget.nodes = (function() {
             'value2': values.value2,
             'diff': diffPercent(values.value, values.value2),
             'type': type,
-            'key': key,
             'depth': depth,
             'children': []
         }
 
         if(depth) {
             node.parent = parent;
-            node.id = parent.id + '-' + datum.number;
+            node.id = parent.id + '-' + (datum.number || key);
             parent.children.push(node);
         }
         else {
             node.center = centers[type == 'gross_cost' ? 'left' : 'right'];
-            node.id = type + '-' + datum.number;
+            node.id = type + '-' + (datum.number || key);
 
             rootNodes.push(node);
 

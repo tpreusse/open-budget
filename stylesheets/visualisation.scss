@@ -1,8 +1,8 @@
 $openDataRed:#E61414;
 $font:"Share",sans-serif;
 
-@mixin letterpress($opacity){
-  text-shadow:white($opacity) 0 1px 0;
+@mixin letterpress {
+  text-shadow:white 0 1px 0;
 }
 
 html, body {
@@ -14,6 +14,12 @@ html, body {
   font-family:$font;
 }
 
+a {
+  color:$openDataRed;
+  &:hover {
+    color:darken($openDataRed, 10%);
+  }
+}
 
 #tooltip {
   font-size:12px;
@@ -38,10 +44,11 @@ html, body {
 }
 
 #sidebar {
+
   position:absolute;
   top:0;
   right:0;
-  z-index:1;
+  z-index:2;
   min-width:400px;
   width:20%;
   max-width:500px;
@@ -73,7 +80,7 @@ html, body {
 
   #search {
     display:block;
-    margin:20px auto 30px;
+    margin:20px auto 0;
     position:relative;
     width:166px;
 
@@ -82,13 +89,47 @@ html, body {
     border-radius:20px;
 
     input {
-      padding-left:20px;
+      padding-left:24px;
+      width:auto;
     }
 
     label {
       position:absolute;
-      top:8px;
-      left:3px;
+      top:6px;
+      left:6px;
+
+      i {
+        opacity:0.8;
+      }
+    }
+  }
+
+  // initially hidden
+  .breadcrumb, table {
+    opacity:0;
+  }
+
+  .breadcrumb {
+    margin-top:20px;
+    margin-bottom:-20px;
+    padding:8px;
+    background-color:transparent;
+    font-size:16px;
+
+    li:last-child {
+      font-weight:bold;
+    }
+  }
+
+  table {
+    margin-top:20px;
+
+    .n2013, .n2012, .diff {
+      text-align:right;
+    }
+
+    .diff {
+      font-weight:bold;
     }
   }
 
@@ -139,7 +180,7 @@ svg {
 
     opacity:0.8;
 
-    @include letterpress(1);
+    @include letterpress;
   }
 
   circle {
@@ -158,5 +199,16 @@ svg {
 
   circle.surplus:hover {
     stroke-width:4;
+  }
+}
+
+#notsupported {
+  margin:20px 40px;
+  text-align:center;
+
+  .try {
+    cursor:pointer;
+    font-size:10px;
+    color:gray;
   }
 }

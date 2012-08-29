@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html id="OpenBudget">
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <title>Budget App</title>
-    <link href='http://fonts.googleapis.com/css?family=Share:400,700' rel='stylesheet' type='text/css'>
+    <!-- <link href="http://fonts.googleapis.com/css?family=Share:400,700" rel="stylesheet" type="text/css"/> -->
+    <link type="text/css" rel="stylesheet" href="lib/bootstrap/css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="stylesheets/visualisation.css"/>
   </head>
   <body>
@@ -15,34 +16,48 @@
         <h1>Stadt Bern</h1>
         <h2>Budget 2013</h2>
 
-        <!--<div id="search">
-            <label for="search-field"></label>
+<!--         <div id="search">
+            <label for="search-field">
+                <i class="icon-search"></i>
+            </label>
             <input id="search-field" type="text" />
         </div>
-       
+        -->
 
-        <ul class="breadcrumbs">
+        <ul class="breadcrumb">
             <li>
-                <a>Übersicht</a>
+                Übersicht
             </li>
         </ul>
 
-        <table>
+        <table id="table" class="table">
             <thead>
-                <tr>
+                <tr class="overview">
                     <th>Direktion</th>
                     <th style="text-align:right">Bruttokosten</th>
                     <th style="text-align:right">Erlöse</th>
                 </tr>
+                <tr class="compare">
+                    <th></th>
+                    <th style="text-align:right">2013</th>
+                    <th></th>
+                    <th style="text-align:right">2012</th>
+                </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr class="overview">
                     <td></td>
                     <td style="text-align:right"></td>
                     <td style="text-align:right"></td>
                 </tr>
+                <tr class="compare">
+                    <td></td>
+                    <td class="n2013"></td>
+                    <td class="diff"></td>
+                    <td class="n2012"></td>
+                </tr>
             </tbody>
-        </table>-->
+        </table>
         
         <a id="opendatach" href="http://www.opendata.ch/">
           <img src="images/opendatach.png" alt="" />
@@ -50,8 +65,10 @@
     </div>
     <script src="lib/jquery-1.7.2.min.js"></script>
     <script src="lib/d3/d3.v2.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.js"></script>
     <script src="scripts/setup.js"></script>
     <script src="scripts/tooltip.js"></script>
+    <script src="scripts/table.js"></script>
     <script src="scripts/nodes.js"></script>
     <script src="scripts/visualisation.js"></script>
   </body>
