@@ -379,7 +379,7 @@ $(function() {
                 children = d.children;
 
             if(d.depth+1 < level.stack.length) return;
-            d3.event.stopPropagation();
+            if(d3.event) d3.event.stopPropagation();
             force.stop();
 
             if(!children || children.length < 2) {
@@ -407,7 +407,7 @@ $(function() {
 
             d.computedRadius = undefined;
 
-            var transitionSpeed = d3.event.altKey ? 7500 : 750;
+            var transitionSpeed = d3.event && d3.event.altKey ? 7500 : 750;
 
             // cNode.parentNode.appendChild(cNode);
             gNode.parentNode.appendChild(gNode);
@@ -486,7 +486,7 @@ $(function() {
             nodes.setRadiusScaleFactor(scaleFactor);
             nodes.calculateRadius();
 
-            var hideSpeed = d3.event.altKey ? 7500 : 750;
+            var hideSpeed = d3.event && d3.event.altKey ? 7500 : 750;
             newLevel.circles.transition().duration(hideSpeed)
                 .attr('cx', helpers.cx)
                 .attr('cy', helpers.cy)
@@ -524,7 +524,7 @@ $(function() {
             activeGroup.transition().duration(hideSpeed)
                 .attr('transform', helpers.transform);
 
-            var fadeInSpeed = d3.event.altKey ? 750 : 75;
+            var fadeInSpeed = d3.event && d3.event.altKey ? 750 : 75;
             newLevel.groups.classed('blur', 1).transition().delay(hideSpeed - fadeInSpeed).duration(fadeInSpeed)
                 .attr('clip-path', helpers.clipPathUrl)
                 .style('opacity', 0.7);
@@ -592,4 +592,8 @@ $(function() {
         init();
     }
     
+    OpenBudget.visualisation = {
+        zoomIn: level.zoomIn,
+        zoomOut: level.zoomOut
+    };
 });

@@ -13,13 +13,18 @@ $(function() {
         var formatCHF = d3.format(',f');
         var formatDiffPercent = d3.format('+.2');
 
-        var cleanId = function(id) {
-            return id.replace(/revenue-|gross_cost-/, '');
+        var helpers = {
+            cleanId: function(id) {
+                return id.replace(/revenue-|gross_cost-/, '');
+            },
+            cleanIdFromTr: function(tr) {
+                return $.trim($(tr).attr('id').replace(/^tr-/, ''));
+            }
         };
 
         var highlightedCircles = d3.select();
         $tBody.on('mouseover', 'tr', function() {
-            var cleanId = $.trim($(this).attr('id').replace(/^tr-/, ''));
+            var cleanId = helpers.cleanIdFromTr(this);
             highlightedCircles.classed('hover', 0);
             highlightedCircles = d3.selectAll('svg circle#c-revenue-'+cleanId+', svg circle#c-gross_cost-'+cleanId).classed('hover', 1);
         }).on('mouseout', 'tr', function() {
@@ -36,7 +41,7 @@ $(function() {
             highlight: function(id) {
                 $tBody.find('tr').removeClass('hover');
                 if(id) {
-                    $tBody.find('#tr-'+cleanId(id)).addClass('hover');
+                    $tBody.find('#tr-'+helpers.cleanId(id)).addClass('hover');
                 }
             },
             show: function(nodes) {
@@ -48,7 +53,7 @@ $(function() {
                             idToIndex = {};
 
                         $.each(nodes, function(key, node) {
-                            var id = cleanId(node.id);
+                            var id = helpers.cleanId(node.id);
                             var index = idToIndex[id];
                             if(index === undefined) {
                                 index = dataSets.length;
@@ -106,6 +111,14 @@ $(function() {
                                 $tBody.append($tr);
                             });
 
+                            if(firstDataSet.nodes[type].depth < 3) {
+                                $tBody.find('tr').click(function() {
+                                    d3.select('#c-'+type+'-'+helpers.cleanIdFromTr(this)).each(function(d, i) {
+                                        OpenBudget.visualisation.zoomIn.apply(this, [d, i]);
+                                    });
+                                }).css('cursor', 'pointer');
+                            }
+
                             createBreadcrumbItem(firstDataSet.nodes[type].parent);
 
                             breadcrumbItems.unshift(type == 'gross_cost' ? 'Bruttokosten' : 'Erlöse');
@@ -120,6 +133,9 @@ $(function() {
                             $item.text(item);
                             if(index + 1 < breadcrumbLength) {
                                 $item.append('<span class="divider">/</span>');
+                                $item.click(function() {
+                                    OpenBudget.visualisation.zoomOut();
+                                }).css('cursor', 'pointer');
                             }
                             $item.appendTo($breadcrumb);
                         });
