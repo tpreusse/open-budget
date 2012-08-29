@@ -41,7 +41,7 @@ $(function() {
                 l = Math.sqrt(x * x + y * y),
                 r = node.radius + quad.point.radius;
                 if(l < r) {
-                    l = (l - r) / l * .5;
+                    l = (l - r) / l * 0.5;
                     node.x -= x *= l;
                     node.y -= y *= l;
                     quad.point.x += x;
@@ -79,7 +79,8 @@ $(function() {
         
         activeNodesCircles
             .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; })
+            .attr("cy", function(d) { return d.y; });
+
         activeNodesGroups.attr('transform', helpers.transform);
     };
 
@@ -95,7 +96,7 @@ $(function() {
             activeNodesGroups = aLevel.groups || d3.select();
             activeNodesClipPaths = aLevel.clipPaths || d3.select();
 
-            force.nodes(activeNodes)
+            force.nodes(activeNodes);
             activeNodesCircles.call(force.drag);
         },
         resize: function(svgSizeCallback) {
@@ -138,7 +139,7 @@ $(function() {
         centerTransform: function(d) {
             var radius = d.radius,
                 parent = d.parent,
-                center = parent ? {x: parent.centerRadius, y: parent.centerRadius} : nodes.centers['middle'];
+                center = parent ? {x: parent.centerRadius, y: parent.centerRadius} : nodes.centers.middle;
             d.centerRadius = radius;
             return 'translate(' + (center.x - radius) + ',' + (center.y - radius) + ') scale(1)';
         },
@@ -179,12 +180,12 @@ $(function() {
         reject: function(dd) {
             return function(d) {
                 return d == dd ? null : this;
-            }
+            };
         },
         diffAccessor: function(d) {
             return d.diff;
         }
-    }
+    };
 
     var level = {
         stack: [],
@@ -393,7 +394,7 @@ $(function() {
 
             disabledGroups.selectAll('circle').transition().duration(transitionSpeed)
                 .style('fill', function(d) { return grayscale(d.parent.fill); })
-                .style('stroke', function(d) { return grayscale(d.parent.stroke); })
+                .style('stroke', function(d) { return grayscale(d.parent.stroke); });
 
             disabledGroups.transition().duration(75)
                 .style('opacity', 0.2);
@@ -474,7 +475,7 @@ $(function() {
                 .style('fill', function(d) { return d.parent.fill; })
                 .style('stroke', function(d) { return d.parent.stroke; });
 
-            var activeGroup = d3.select('#g-' + popLevel.nodes[0].parent.id)
+            var activeGroup = d3.select('#g-' + popLevel.nodes[0].parent.id),
                 activeGroupD = activeGroup.datum();
 
             activeGroupD.computedRadius = activeGroupD.stuffedChildrenRadius;
@@ -533,10 +534,9 @@ $(function() {
             level.push(levelId);
 
             // zoom out
-            d3.select(window).on("click", level.zoomOut);
+            svg.on("click", level.zoomOut);
         });
     };
-
 
     if(!(!!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect)) {
         $sidebar.append('<div id="notsupported"><h2>Browser inkompatibel</h2><p>Leider unterstüzt ihr Browser kein SVG.<br /><br />Wir empfehlen die neuste Version von <span class="recommendation"></span>.</p><div class="try">trotzdem versuchen</div></div>');

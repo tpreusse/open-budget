@@ -69,7 +69,7 @@ a {
       left: 6px; }
       #sidebar #search label i {
         opacity: 0.8; }
-  #sidebar .breadcrumb, #sidebar table {
+  #sidebar table {
     opacity: 0; }
   #sidebar .breadcrumb {
     margin-top: 20px;

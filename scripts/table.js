@@ -14,8 +14,14 @@ $(function() {
         var formatDiffPercent = d3.format('+.2');
 
         var fn = {
+            labelOfDepth: [
+                'Direktion',
+                'Dienststelle',
+                'Produktegruppe',
+                'Produkt'
+            ],
             show: function(nodes) {
-                $table.add($breadcrumb).stop(true).animate({
+                $table.stop(true).animate({
                     opacity: 0
                 }, {
                     complete: function() {
@@ -47,26 +53,26 @@ $(function() {
                                 breadcrumbItems.unshift(node.name);
                                 createBreadcrumbItem(node.parent);
                             }
-                        }
+                        };
 
                         var firstDataSet = dataSets[0];
 
-                        if(firstDataSet.nodes['gross_cost'] !== undefined && firstDataSet.nodes['revenue'] !== undefined) {
+                        if(firstDataSet.nodes.gross_cost !== undefined && firstDataSet.nodes.revenue !== undefined) {
                             $overviewHead.clone().appendTo($tHead);
 
                             $.each(dataSets, function(index, dataSet) {
                                 var $tr = $overviewTrTemplate.clone();
 
                                 $tr.find('td:eq(0)').text(dataSet.name);
-                                $tr.find('td:eq(1)').text(formatCHF(dataSet.nodes['gross_cost'].value));
-                                $tr.find('td:eq(2)').text(formatCHF(dataSet.nodes['revenue'].value));
+                                $tr.find('td:eq(1)').text(formatCHF(dataSet.nodes.gross_cost.value));
+                                $tr.find('td:eq(2)').text(formatCHF(dataSet.nodes.revenue.value));
                                 $tBody.append($tr);
                             });
                         }
                         else {
-                            $compareHead.clone().appendTo($tHead);
+                            var type = firstDataSet.nodes.gross_cost === undefined ? 'revenue' : 'gross_cost';
 
-                            var type = firstDataSet.nodes['gross_cost'] === undefined ? 'revenue' : 'gross_cost';
+                            $compareHead.clone().appendTo($tHead).find('th:eq(0)').text(fn.labelOfDepth[firstDataSet.nodes[type].depth]);
 
                             $.each(dataSets, function(index, dataSet) {
                                 var $tr = $compareTrTemplate.clone(),
@@ -79,7 +85,7 @@ $(function() {
                                 $tBody.append($tr);
                             });
 
-                            createBreadcrumbItem(firstDataSet.nodes[type].parent)
+                            createBreadcrumbItem(firstDataSet.nodes[type].parent);
 
                             breadcrumbItems.unshift(type == 'gross_cost' ? 'Bruttokosten' : 'Erlöse');
                         }
@@ -90,18 +96,18 @@ $(function() {
                         $breadcrumb.empty();
                         $.each(breadcrumbItems, function(index, item) {
                             var $item = $('<li></li>');
-                            $item.text(item)
+                            $item.text(item);
                             if(index + 1 < breadcrumbLength) {
                                 $item.append('<span class="divider">/</span>');
                             }
                             $item.appendTo($breadcrumb);
                         });
 
-                        $table.add($breadcrumb).animate({opacity:1});
+                        $table.animate({opacity:1});
                     }
                 });
             }
-        }
+        };
 
         return fn;
     })();

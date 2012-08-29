@@ -25,20 +25,20 @@ OpenBudget.nodes = (function() {
             if(value > 0) {
                 numbers = {
                     'value': value
-                }
+                };
                 if(value2) {
                     numbers.value2 = value2;
                 }
             }
 
             return numbers;
-        }
-    }
+        };
+    };
     
     var valuesAccessorForNodeType = {
         'revenue': valuesAccessor('revenue', 'budgets', '2013', '2012'),
         'gross_cost': valuesAccessor('gross_cost', 'budgets', '2013', '2012')
-    }
+    };
 
     var diffPercent = function(value, value2) {
         if(!value2) {
@@ -47,7 +47,7 @@ OpenBudget.nodes = (function() {
         }
         var diff = value - value2;
         return d3.round(diff / (value2 / 100), 2);
-    }
+    };
 
     var createNode = function(key, datum, parent) {
         if(!parent) return;
@@ -66,7 +66,7 @@ OpenBudget.nodes = (function() {
             'type': type,
             'depth': depth,
             'children': []
-        }
+        };
 
         if(depth) {
             node.parent = parent;
@@ -101,8 +101,8 @@ OpenBudget.nodes = (function() {
             }
         };
         return {
-            'revenue': createNode(key, datum, parents['revenue']),
-            'gross_cost': createNode(key, datum, parents['gross_cost'])
+            'revenue': createNode(key, datum, parents.revenue),
+            'gross_cost': createNode(key, datum, parents.gross_cost)
         };
     };
 
@@ -129,7 +129,7 @@ OpenBudget.nodes = (function() {
             var c = parentRadius, da = 0.13 * alpha;
             d.x += (c - d.x) * da;
             d.y += (c - d.y) * da;
-        }
+        };
     };
 
     var valueSort = function(a, b) {
@@ -142,7 +142,7 @@ OpenBudget.nodes = (function() {
                 directorateNodes = createNodes(key, directorate);
                 $.each(directorate.agencies, function(key, agency) {
                     agencyNodes = createNodes(key, agency, directorateNodes);
-                    $.each(agency['product_groups'], function(key, productGroup) {
+                    $.each(agency.product_groups, function(key, productGroup) {
                         productGroupNodes = createNodes(key, productGroup, agencyNodes);
                         $.each(productGroup.products, function(key, product) {
                             createNodes(key, product, productGroupNodes);
@@ -185,7 +185,7 @@ OpenBudget.nodes = (function() {
                         recursiveSort(value.children);
                     }
                 });
-            }
+            };
             recursiveSort(nodes);
         },
         setup: function() {
@@ -217,7 +217,7 @@ OpenBudget.nodes = (function() {
                             recursiveStuffing(value.children);
                         }
                     });
-                }
+                };
                 recursiveStuffing(rootNodes);
                 stuffForceMinTick /= 10;
 
@@ -229,7 +229,7 @@ OpenBudget.nodes = (function() {
                             recursiveCleanup(value.children);
                         }
                     });
-                }
+                };
                 recursiveCleanup(rootNodes);
 
                 $('body').append('<textarea></textarea>').find('textarea:last').css({
@@ -259,7 +259,7 @@ OpenBudget.nodes = (function() {
                         }
                         nodes.push(value);
                     });
-                }
+                };
                 recursiveReferencing(rootNodes);
             
                 fn.setup();
@@ -277,12 +277,12 @@ OpenBudget.nodes = (function() {
             });
         },
         resize: function(width, height) {
-            centers['middle'].x = width / 2;
-            centers['middle'].y = height / 2;
-            centers['left'].x = width / 4;
-            centers['left'].y = height / 2;
-            centers['right'].x = width / 4 * 3;
-            centers['right'].y = height / 2;
+            centers.middle.x = width / 2;
+            centers.middle.y = height / 2;
+            centers.left.x = width / 4;
+            centers.left.y = height / 2;
+            centers.right.x = width / 4 * 3;
+            centers.right.y = height / 2;
 
             radiusScale.range([0, width / (rootNodes.length / 1.5)]);
             fn.calculateRadius();
