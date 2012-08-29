@@ -131,6 +131,12 @@ a {
     .diff {
       font-weight:bold;
     }
+
+    &.table-hover tbody {
+      tr:hover td, tr.hover td {
+        background-color:lighten($openDataRed, 48%);
+      }
+    }
   }
 
   .foot {
@@ -184,6 +190,7 @@ svg {
     opacity:0.6;
 
     @include letterpress;
+    pointer-events:none;
   }
 
   circle {
@@ -192,7 +199,7 @@ svg {
     stroke-width:1;
   }
 
-  circle:hover {
+  circle:hover, circle.hover {
     stroke-width:2;
   }
 

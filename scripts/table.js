@@ -13,6 +13,19 @@ $(function() {
         var formatCHF = d3.format(',f');
         var formatDiffPercent = d3.format('+.2');
 
+        var cleanId = function(id) {
+            return id.replace(/revenue-|gross_cost-/, '');
+        };
+
+        var highlightedCircles = d3.select();
+        $tBody.on('mouseover', 'tr', function() {
+            var cleanId = $.trim($(this).attr('id').replace(/^tr-/, ''));
+            highlightedCircles.classed('hover', 0);
+            highlightedCircles = d3.selectAll('svg circle#c-revenue-'+cleanId+', svg circle#c-gross_cost-'+cleanId).classed('hover', 1);
+        }).on('mouseout', 'tr', function() {
+            highlightedCircles.classed('hover', 0);
+        });
+
         var fn = {
             labelOfDepth: [
                 'Direktion',
@@ -20,6 +33,12 @@ $(function() {
                 'Produktegruppe',
                 'Produkt'
             ],
+            highlight: function(id) {
+                $tBody.find('tr').removeClass('hover');
+                if(id) {
+                    $tBody.find('#tr-'+cleanId(id)).addClass('hover');
+                }
+            },
             show: function(nodes) {
                 $table.stop(true).animate({
                     opacity: 0
@@ -29,7 +48,7 @@ $(function() {
                             idToIndex = {};
 
                         $.each(nodes, function(key, node) {
-                            var id = node.id.replace(/revenue-|gross_cost-/, '');
+                            var id = cleanId(node.id);
                             var index = idToIndex[id];
                             if(index === undefined) {
                                 index = dataSets.length;
@@ -63,6 +82,7 @@ $(function() {
                             $.each(dataSets, function(index, dataSet) {
                                 var $tr = $overviewTrTemplate.clone();
 
+                                $tr.attr('id', 'tr-'+dataSet.id);
                                 $tr.find('td:eq(0)').text(dataSet.name);
                                 $tr.find('td:eq(1)').text(formatCHF(dataSet.nodes.gross_cost.value));
                                 $tr.find('td:eq(2)').text(formatCHF(dataSet.nodes.revenue.value));
@@ -78,6 +98,7 @@ $(function() {
                                 var $tr = $compareTrTemplate.clone(),
                                     d = dataSet.nodes[type];
 
+                                $tr.attr('id', 'tr-'+dataSet.id);
                                 $tr.find('td:eq(0)').text(dataSet.name);
                                 $tr.find('td:eq(1)').text(formatCHF(d.value));
                                 $tr.find('td:eq(2)').text(formatDiffPercent(dataSet.nodes[type].diff)+'%').css('color', d.stroke);

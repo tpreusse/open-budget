@@ -27,8 +27,10 @@ OpenBudget.tooltip = (function() {
         );
         $tipInner.find('span.percent').css('color', d.stroke);
         $tip.show();
+        OpenBudget.table.highlight(d.id);
     });
     $(document).on('mouseout', 'svg circle', function(){
         $tip.hide();
+        OpenBudget.table.highlight(null);
     });
 })();

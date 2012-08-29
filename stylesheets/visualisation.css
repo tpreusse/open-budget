@@ -85,6 +85,8 @@ a {
       text-align: right; }
     #sidebar table .diff {
       font-weight: bold; }
+    #sidebar table.table-hover tbody tr:hover td, #sidebar table.table-hover tbody tr.hover td {
+      background-color: #fef1f1; }
   #sidebar .foot {
     position: absolute;
     bottom: 10px;
@@ -116,12 +118,13 @@ svg {
     font-family: "Share", sans-serif;
     font-weight: bold;
     opacity: 0.6;
-    text-shadow: white 0 1px 0; }
+    text-shadow: white 0 1px 0;
+    pointer-events: none; }
   svg circle {
     fill: transparent;
     stroke: #000;
     stroke-width: 1; }
-  svg circle:hover {
+  svg circle:hover, svg circle.hover {
     stroke-width: 2; }
   svg circle.surplus {
     stroke-width: 2; }
