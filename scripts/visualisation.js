@@ -345,6 +345,7 @@ $(function() {
             }
 
             theLevel.circles.on('click', level.zoomIn);
+            theLevel.circles.on('touchend', level.zoomIn);
         },
         pop: function() {
             var levelId = level.stack.pop();
@@ -572,7 +573,8 @@ $(function() {
             level.push(levelId);
 
             // zoom out
-            svg.on("click", level.zoomOut);
+            svg.on('click', level.zoomOut);
+            svg.on('touchend', level.zoomOut);
         });
     };
 
