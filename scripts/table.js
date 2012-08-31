@@ -10,28 +10,10 @@ $(function() {
             $compareTrTemplate = $tBody.find('tr.compare').detach(),
             $breadcrumb = $('.breadcrumb');
         
-        var formatCHF = d3.format(',f');
-        var formatDiffPercent = d3.format('+.2');
-
-        var helpers = {
-            cleanId: function(id) {
-                return id.replace(/revenue-|gross_cost-/, '');
-            },
-            cleanIdFromTr: function(tr) {
-                return $.trim($(tr).attr('id').replace(/^tr-/, ''));
-            },
-            removeCircleHighlight: function() {
-                highlightedCircles.classed('hover', 0);
-            }
-        };
-
-        var highlightedCircles = d3.select();
-        $tBody.on('mouseover', 'tr', function() {
-            helpers.removeCircleHighlight();
-
-            var cleanId = helpers.cleanIdFromTr(this);
-            highlightedCircles = d3.selectAll('svg circle#c-revenue-'+cleanId+', svg circle#c-gross_cost-'+cleanId).classed('hover', 1);
-        }).on('mouseout', 'tr', helpers.removeCircleHighlight);
+        var formatCHF,
+            formatDiffPercent,
+            helpers,
+            highlightedCircles;
 
         var fn = {
             labelOfDepth: [
@@ -149,7 +131,34 @@ $(function() {
             }
         };
 
-        return fn;
+        return {
+            init: function() {
+                formatCHF = d3.format(',f');
+                formatDiffPercent = d3.format('+.2');
+
+                helpers = {
+                    cleanId: function(id) {
+                        return id.replace(/revenue-|gross_cost-/, '');
+                    },
+                    cleanIdFromTr: function(tr) {
+                        return $.trim($(tr).attr('id').replace(/^tr-/, ''));
+                    },
+                    removeCircleHighlight: function() {
+                        highlightedCircles.classed('hover', 0);
+                    }
+                };
+
+                highlightedCircles = d3.select();
+                $tBody.on('mouseover', 'tr', function() {
+                    helpers.removeCircleHighlight();
+
+                    var cleanId = helpers.cleanIdFromTr(this);
+                    highlightedCircles = d3.selectAll('svg circle#c-revenue-'+cleanId+', svg circle#c-gross_cost-'+cleanId).classed('hover', 1);
+                }).on('mouseout', 'tr', helpers.removeCircleHighlight);
+
+                OpenBudget.table = fn;
+            }
+        };
     })();
 
 });
