@@ -177,7 +177,8 @@ svg {
   z-index:0;
   display:block;
 
-  background-color:#f9f9f9;
+  $bgColor:#f9f9f9;
+  background-color:$bgColor;
 
   rect {
     fill:#fff;
@@ -204,6 +205,13 @@ svg {
 
     @include letterpress;
     pointer-events:none;
+
+    &.headline {
+      opacity:1;
+      fill:darken($bgColor, 5%);
+      font-size:40px;
+      text-transform:none;
+    }
   }
 
   circle {

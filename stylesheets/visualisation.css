@@ -128,6 +128,11 @@ svg {
     opacity: 0.6;
     text-shadow: white 0 1px 0;
     pointer-events: none; }
+    svg text.headline {
+      opacity: 1;
+      fill: #ececec;
+      font-size: 40px;
+      text-transform: none; }
   svg circle {
     fill: transparent;
     stroke: #000;

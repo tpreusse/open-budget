@@ -18,7 +18,61 @@ $(function() {
             .charge(0)
             .alpha(0.5);
 
-        var activeNodes = d3.select(),
+        var headlines = {
+            data: [
+                {
+                    type: 'gross_cost',
+                    text: 'Bruttokosten',
+                    center: nodes.centers.topLeft
+                },
+                {
+                    type: 'revenue',
+                    text: 'Erlöse',
+                    center: nodes.centers.topRight
+                }
+            ],
+            withType: {},
+            setup: function() {
+                svgHeadlines = svg.selectAll('text.headline').data(headlines.data);
+                svgHeadlines
+                    .enter()
+                    .append('text')
+                        .attr('id', helpers.headlineId).classed('headline', 1)
+                        .attr('text-anchor', 'middle')
+                        .text(function(d) { return d.text; });
+
+                _.each(headlines.data, function(value) {
+                    headlines.withType[value.type] = d3.select('#' + helpers.headlineId(value));
+                    value.pos = value.center;
+                    value.opacity = 1;
+                });
+            },
+            transition: function() {
+                svgHeadlines.transition().duration(750)
+                    .attr('x', function(d) { return d.pos.x; })
+                    .attr('y', function(d) { return d.pos.y; })
+                    .style('opacity', function(d) { return d.opacity; });
+            },
+            focus: function(d, zoomIn) {
+                var type = d.depth || zoomIn ? d.type : false;
+
+                _.each(headlines.data, function(value) {
+                    if(value.type == type) {
+                        value.pos = nodes.centers.topMiddle;
+                        value.opacity = 1;
+                    }
+                    else {
+                        value.pos = value.center;
+                        value.opacity = type ? 0 : 1;
+                    }
+                });
+
+                headlines.transition();
+            }
+        };
+
+        var svgHeadlines = d3.select(),
+            activeNodes = d3.select(),
             activeNodesCircles = d3.select(),
             activeNodesGroups = d3.select(),
             activeNodesClipPaths = d3.select(),
@@ -135,6 +189,8 @@ $(function() {
                     });
                 activeNodesGroups.attr('transform', helpers.transform);
 
+                headlines.transition();
+
                 force.resume();
             }
         };
@@ -200,6 +256,9 @@ $(function() {
             },
             diffAccessor: function(d) {
                 return d.diff;
+            },
+            headlineId: function(d) {
+                return 'headline-' + d.type;
             }
         };
 
@@ -387,6 +446,8 @@ $(function() {
                     return;
                 }
 
+                headlines.focus(d, true);
+
                 var curLevel = level.current(),
                     levelId = level.setup(children, d),
                     theLevel = level.all[levelId];
@@ -515,6 +576,7 @@ $(function() {
                 var activeGroup = d3.select('#g-' + popLevel.nodes[0].parent.id),
                     activeGroupD = activeGroup.datum();
 
+                headlines.focus(activeGroupD);
                 activeGroupD.computedRadius = activeGroupD.stuffedChildrenRadius;
 
                 newLevel.groups.filter(helpers.reject(activeGroupD)).selectAll('circle')
@@ -541,6 +603,9 @@ $(function() {
         };
 
         var init = function() {
+
+            headlines.setup();
+
             nodes.loadFromCache(function(rootNodes) {
                 $window.resize(vis.resize);
 

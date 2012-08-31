@@ -1,8 +1,11 @@
 OpenBudget.nodes = (function() {
     var centers = {
         'right': {x:0,y:0},
+        'topRight': {x:0,y:0},
         'middle': {x:0,y:0},
-        'left': {x:0,y:0}
+        'topMiddle': {x:0,y:0},
+        'left': {x:0,y:0},
+        'topLeft': {x:0,y:0}
     };
     
     var totals = {
@@ -279,10 +282,16 @@ OpenBudget.nodes = (function() {
         resize: function(width, height) {
             centers.middle.x = width / 2;
             centers.middle.y = height / 2;
+            centers.topMiddle.x = centers.middle.x;
+            centers.topMiddle.y = centers.middle.y / 3;
             centers.left.x = width / 4;
             centers.left.y = height / 2;
+            centers.topLeft.x = centers.left.x;
+            centers.topLeft.y = centers.left.y / 3;
             centers.right.x = width / 4 * 3;
             centers.right.y = height / 2;
+            centers.topRight.x = centers.right.x;
+            centers.topRight.y = centers.right.y / 3;
 
             radiusScale.range([0, width / (rootNodes.length / 1.5)]);
             fn.calculateRadius();
@@ -326,10 +335,10 @@ OpenBudget.nodes = (function() {
             stuffForce.size([nodeSize, nodeSize]).nodes(children);
 
             stuffForce.on('tick', function(e) {
-                var i = 0, 
-                    c = children, 
-                    cl = childrenLength, 
-                    f = moveTowardsCenter(e.alpha, nodeRadius), 
+                var i = 0,
+                    c = children,
+                    cl = childrenLength,
+                    f = moveTowardsCenter(e.alpha, nodeRadius),
                     d;
 
                 while(i < cl) {
