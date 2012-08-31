@@ -1,8 +1,5 @@
 $(function() {
     OpenBudget.visualisation = (function() {
-        //IE 8
-        if(!d3.select) return;
-
         var nodes = OpenBudget.nodes;
 
         var $window = $(window),
