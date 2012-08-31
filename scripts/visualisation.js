@@ -126,11 +126,11 @@ $(function() {
                     var fontSize = vis.labelFontSize / helpers.scale(d);
                     var radius = helpers.computedRadius(d) - fontSize;
                     if(radius < fontSize*2) return null;
-                    return 'M'+fontSize+','+(radius+fontSize)+' a'+radius+','+radius+' 0 1,1 '+(radius)+','+(radius); 
+                    return 'M'+fontSize+','+(radius+fontSize)+' a'+radius+','+radius+' 0 1,1 '+(radius)+','+(radius);
                 });
             activeNodesText
                 .style('font-size', function(d) {
-                    return vis.labelFontSize / helpers.scale(d);
+                    return (vis.labelFontSize / helpers.scale(d))+'px';
                 });
             activeNodesGroups.attr('transform', helpers.transform);
 
@@ -435,7 +435,7 @@ $(function() {
             disabledGroups.transition().duration(75)
                 .style('opacity', 0.2);
 
-            g.attr('clip-path', '').classed('blur', 0);
+            g.attr('clip-path', 'none').classed('blur', 0);
             g.transition().duration(transitionSpeed)
                 .attr('transform', helpers.centerTransform)
                 .style('opacity', 1);
