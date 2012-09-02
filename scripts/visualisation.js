@@ -443,8 +443,10 @@ $(function() {
                 force.stop();
 
                 if(!children || children.length < 2) {
+                    OpenBudget.track('Visualisation', 'zoom in blocked', d.id);
                     return;
                 }
+                OpenBudget.track('Visualisation', 'zoom in', d.id);
 
                 headlines.focus(d, true);
 
@@ -578,6 +580,7 @@ $(function() {
 
                 headlines.focus(activeGroupD);
                 activeGroupD.computedRadius = activeGroupD.stuffedChildrenRadius;
+                OpenBudget.track('Visualisation', 'zoom out', activeGroupD.id);
 
                 newLevel.groups.filter(helpers.reject(activeGroupD)).selectAll('circle')
                     .transition().duration(hideSpeed)
@@ -641,6 +644,8 @@ $(function() {
                 // zoom out
                 svg.on('click', level.zoomOut);
                 svg.on('touchend', level.zoomOut);
+
+                OpenBudget.track('Visualisation', 'initialized', undefined, undefined, true);
             });
         };
         

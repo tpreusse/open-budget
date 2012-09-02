@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html id="OpenBudget">
   <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <title>Stadt Bern Budget 2013</title>
-    <link href="http://fonts.googleapis.com/css?family=Share:400,700" rel="stylesheet" type="text/css"/>
-    <link type="text/css" rel="stylesheet" href="lib/bootstrap/css/bootstrap.css"/>
-    <link type="text/css" rel="stylesheet" href="stylesheets/visualisation.css"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Stadt Bern - Produktegruppen-Budget 2013</title>
+    <meta name="description" content="Die Ausgaben und Einnahmen des Berners Produktegruppen-Budget 2013 in Kreisen visualisiert. Spielerisch und einfach zu verstehen.">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Share:400,700" type="text/css">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" type="text/css" >
+    <link rel="stylesheet" href="stylesheets/visualisation.css" type="text/css" >
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
   </head>
   <body>
     <svg>
@@ -57,7 +60,7 @@
     </div>
     <div id="footer">
         <a id="opendatach" href="http://www.opendata.ch/">
-          <img src="images/opendatach.png" alt="OpenData.ch" />
+          <img src="images/opendatach.png" alt="OpenData.ch">
         </a>
 
         <p>
@@ -77,5 +80,17 @@
     <script src="scripts/nodes.js"></script>
     <script src="scripts/visualisation.js"></script>
     <script src="scripts/init.js"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-34522537-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
   </body>
 </html>
