@@ -4,10 +4,10 @@ $(function() {
     };
 
     if(!OpenBudget.SVGSupport) {
-        $('<div class="try">trotzdem versuchen</div>').appendTo('#notsupported');
+        $('<div class="try">trotzdem versuchen</div>').appendTo('#not-supported .message');
         OpenBudget.track('Setup', 'browser warning try anyway shown', undefined, undefined, true);
-        $('#notsupported .try').click(function(){
-            $('#notsupported').fadeOut();
+        $('#not-supported .try').click(function(){
+            $('#not-supported').fadeOut();
             OpenBudget.track('Setup', 'browser warning try anyway clicked', undefined, undefined, true);
             init();
             OpenBudget.track('Setup', 'browser warning try anyway initialized', undefined, undefined, true);

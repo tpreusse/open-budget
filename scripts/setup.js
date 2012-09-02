@@ -24,10 +24,21 @@ window.OpenBudget = {
 
 $(function() {
   if(!OpenBudget.SVGSupport) {
-        $('#sidebar').append('<div id="notsupported"><h2>Browser inkompatibel</h2><p>Leider unterstüzt ihr Browser kein SVG.<br /><br />Wir empfehlen die neuste Version von <span class="recommendation"></span>.</p></div>');
-        // maybe OS dependant but Safari currently sucks
-        $('#notsupported .recommendation').html('<a href="https://www.google.com/chrome" target="_blank">Google Chrome</a> oder <a href="http://www.mozilla.org/firefox/" target="_blank">Firefox</a>');
-
+        var $notSupported = $('<div id="not-supported"></div>');
+            $notSupportedImg = $('<img src="images/browser-teaser.png">');
+        $notSupportedImg.appendTo($notSupported);
+        $notSupported.append('<div class="message"><h2>Browser inkompatibel</h2><p>Leider unterstüzt ihr Browser SVG nicht.<br /><br />Wir empfehlen die neuste Version von <span class="recommendation"></span>.</p></div>');
+        $notSupported.find('.recommendation').html('<a href="http://goo.gl/Z0UIl" target="_blank">Google Chrome</a> oder <a href="http://goo.gl/LwIPJ" target="_blank">Firefox</a>');
+        if($.browser.msie) {
+            $notSupported.find('.message').append('<p>Alternativ können sie eine Erweiterung für ihren jetzigen Browser installieren: <a href="http://goo.gl/3i1hs" target="_blank">Google Chrome Frame</a>.</p>');
+        }
+        $notSupported.prependTo('body');
+        $(window).resize(function() {
+            $notSupportedImg.css('margin-top', ($notSupportedImg.height() / -2) + 'px');
+        });
+        $(window).load(function() {
+            $(window).resize();
+        });
         OpenBudget.track('Setup', 'browser warning shown', undefined, undefined, true);
     }
 });

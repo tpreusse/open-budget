@@ -5,6 +5,15 @@ $font:"Share",sans-serif;
   text-shadow:white 0 1px 0;
 }
 
+@mixin background-color-alpha($color, $alpha) {
+  $rgba: rgba($color, $alpha);
+  $ie-hex-str: ie-hex-str($rgba);
+  background-color: transparent;
+  background-color: $rgba;
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$ie-hex-str},endColorstr=#{$ie-hex-str});
+  zoom: 1;
+}
+
 html, body {
   width:100%;
   height:100%;
@@ -43,10 +52,12 @@ a {
   }
 }
 
+$sidebarMaxWidth:500px;
+
 #sidebar, #footer {
   min-width:400px;
   width:20%;
-  max-width:500px;
+  max-width:$sidebarMaxWidth;
 }
 
 #sidebar {
@@ -233,13 +244,36 @@ svg {
   }
 }
 
-#notsupported {
-  margin:20px 40px;
-  text-align:center;
+#not-supported {
+  position:relative;
+  z-index:1;
 
-  .try {
-    cursor:pointer;
-    font-size:10px;
-    color:gray;
+  margin-right:$sidebarMaxWidth;
+  height:100%;
+
+  img {
+    position:absolute;
+    left:10%;
+    top:50%;
+    width:90%;
+    margin-top:-400px;
+  }
+
+  .message {
+    @include background-color-alpha(#fff, 0.8);
+    padding:20px $sidebarMaxWidth 20px 0;
+
+    position:absolute;
+    top:50%;
+    left:0;
+    width:100%;
+    margin-top:-200px;
+    text-align:center;
+
+    .try {
+      cursor:pointer;
+      font-size:10px;
+      color:gray;
+    }
   }
 }

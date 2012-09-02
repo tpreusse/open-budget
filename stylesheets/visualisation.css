@@ -144,10 +144,30 @@ svg {
   svg circle.surplus:hover {
     stroke-width: 4; }
 
-#notsupported {
-  margin: 20px 40px;
-  text-align: center; }
-  #notsupported .try {
-    cursor: pointer;
-    font-size: 10px;
-    color: gray; }
+#not-supported {
+  position: relative;
+  z-index: 1;
+  margin-right: 500px;
+  height: 100%; }
+  #not-supported img {
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    width: 90%;
+    margin-top: -400px; }
+  #not-supported .message {
+    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.8);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=ie-hex-str(rgba(255, 255, 255, 0.8)),endColorstr=ie-hex-str(rgba(255, 255, 255, 0.8)));
+    zoom: 1;
+    padding: 20px 500px 20px 0;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    margin-top: -200px;
+    text-align: center; }
+    #not-supported .message .try {
+      cursor: pointer;
+      font-size: 10px;
+      color: gray; }
