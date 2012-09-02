@@ -10,7 +10,7 @@ $font:"Share",sans-serif;
   $ie-hex-str: ie-hex-str($rgba);
   background-color: transparent;
   background-color: $rgba;
-  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$ie-hex-str},endColorstr=#{$ie-hex-str});
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$ie-hex-str}',endColorstr='#{$ie-hex-str}');
   zoom: 1;
 }
 
@@ -181,6 +181,7 @@ $sidebarMaxWidth:500px;
   }
 }
 
+$svgBgColor:#f9f9f9;
 svg {
   position:absolute;
   top:0;
@@ -188,8 +189,7 @@ svg {
   z-index:0;
   display:block;
 
-  $bgColor:#f9f9f9;
-  background-color:$bgColor;
+  background-color:$svgBgColor;
 
   rect {
     fill:#fff;
@@ -219,7 +219,7 @@ svg {
 
     &.headline {
       opacity:1;
-      fill:darken($bgColor, 5%);
+      fill:darken($svgBgColor, 5%);
       font-size:40px;
       text-transform:none;
     }
@@ -250,6 +250,8 @@ svg {
 
   margin-right:$sidebarMaxWidth;
   height:100%;
+
+  background-color:$svgBgColor;
 
   img {
     position:absolute;
