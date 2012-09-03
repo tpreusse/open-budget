@@ -54,7 +54,7 @@ $(function() {
                         var dataSets = [],
                             idToIndex = {};
 
-                        $.each(nodes, function(key, node) {
+                        _.each(nodes, function(node) {
                             var id = helpers.cleanId(node.id);
                             var index = idToIndex[id];
                             if(index === undefined) {
@@ -86,7 +86,7 @@ $(function() {
                         if(firstDataSet.nodes.gross_cost !== undefined && firstDataSet.nodes.revenue !== undefined) {
                             $overviewHead.clone().appendTo($tHead);
 
-                            $.each(dataSets, function(index, dataSet) {
+                            _.each(dataSets, function(dataSet) {
                                 var $tr = $overviewTrTemplate.clone();
 
                                 $tr.attr('id', 'tr-'+dataSet.id);
@@ -101,7 +101,7 @@ $(function() {
 
                             $compareHead.clone().appendTo($tHead).find('th:eq(0)').text(fn.labelOfDepth[firstDataSet.nodes[type].depth]);
 
-                            $.each(dataSets, function(index, dataSet) {
+                            _.each(dataSets, function(dataSet) {
                                 var $tr = $compareTrTemplate.clone(),
                                     d = dataSet.nodes[type];
 
@@ -131,7 +131,7 @@ $(function() {
 
                         var breadcrumbLength = breadcrumbItems.length;
                         $breadcrumb.empty();
-                        $.each(breadcrumbItems, function(index, item) {
+                        _.each(breadcrumbItems, function(item, index) {
                             var $item = $('<li></li>');
                             $item.text(item);
                             if(index + 1 < breadcrumbLength) {

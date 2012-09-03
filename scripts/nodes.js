@@ -141,13 +141,13 @@ OpenBudget.nodes = (function() {
 
     var fn = {
         process: function(data) {
-            $.each(data, function(key, directorate) {
+            _.each(data, function(directorate, key) {
                 directorateNodes = createNodes(key, directorate);
-                $.each(directorate.agencies, function(key, agency) {
+                _.each(directorate.agencies, function(agency, key) {
                     agencyNodes = createNodes(key, agency, directorateNodes);
-                    $.each(agency.product_groups, function(key, productGroup) {
+                    _.each(agency.product_groups, function(productGroup, key) {
                         productGroupNodes = createNodes(key, productGroup, agencyNodes);
-                        $.each(productGroup.products, function(key, product) {
+                        _.each(productGroup.products, function(product, key) {
                             createNodes(key, product, productGroupNodes);
                         });
                     });
@@ -175,7 +175,7 @@ OpenBudget.nodes = (function() {
                 .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
                 //.range(['rgb(255,77,77)', 'rgb(255,255,230)', 'rgb(77,255,77)']);
 
-            $.each(nodes, function(index, d) {
+            _.each(nodes, function(d) {
                 var rgb = d3.rgb(colorScale(d.diff));
                 d.fill = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
                 d.stroke = rgb.darker().toString();
@@ -183,7 +183,7 @@ OpenBudget.nodes = (function() {
 
             var recursiveSort = function(nodes) {
                 nodes.sort(valueSort);
-                $.each(nodes, function(key, value) {
+                _.each(nodes, function(value) {
                     if(value.children) {
                         recursiveSort(value.children);
                     }
@@ -214,7 +214,7 @@ OpenBudget.nodes = (function() {
                 stuffForceMinTick *= 10;
                 var recursiveStuffing = function(nodes) {
                     var aRadiusScaleFactor = 300 / d3.max(nodes, function(d) { return d.unscaledRadius; });
-                    $.each(nodes, function(key, value) {
+                    _.each(nodes, function(value) {
                         if(value.children) {
                             fn.stuffChildren(value, aRadiusScaleFactor);
                             recursiveStuffing(value.children);
@@ -225,7 +225,7 @@ OpenBudget.nodes = (function() {
                 stuffForceMinTick /= 10;
 
                 var recursiveCleanup = function(nodes) {
-                    $.each(nodes, function(key, value) {
+                    _.each(nodes, function(value) {
                         value.parent = undefined;
                         value.center = undefined;
                         if(value.children) {
@@ -250,12 +250,12 @@ OpenBudget.nodes = (function() {
                 rootNodes = data;
 
                 var recursiveReferencing = function(someNodes) {
-                    $.each(someNodes, function(key, value) {
+                    _.each(someNodes, function(value) {
                         if(!value.depth) {
                             value.center = centers[value.type == 'gross_cost' ? 'left' : 'right'];
                         }
                         if(value.children) {
-                            $.each(value.children, function(key2, value2) {
+                            _.each(value.children, function(value2) {
                                 value2.parent = value;
                             });
                             recursiveReferencing(value.children);

@@ -293,7 +293,7 @@ $(function() {
                 //     .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
                 //     //.range(['rgb(255,77,77)', 'rgb(255,255,230)', 'rgb(77,255,77)']);
 
-                // $.each(levelNodes, function(index, d) {
+                // _.each(levelNodes, function(d) {
                 //     var rgb = d3.rgb(colorScale(d.diff));
                 //     d.fill = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
                 //     d.stroke = rgb.darker().toString();
