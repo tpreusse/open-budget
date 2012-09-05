@@ -76,7 +76,8 @@ $(function() {
             activeNodesCircles = d3.select(),
             activeNodesGroups = d3.select(),
             activeNodesClipPaths = d3.select(),
-            activeNodesTextPaths = d3.select();
+            activeNodesTextPaths = d3.select(),
+            activeNodesText = d3.select();
 
         var grayscale = function(color) {
             var hsl = d3.hsl(color);
@@ -609,8 +610,11 @@ $(function() {
 
             headlines.setup();
 
-            nodes.loadFromCache(function(rootNodes) {
+            nodes[OpenBudget.cache ? 'loadFromCache': 'load'](function(rootNodes) {
                 $window.resize(vis.resize);
+                if(!OpenBudget.cache) {
+                    vis.resize();
+                }
 
                 var levelId = level.setup(rootNodes, 'root');
                 var theLevel = level.all[levelId];

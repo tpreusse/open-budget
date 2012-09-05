@@ -19,7 +19,8 @@ window.OpenBudget = {
 
     window.console.log('track event', arguments);
     window._gaq.push(['_trackEvent', category, action, opt_label, opt_value, opt_noninteraction]);
-  }
+  },
+  cache: true
 };
 
 $(function() {
