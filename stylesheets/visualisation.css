@@ -168,7 +168,10 @@ svg {
     width: 100%;
     margin-top: -200px;
     text-align: center; }
-    #not-supported .message .try {
-      cursor: pointer;
-      font-size: 10px;
+    #not-supported .message .try, #not-supported .message em {
       color: gray; }
+    #not-supported .message em {
+      font-size: 12px; }
+    #not-supported .message .try {
+      font-size: 10px;
+      cursor: pointer; }

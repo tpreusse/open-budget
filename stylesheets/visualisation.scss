@@ -272,10 +272,17 @@ svg {
     margin-top:-200px;
     text-align:center;
 
-    .try {
-      cursor:pointer;
-      font-size:10px;
+    .try, em {
       color:gray;
+    }
+
+    em {
+      font-size:12px;
+    }
+
+    .try {
+      font-size:10px;
+      cursor:pointer;
     }
   }
 }

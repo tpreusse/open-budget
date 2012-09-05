@@ -31,7 +31,8 @@ $(function() {
         $notSupported.append('<div class="message"><h2>Browser inkompatibel</h2><p>Leider unterstüzt ihr Browser SVG nicht.<br /><br />Wir empfehlen die neuste Version von <span class="recommendation"></span>.</p></div>');
         $notSupported.find('.recommendation').html('<a href="http://goo.gl/Z0UIl" target="_blank">Google Chrome</a> oder <a href="http://goo.gl/LwIPJ" target="_blank">Firefox</a>');
         if($.browser.msie) {
-            $notSupported.find('.message').append('<p>Alternativ können sie eine Erweiterung für ihren jetzigen Browser installieren: <a href="http://goo.gl/3i1hs" target="_blank">Google Chrome Frame</a>.</p>');
+            $notSupported.find('.message')
+                .append('<p>Alternativ können sie eine Erweiterung für ihren jetzigen Browser installieren: <a href="http://goo.gl/3i1hs" target="_blank">Google Chrome Frame</a>.<br /><em>Nach der Installation muss Internet Explorer neugestartet werden (alle "Internet Explorer"-Fenster schliessen und wieder öffnen).</em></p>');
         }
         $notSupported.prependTo('body');
         $(window).resize(function() {
