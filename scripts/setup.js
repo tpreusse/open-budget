@@ -20,7 +20,9 @@ window.OpenBudget = {
     window.console.log('track event', arguments);
     window._gaq.push(['_trackEvent', category, action, opt_label, opt_value, opt_noninteraction]);
   },
-  cache: true
+  dataUrl: 'data/bern-budget2013.json',
+  usePreproccesedData: true,
+  preproccesedDataUrl: 'data/bern-budget2013-cache.json'
 };
 
 $(function() {
