@@ -202,7 +202,7 @@ OpenBudget.nodes = (function() {
             radiusScale.domain([0, d3.max([max, Math.abs(min)])]);
         },
         createCache: function() {
-            d3.json('data/bern-budget2013.json', function(data) {
+            d3.json(OpenBudget.dataUrl, function(data) {
                 rootNodes = [];
                 nodes = [];
 
@@ -246,7 +246,7 @@ OpenBudget.nodes = (function() {
             });
         },
         loadFromCache: function(loadCallback) {
-            d3.json('data/bern-budget2013-cache.json', function(data) {
+            d3.json(OpenBudget.preproccesedDataUrl, function(data) {
                 rootNodes = data;
 
                 var recursiveReferencing = function(someNodes) {
@@ -272,7 +272,7 @@ OpenBudget.nodes = (function() {
             });
         },
         load: function(loadCallback) {
-            d3.json('data/bern-budget2013.json', function(data) {
+            d3.json(OpenBudget.dataUrl, function(data) {
                 fn.process(data);
                 fn.setup();
 
