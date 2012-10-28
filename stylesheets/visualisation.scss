@@ -172,12 +172,17 @@ $sidebarMaxWidth:500px;
   background-color:#fff;
 
   p {
-    margin-top:15px;
+    margin:0 0;
+  }
+
+  p.links {
+    margin-bottom:15px;
   }
 
   img {
     height:60px;
     border:0;
+    margin-bottom:15px;
   }
 }
 
@@ -196,7 +201,6 @@ svg {
   }
 
   g {
-
     &.blur {
       opacity:0;
       pointer-events:none;
@@ -226,6 +230,11 @@ svg {
   }
 
   circle {
+    -webkit-transform : translateZ(0); 
+    -o-transform : translateZ(0); 
+    -moz-transform : translateZ(0); 
+    transform : translateZ(0);
+
     fill:transparent;
     stroke:#000;
     stroke-width:1;
