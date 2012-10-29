@@ -143,7 +143,7 @@ svg {
     transform: translateZ(0);
     fill: transparent;
     stroke: #000;
-    stroke-width: 1; }
+    stroke-width: 1.5; }
   svg circle:hover, svg circle.hover {
     stroke-width: 2; }
   svg circle.surplus {

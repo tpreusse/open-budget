@@ -48,7 +48,7 @@ $(function() {
                 });
             },
             transition: function() {
-                svgHeadlines.transition().duration(750)
+                svgHeadlines.transition().duration(d3.event && d3.event.altKey ? 7500 : 750)
                     .attr('x', function(d) { return d.pos.x; })
                     .attr('y', function(d) { return d.pos.y; })
                     .style('opacity', function(d) { return d.opacity; });
@@ -418,9 +418,9 @@ $(function() {
 
                     if(stackLevel.hidden) {
                         stackLevel.hidden = false;
-                        svg.selectAll('.l-'+stackLevelId+':not(#g-'+stackLevelParentId+')')
-                            .transition().duration(750)
-                            .style('opacity', 0.2);
+                        // svg.selectAll('.l-'+stackLevelId+':not(#g-'+stackLevelParentId+')')
+                        //     .transition().duration(750)
+                        //     .style('opacity', 0.2);
                         svg.select('#c-'+stackLevelParentId)
                             .transition().duration(750)
                             .style('opacity', 0.8);
@@ -478,17 +478,21 @@ $(function() {
                 gNode.parentNode.appendChild(gNode);
 
                 c.transition().duration(transitionSpeed)
-                    // .attr('cx', helpers.cx)
-                    // .attr('cy', helpers.cy)
-                    // .attr('r', helpers.r)
+                    .attr('cx', function(d) { console.log(d.parent); return (d.parent && d.radius) || (svgWidth / 2); })
+                    .attr('cy', function(d) { return (d.parent && d.radius) || (svgHeight / 2); })
+                    .attr('r', helpers.r)
+                    .style('pointer-events', 'none')
                     .style('opacity', 0.8)
                     .style('fill', function(d) { return grayscale(d.fill); })
                     .style('stroke', function(d) { return grayscale(d.stroke); });
 
-                g.select('text').transition().duration(70)
+                g.select('text').transition().duration(transitionSpeed / 10)
                     .style('opacity', 0);
 
                 disabledCircles.transition().duration(transitionSpeed)
+                    .attr('cy', function(d){
+                        return svgHeight + d.radius;
+                    })
                     .style('fill', function(d) { return grayscale(d.fill); })
                     .style('stroke', function(d) { return grayscale(d.stroke); })
                     .style('opacity', 0.2);
@@ -497,8 +501,8 @@ $(function() {
                     .style('fill', function(d) { return grayscale(d.parent.fill); })
                     .style('stroke', function(d) { return grayscale(d.parent.stroke); });
 
-                disabledGroups.transition().duration(75)
-                    .style('opacity', 0.2);
+                disabledGroups.transition().duration(transitionSpeed / 10)
+                    .style('opacity', 0);
 
                 g.attr('clip-path', 'none').classed('blur', 0);
                 g.transition().duration(transitionSpeed)
@@ -551,7 +555,9 @@ $(function() {
                 nodes.setRadiusScaleFactor(scaleFactor);
                 nodes.calculateRadius();
 
-                var hideSpeed = d3.event && d3.event.altKey ? 7500 : 750;
+                var hideSpeed = d3.event && d3.event.altKey ? 7500 : 750,
+                    fadeSpeed = hideSpeed / 10;
+
                 newLevel.circles.transition().duration(hideSpeed)
                     .attr('cx', helpers.cx)
                     .attr('cy', helpers.cy)
@@ -563,7 +569,7 @@ $(function() {
                 var childrenCircles = popLevel.circles,
                     childrenGroups = popLevel.groups;
 
-                childrenGroups.transition().duration(75)
+                childrenGroups.transition().duration(fadeSpeed)
                     .style('opacity', 0)
                     .remove();
 
@@ -577,7 +583,10 @@ $(function() {
                     .style('stroke', function(d) { return d.parent.stroke; });
 
                 var activeGroup = d3.select('#g-' + popLevel.nodes[0].parent.id),
-                    activeGroupD = activeGroup.datum();
+                    activeGroupD = activeGroup.datum(),
+                    activeCircle = d3.select('#c-' + popLevel.nodes[0].parent.id);
+
+                activeCircle.style('pointer-events', 'auto');
 
                 headlines.focus(activeGroupD);
                 activeGroupD.computedRadius = activeGroupD.stuffedChildrenRadius;
@@ -591,13 +600,12 @@ $(function() {
                 activeGroup.transition().duration(hideSpeed)
                     .attr('transform', helpers.transform);
 
-                var fadeInSpeed = d3.event && d3.event.altKey ? 750 : 75;
-                newLevel.groups.classed('blur', 1).transition().delay(hideSpeed - fadeInSpeed).duration(fadeInSpeed)
+                newLevel.groups.classed('blur', 1).transition().delay(hideSpeed - fadeSpeed).duration(fadeSpeed)
                     .attr('clip-path', helpers.clipPathUrl)
                     .style('opacity', 0.7);
                     //.attr('transform', helpers.transform);
 
-                activeGroup.select('text').transition().delay(hideSpeed - fadeInSpeed).duration(fadeInSpeed)
+                activeGroup.select('text').transition().delay(hideSpeed - fadeSpeed).duration(fadeSpeed)
                     .style('opacity', 0.6);
 
                 setTimeout(function() {
