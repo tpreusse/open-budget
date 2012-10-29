@@ -124,6 +124,8 @@ svg {
     pointer-events: none; }
   svg .disabled {
     pointer-events: none; }
+  svg .shadow-parent {
+    pointer-events: none; }
   svg text {
     text-transform: uppercase;
     font-family: "Share", sans-serif;

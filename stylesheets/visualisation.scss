@@ -211,6 +211,10 @@ svg {
     pointer-events:none;
   }
 
+  .shadow-parent {
+    pointer-events:none;
+  }
+
   text {
     text-transform:uppercase;
     font-family:$font;

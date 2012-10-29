@@ -477,11 +477,11 @@ $(function() {
                 // cNode.parentNode.appendChild(cNode);
                 gNode.parentNode.appendChild(gNode);
 
+                c.classed('shadow-parent', 1);
                 c.transition().duration(transitionSpeed)
                     .attr('cx', function(d) { console.log(d.parent); return (d.parent && d.radius) || (svgWidth / 2); })
                     .attr('cy', function(d) { return (d.parent && d.radius) || (svgHeight / 2); })
                     .attr('r', helpers.r)
-                    .style('pointer-events', 'none')
                     .style('opacity', 0.8)
                     .style('fill', function(d) { return grayscale(d.fill); })
                     .style('stroke', function(d) { return grayscale(d.stroke); });
@@ -586,7 +586,7 @@ $(function() {
                     activeGroupD = activeGroup.datum(),
                     activeCircle = d3.select('#c-' + popLevel.nodes[0].parent.id);
 
-                activeCircle.style('pointer-events', 'auto');
+                activeCircle.classed('shadow-parent', 0);
 
                 headlines.focus(activeGroupD);
                 activeGroupD.computedRadius = activeGroupD.stuffedChildrenRadius;
