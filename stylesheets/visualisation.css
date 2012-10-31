@@ -110,35 +110,35 @@ a {
     border: 0;
     margin-bottom: 15px; }
 
-svg {
+svg#canvas {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 0;
   display: block;
   background-color: #f9f9f9; }
-  svg rect {
+  svg#canvas rect {
     fill: #fff; }
-  svg g.blur {
+  svg#canvas g.blur {
     opacity: 0;
     pointer-events: none; }
-  svg .disabled {
+  svg#canvas .disabled {
     pointer-events: none; }
-  svg .shadow-parent {
+  svg#canvas .shadow-parent {
     pointer-events: none; }
-  svg text {
+  svg#canvas text {
     text-transform: uppercase;
     font-family: "Share", sans-serif;
     font-weight: bold;
     opacity: 0.6;
     text-shadow: white 0 1px 0;
     pointer-events: none; }
-    svg text.headline {
+    svg#canvas text.headline {
       opacity: 1;
       fill: #ececec;
       font-size: 40px;
       text-transform: none; }
-  svg circle {
+  svg#canvas circle {
     -webkit-transform: translateZ(0);
     -o-transform: translateZ(0);
     -moz-transform: translateZ(0);
@@ -146,11 +146,11 @@ svg {
     fill: transparent;
     stroke: #000;
     stroke-width: 1.5; }
-  svg circle:hover, svg circle.hover {
+  svg#canvas circle:hover, svg#canvas circle.hover {
     stroke-width: 2; }
-  svg circle.surplus {
+  svg#canvas circle.surplus {
     stroke-width: 2; }
-  svg circle.surplus:hover {
+  svg#canvas circle.surplus:hover {
     stroke-width: 4; }
 
 #not-supported {

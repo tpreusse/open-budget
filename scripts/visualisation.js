@@ -3,11 +3,11 @@ $(function() {
         var nodes = OpenBudget.nodes;
 
         var $window = $(window),
-            $svg = $('svg'),
+            $svg = $('svg#canvas'),
             $sidebar = $('#sidebar'),
             $body = $('body');
 
-        var svg = d3.select('body').select('svg'),
+        var svg = d3.select('body').select('svg#canvas'),
             defs = svg.select('defs'),
             svgWidth,
             svgHeight;

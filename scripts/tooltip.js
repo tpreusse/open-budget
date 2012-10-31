@@ -11,7 +11,7 @@ OpenBudget.tooltip = (function() {
         });
     });
     
-    $(document).on('mouseover', 'svg circle', function(){
+    $(document).on('mouseover', 'svg#canvas circle', function(){
         var d = this.__data__, valueLabel = '';
         if(d.type == 'revenue') {
             valueLabel = 'Erlöse: ';
@@ -29,7 +29,7 @@ OpenBudget.tooltip = (function() {
         $tip.show();
         OpenBudget.table.highlight(d.id);
     });
-    $(document).on('mouseout', 'svg circle', function(){
+    $(document).on('mouseout', 'svg#canvas circle', function(){
         $tip.hide();
         OpenBudget.table.highlight(null);
     });
