@@ -1,3 +1,8 @@
+if ENV['RACK_ENV'] == 'production'
+  require 'newrelic_rpm'
+  NewRelic::Agent.manual_start
+end
+
 use Rack::Static, 
   :urls => [
     "/stylesheets", "/images", "/scripts", "/lib", "/data", "/favicon.ico", 
