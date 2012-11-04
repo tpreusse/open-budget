@@ -479,7 +479,7 @@ $(function() {
 
                 c.classed('shadow-parent', 1);
                 c.transition().duration(transitionSpeed)
-                    .attr('cx', function(d) { console.log(d.parent); return (d.parent && d.radius) || (svgWidth / 2); })
+                    .attr('cx', function(d) { return (d.parent && d.radius) || (svgWidth / 2); })
                     .attr('cy', function(d) { return (d.parent && d.radius) || (svgHeight / 2); })
                     .attr('r', helpers.r)
                     .style('opacity', 0.8)
