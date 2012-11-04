@@ -1,3 +1,8 @@
+trap('TERM') do
+  puts "received SIGTERM, exiting"
+  exit
+end
+
 if ENV['RACK_ENV'] == 'production'
   require 'newrelic_rpm'
   NewRelic::Agent.manual_start
