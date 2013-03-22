@@ -141,18 +141,19 @@ OpenBudget.nodes = (function() {
 
     var fn = {
         process: function(data) {
-            _.each(data, function(directorate, key) {
-                directorateNodes = createNodes(key, directorate);
-                _.each(directorate.agencies, function(agency, key) {
-                    agencyNodes = createNodes(key, agency, directorateNodes);
-                    _.each(agency.product_groups, function(productGroup, key) {
-                        productGroupNodes = createNodes(key, productGroup, agencyNodes);
-                        _.each(productGroup.products, function(product, key) {
-                            createNodes(key, product, productGroupNodes);
-                        });
-                    });
+            fn.meta = data.meta;
+
+            var recursiveCreate = function(nodes, parents) {
+                _.each(nodes, function(node) {
+                    key = node.id;
+                    nodes = createNodes(key, node, parents);
+                    if(node.children) {
+                        recursiveCreate(node.children, nodes);
+                    }
                 });
-            });
+            };
+
+            recursiveCreate(data.nodes);
 
             // surplus = d3.round(totals.revenue.value - totals['gross_cost'].value, 2);
             // surplus2 = d3.round(totals.revenue.value2 - totals['gross_cost'].value2, 2);
@@ -242,12 +243,13 @@ OpenBudget.nodes = (function() {
                     left: '0px',
                     width: '100%',
                     height: '100%'
-                }).text(JSON.stringify(rootNodes));
+                }).text(JSON.stringify({meta: fn.meta, nodes: rootNodes}));
             });
         },
         loadFromCache: function(loadCallback) {
             d3.json(OpenBudget.preproccesedDataUrl, function(data) {
-                rootNodes = data;
+                rootNodes = data.nodes;
+                fn.meta = data.meta;
 
                 var recursiveReferencing = function(someNodes) {
                     _.each(someNodes, function(value) {
@@ -364,6 +366,7 @@ OpenBudget.nodes = (function() {
 
             node.stuffedChildrenRadius = nodeRadius;
         },
+        meta: {},
         centers: centers
     };
 

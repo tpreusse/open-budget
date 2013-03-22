@@ -33,13 +33,9 @@ $(function() {
             highlightedCircles = d3.selectAll('svg circle#c-revenue-'+cleanId+', svg circle#c-gross_cost-'+cleanId).classed('hover', 1);
         }).on('mouseout', 'tr', helpers.removeCircleHighlight);
 
+        var labelOfDepth = [];
+
         var fn = {
-            labelOfDepth: [
-                'Direktion',
-                'Dienststelle',
-                'Produktegruppe',
-                'Produkt'
-            ],
             highlight: function(id) {
                 $tBody.find('tr').removeClass('hover');
                 if(id) {
@@ -47,6 +43,9 @@ $(function() {
                 }
             },
             show: function(nodes) {
+                if(!labelOfDepth.length && OpenBudget.nodes && OpenBudget.nodes.meta) {
+                    labelOfDepth = OpenBudget.nodes.meta.hierarchy;
+                }
                 $table.stop(true).animate({
                     opacity: 0
                 }, {
@@ -99,7 +98,7 @@ $(function() {
                         else {
                             var type = firstDataSet.nodes.gross_cost === undefined ? 'revenue' : 'gross_cost';
 
-                            $compareHead.clone().appendTo($tHead).find('th:eq(0)').text(fn.labelOfDepth[firstDataSet.nodes[type].depth]);
+                            $compareHead.clone().appendTo($tHead).find('th:eq(0)').text(labelOfDepth[firstDataSet.nodes[type].depth]);
 
                             _.each(dataSets, function(dataSet) {
                                 var $tr = $compareTrTemplate.clone(),
