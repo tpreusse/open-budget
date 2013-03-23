@@ -7,6 +7,10 @@ content_for :description do
     @data['meta']['description']
 end
 
+content_for :html_class do
+    @data['meta']['html_class']
+end
+
 %>
 
 <svg id="canvas">
@@ -60,7 +64,7 @@ end
         <%= image_tag "opendatach.png", alt: "OpenData.ch" %>
     </a>
     <p>
-        <a href="http://www.bern.ch/leben_in_bern/stadt/information/finanzplan/budget_2013_buch_beschlusssr_internet.pdf">Offizielles Budget-PDF</a> -
+        <a href="<%= @data['meta']['data_link'] %>"><%= @data['meta']['data_title'] %></a> -
         <a href="javascript:UserVoice.showPopupWidget();">Feedback &amp; Support</a>
     </p>
     <p class="links">
