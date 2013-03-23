@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
     end
 
     @data = get_budget id
+
     if @data.blank?
       raise ActionController::RoutingError.new('Not Found')
     end
@@ -21,6 +22,7 @@ class ApplicationController < ActionController::Base
 
   def get_budget id
     Rails.cache.fetch("#{id}/data.json", :expires_in => 5.minutes) do
+
       uploader = BudgetUploader.new
 
       uploader.retrieve_from_store! "#{id}/data.json"
@@ -28,7 +30,25 @@ class ApplicationController < ActionController::Base
         return nil
       end
 
-      JSON.parse uploader.file.read
+      source = JSON.parse uploader.file.read
+
+      budget = {}
+      data = {
+        meta: source['meta']
+      }
+      if source['cache']
+        data['nodes'] = source['cache']
+        budget['usePreproccesedData'] = true
+        budget['preproccesedData'] = data
+      else
+        data['nodes'] = source['data']
+        budget['data'] = data
+      end
+
+      {
+        'meta' => source['meta'],
+        'json' => budget.to_json
+      }
     end
   end
 end

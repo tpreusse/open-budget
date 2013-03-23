@@ -83,19 +83,5 @@ end
 </div>
 
 <script type="text/javascript">
-    window.OpenBudget = {
-        <%= 
-            data = {
-                meta: @data['meta']
-            }
-            if @data['cache']
-                data[:nodes] = @data['cache']
-                "usePreproccesedData: true,\n        " +
-                "preproccesedData: #{data.to_json}"
-            else
-                data[:nodes] = @data['data']
-                "data: #{data.to_json}"
-            end.html_safe
-        %>
-    };
+    window.OpenBudget = <%= @data['json'].html_safe %>;
 </script>
