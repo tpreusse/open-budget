@@ -8,6 +8,7 @@ gem 'rails', '3.2.12'
 # gem 'sqlite3'
 gem 'carrierwave'
 gem 'fog', '~> 1.3.1'
+gem 'memcachier'
 gem 'dalli'
 
 # Gems used only for assets and not required

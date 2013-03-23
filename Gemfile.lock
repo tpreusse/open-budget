@@ -82,6 +82,7 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    memcachier (0.0.2)
     mime-types (1.21)
     multi_json (1.7.2)
     net-scp (1.0.4)
@@ -153,6 +154,7 @@ DEPENDENCIES
   haml-rails (>= 0.4)
   html2haml (>= 1.0.1)
   jquery-rails
+  memcachier
   rails (= 3.2.12)
   sass-rails (~> 3.2.3)
   thin (>= 1.5.0)
