@@ -10,7 +10,11 @@ if (!(window.console && console.log)) {
     }());
 }
 
-window.OpenBudget = {
+if (!window.OpenBudget) {
+    window.OpenBudget = {};
+}
+
+_.extend(window.OpenBudget, {
   SVGSupport: (!!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect),
   track: function(category, action, opt_label, opt_value, opt_noninteraction) {
     if(!window._gaq) {
@@ -19,11 +23,8 @@ window.OpenBudget = {
 
     window.console.log('track event', arguments);
     window._gaq.push(['_trackEvent', category, action, opt_label, opt_value, opt_noninteraction]);
-  },
-  dataUrl: 'data/bern-budget2013.json',
-  usePreproccesedData: true,
-  preproccesedDataUrl: 'data/bern-budget2013-cache.json'
-};
+  }
+});
 
 $(function() {
   if(!OpenBudget.SVGSupport) {
