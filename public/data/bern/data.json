@@ -4,7 +4,9 @@
         "page_title": "Budget Bern - Städtisches Produktegruppen-Budget 2013",
         "description": "Die Ausgaben und Einnahmen des Berners Produktegruppen-Budget 2013 in Kreisen visualisiert. Spielerisch und einfach zu verstehen.",
         "h1": "Stadt Bern",
-        "h2": "Produktegruppen-Budget 2013"
+        "h2": "Produktegruppen-Budget 2013",
+        "data_link": "http://www.bern.ch/leben_in_bern/stadt/information/finanzplan/budget_2013_buch_beschlusssr_internet.pdf",
+        "data_title": "Offizielles Budget-PDF"
     },
     "data": [{
         "id": "1000",

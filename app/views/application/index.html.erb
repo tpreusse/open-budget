@@ -75,10 +75,12 @@ end
         <a href="javascript:UserVoice.showPopupWidget();">Feedback &amp; Support</a>
     </p>
     <p class="links">
-        <a href="https://github.com/tpreusse/open-budget">Quellcode</a> - 
-        <a href="https://twitter.com/intent/tweet?hashtags=ogd&amp;text=Stadt%20Bern%20Produktegruppen-Budget%202013&amp;url=http%3A%2F%2Ft.preus.se%2Fbernbudget2013%2F&amp;via=OpendataCH" target="_blank">Tweet</a> -
-        <a href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Ft.preus.se%2Fbernbudget2013%2F" target="_blank">Facebook</a> -
-        <a href="http://t.preus.se/bernbudget2013/v1">Alte Version</a>
+        <a href="https://github.com/tpreusse/open-budget">Quellcode</a>
+        <% if @subdomain.present? %>
+            - 
+            <a href="https://twitter.com/intent/tweet?hashtags=ogd&amp;text=<%= u(@data['meta']['page_title']) %>&amp;url=http%3A%2F%2F<%= @subdomain %>.budget.opendata.ch%2F&amp;via=OpendataCH" target="_blank">Tweet</a> -
+            <a href="https://www.facebook.com/sharer.php?u=http%3A%2F%2F<%= @subdomain %>.budget.opendata.ch%2F" target="_blank">Facebook</a>
+        <% end %>
     </p>
 </div>
 
