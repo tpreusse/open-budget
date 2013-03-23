@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
     if id.blank?
       id = 'bern'
     end
+    Rails.logger.info "request budget #{id}"
 
     # only allow word chars - no dots and slashes for filepath
     if !id.match(/^[\w-]+$/)
