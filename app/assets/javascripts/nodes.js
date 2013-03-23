@@ -196,7 +196,7 @@ OpenBudget.nodes = (function() {
             radiusScale.domain([0, d3.max([max, Math.abs(min)])]);
         },
         createCache: function() {
-            d3.json(OpenBudget.dataUrl, function(data) {
+            var ready = function(data) {
                 rootNodes = [];
                 nodes = [];
 
@@ -237,7 +237,14 @@ OpenBudget.nodes = (function() {
                     width: '100%',
                     height: '100%'
                 }).text(JSON.stringify({meta: fn.meta, nodes: rootNodes}));
-            });
+            };
+
+            if(OpenBudget.dataUrl) {
+                d3.json(OpenBudget.dataUrl, ready);
+            }
+            else {
+                ready(OpenBudget.data);
+            }
         },
         loadFromCache: function(loadCallback) {
             var ready = function(data) {
