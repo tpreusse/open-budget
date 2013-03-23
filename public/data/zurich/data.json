@@ -22,13 +22,13 @@
       "gross_cost":{
         "budgets":{
           "2012":113006200,
-          "2013":113006200
+          "2013":64968700
         }
       },
       "revenue":{
         "budgets":{
           "2012":63188600,
-          "2013":63188600
+          "2013":58483100
         }
       },
       "children":[
@@ -38,7 +38,7 @@
           "gross_cost":{
             "budgets":{
               "2012":3772000,
-              "2013":3772000
+              "2013":4176000
             }
           },
           "revenue":{
@@ -432,10 +432,9 @@
               "id":"10_1000_4360 0000",
               "name":"R\u00fcckerstattungen Dritter",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -455,13 +454,13 @@
           "gross_cost":{
             "budgets":{
               "2012":5081000,
-              "2013":5081000
+              "2013":5324300
             }
           },
           "revenue":{
             "budgets":{
               "2012":141200,
-              "2013":141200
+              "2013":150800
             }
           },
           "children":[
@@ -1191,10 +1190,9 @@
               "id":"10_1005_4367 0000",
               "name":"R\u00fcckerstattungen von Personalaufwendungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -1214,13 +1212,13 @@
           "gross_cost":{
             "budgets":{
               "2012":4145500,
-              "2013":4145500
+              "2013":4200700
             }
           },
           "revenue":{
             "budgets":{
               "2012":1308100,
-              "2013":1308100
+              "2013":1318100
             }
           },
           "children":[
@@ -2026,10 +2024,9 @@
               "id":"10_1007_4982 0000",
               "name":"Verg\u00fctung f\u00fcr Verwaltungskosten",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -2049,7 +2046,7 @@
           "gross_cost":{
             "budgets":{
               "2012":1195800,
-              "2013":1195800
+              "2013":1223200
             }
           },
           "revenue":{
@@ -2785,10 +2782,9 @@
               "id":"10_1010_4366 0000",
               "name":"Versicherungs- und Haftpflichtleistungen f\u00fcr das Personal",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -2808,13 +2804,13 @@
           "gross_cost":{
             "budgets":{
               "2012":5245200,
-              "2013":5245200
+              "2013":5172300
             }
           },
           "revenue":{
             "budgets":{
               "2012":103600,
-              "2013":103600
+              "2013":101500
             }
           },
           "children":[
@@ -3145,10 +3141,9 @@
               "id":"10_1015_4366 0000",
               "name":"Versicherungs- und Haftpflichtleistungen f\u00fcr das Personal",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -3168,13 +3163,13 @@
           "gross_cost":{
             "budgets":{
               "2012":12238500,
-              "2013":12238500
+              "2013":12699500
             }
           },
           "revenue":{
             "budgets":{
               "2012":3444400,
-              "2013":3444400
+              "2013":3478400
             }
           },
           "children":[
@@ -4208,10 +4203,9 @@
               "id":"10_1020_4399 0000",
               "name":"\u00dcbrige Entgelte",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -4231,7 +4225,7 @@
           "gross_cost":{
             "budgets":{
               "2012":961100,
-              "2013":961100
+              "2013":958500
             }
           },
           "revenue":{
@@ -4739,10 +4733,9 @@
               "id":"10_1025_4366 0000",
               "name":"Versicherungs- und Haftpflichtleistungen f\u00fcr das Personal",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -4762,13 +4755,13 @@
           "gross_cost":{
             "budgets":{
               "2012":15382000,
-              "2013":15382000
+              "2013":0
             }
           },
           "revenue":{
             "budgets":{
               "2012":2338200,
-              "2013":2338200
+              "2013":0
             }
           },
           "children":[
@@ -5821,10 +5814,9 @@
               "id":"10_1030_4399 0000",
               "name":"\u00dcbrige Entgelte",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -5844,7 +5836,7 @@
           "gross_cost":{
             "budgets":{
               "2012":759800,
-              "2013":759800
+              "2013":746500
             }
           },
           "revenue":{
@@ -6504,10 +6496,9 @@
               "id":"10_1035_4367 0000",
               "name":"R\u00fcckerstattungen von Personalaufwendungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -6527,13 +6518,13 @@
           "gross_cost":{
             "budgets":{
               "2012":34463900,
-              "2013":34463900
+              "2013":0
             }
           },
           "revenue":{
             "budgets":{
-              "2012":31180400,
-              "2013":31180400
+              "2013":28356200,
+              "2012":31180400
             }
           },
           "children":[
@@ -6681,8 +6672,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":4000000
+                  "2013":4000000,
+                  "2012":0
                 }
               },
               "children":[
@@ -6795,8 +6786,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":650000
+                  "2013":650000,
+                  "2012":0
                 }
               },
               "children":[
@@ -6833,8 +6824,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":2000000
+                  "2013":2000000,
+                  "2012":0
                 }
               },
               "children":[
@@ -6865,8 +6856,8 @@
               "name":"Pauschalabzug Mieten und Benutzungskosten",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -6890,8 +6881,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":250000
+                  "2013":250000,
+                  "2012":0
                 }
               },
               "children":[
@@ -6909,8 +6900,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":6000000
+                  "2013":6000000,
+                  "2012":0
                 }
               },
               "children":[
@@ -6922,8 +6913,8 @@
               "name":"Pauschalabzug Post- und Telekommunikationsgeb\u00fchren",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -6947,8 +6938,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":1000000
+                  "2013":1000000,
+                  "2012":0
                 }
               },
               "children":[
@@ -6979,8 +6970,8 @@
               "name":"Pauschalabzug Entsch\u00e4digungen f\u00fcr Dienstleistungen Dritter im Zusammenhang mit Projektbegleitung, -beratung und Organisationsentwicklung",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -7092,10 +7083,9 @@
               "id":"10_1060_4804 0100",
               "name":"Entnahme aus den Bestandeskonten der WOV-Pilotbetriebe infolge Aufl\u00f6sung der WOV-Reserven",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -7319,10 +7309,9 @@
               "id":"10_1061_4366 0000",
               "name":"Versicherungs- und Haftpflichtleistungen f\u00fcr das Personal",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -7342,13 +7331,13 @@
           "gross_cost":{
             "budgets":{
               "2012":26161700,
-              "2013":26161700
+              "2013":26698600
             }
           },
           "revenue":{
             "budgets":{
               "2012":23410200,
-              "2013":23410200
+              "2013":23817900
             }
           },
           "children":[
@@ -8534,10 +8523,9 @@
               "id":"10_1070_4399 0000",
               "name":"\u00dcbrige Entgelte",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -8557,13 +8545,13 @@
           "gross_cost":{
             "budgets":{
               "2012":3599700,
-              "2013":3599700
+              "2013":3769100
             }
           },
           "revenue":{
             "budgets":{
               "2012":1237100,
-              "2013":1237100
+              "2013":1234800
             }
           },
           "children":[
@@ -9426,10 +9414,9 @@
               "id":"10_1080_4399 0000",
               "name":"\u00dcbrige Entgelte",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -9451,13 +9438,13 @@
       "gross_cost":{
         "budgets":{
           "2012":225724600,
-          "2013":225724600
+          "2013":230863500
         }
       },
       "revenue":{
         "budgets":{
           "2012":84350300,
-          "2013":84350300
+          "2013":82869000
         }
       },
       "children":[
@@ -9467,13 +9454,13 @@
           "gross_cost":{
             "budgets":{
               "2012":3938300,
-              "2013":3938300
+              "2013":4001200
             }
           },
           "revenue":{
             "budgets":{
               "2012":832800,
-              "2013":832800
+              "2013":842800
             }
           },
           "children":[
@@ -10222,10 +10209,9 @@
               "id":"15_1500_4989 0401",
               "name":"Verg\u00fctungen von Dienstabteilungen des Pr\u00e4sidialdepartementes f\u00fcr Dienstleistungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -10245,13 +10231,13 @@
           "gross_cost":{
             "budgets":{
               "2012":134629600,
-              "2013":134629600
+              "2013":137198100
             }
           },
           "revenue":{
             "budgets":{
               "2012":53760800,
-              "2013":53760800
+              "2013":50351300
             }
           },
           "children":[
@@ -11804,10 +11790,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -11821,13 +11806,13 @@
           "gross_cost":{
             "budgets":{
               "2012":10690900,
-              "2013":10690900
+              "2013":11211100
             }
           },
           "revenue":{
             "budgets":{
               "2012":979500,
-              "2013":979500
+              "2013":1326500
             }
           },
           "children":[
@@ -12943,10 +12928,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -12960,13 +12944,13 @@
           "gross_cost":{
             "budgets":{
               "2012":1897800,
-              "2013":1897800
+              "2013":1882300
             }
           },
           "revenue":{
             "budgets":{
               "2012":80800,
-              "2013":80800
+              "2013":78900
             }
           },
           "children":[
@@ -13791,10 +13775,9 @@
               "id":"15_1506_4690 0000",
               "name":"\u00dcbrige Beitr\u00e4ge",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -13814,13 +13797,13 @@
           "gross_cost":{
             "budgets":{
               "2012":12583300,
-              "2013":12583300
+              "2013":12948000
             }
           },
           "revenue":{
             "budgets":{
               "2012":4395700,
-              "2013":4395700
+              "2013":4416600
             }
           },
           "children":[
@@ -13833,13 +13816,13 @@
           "gross_cost":{
             "budgets":{
               "2012":46348700,
-              "2013":46348700
+              "2013":48510500
             }
           },
           "revenue":{
             "budgets":{
               "2012":24101300,
-              "2013":24101300
+              "2013":25638500
             }
           },
           "children":[
@@ -15120,10 +15103,9 @@
               "id":"15_1530_4989 0110",
               "name":"Verg\u00fctung der Finanzverwaltung f\u00fcr Passivzinsen auf Vorauszahlungen f\u00fcr Grabpflege und Bestattungskosten",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -15143,13 +15125,13 @@
           "gross_cost":{
             "budgets":{
               "2012":9045300,
-              "2013":9045300
+              "2013":8484900
             }
           },
           "revenue":{
             "budgets":{
               "2012":153000,
-              "2013":153000
+              "2013":156000
             }
           },
           "children":[
@@ -15955,10 +15937,9 @@
               "id":"15_1560_4690 0000",
               "name":"\u00dcbrige Beitr\u00e4ge",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -15978,13 +15959,13 @@
           "gross_cost":{
             "budgets":{
               "2012":2319400,
-              "2013":2319400
+              "2013":2204000
             }
           },
           "revenue":{
             "budgets":{
               "2012":0,
-              "2013":0
+              "2013":4800
             }
           },
           "children":[
@@ -16448,10 +16429,9 @@
               "id":"15_1561_4366 0000",
               "name":"Versicherungs- und Haftpflichtleistungen f\u00fcr das Personal",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -16471,13 +16451,13 @@
           "gross_cost":{
             "budgets":{
               "2012":4271300,
-              "2013":4271300
+              "2013":4423400
             }
           },
           "revenue":{
             "budgets":{
               "2012":46400,
-              "2013":46400
+              "2013":53600
             }
           },
           "children":[
@@ -17378,10 +17358,9 @@
               "id":"15_1565_4366 0000",
               "name":"Versicherungs- und Haftpflichtleistungen f\u00fcr das Personal",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -18308,10 +18287,9 @@
               "id":"15_1575_4690 0000",
               "name":"\u00dcbrige Beitr\u00e4ge",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -18333,13 +18311,13 @@
       "gross_cost":{
         "budgets":{
           "2012":1336925900,
-          "2013":1336925900
+          "2013":1217622900
         }
       },
       "revenue":{
         "budgets":{
           "2012":3866247500,
-          "2013":3866247500
+          "2013":3759261100
         }
       },
       "children":[
@@ -18349,13 +18327,13 @@
           "gross_cost":{
             "budgets":{
               "2012":28623800,
-              "2013":28623800
+              "2013":39529700
             }
           },
           "revenue":{
             "budgets":{
               "2012":1495600,
-              "2013":1495600
+              "2013":1551000
             }
           },
           "children":[
@@ -20003,10 +19981,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -20020,13 +19997,13 @@
           "gross_cost":{
             "budgets":{
               "2012":38700500,
-              "2013":38700500
+              "2013":15000500
             }
           },
           "revenue":{
             "budgets":{
               "2012":38700500,
-              "2013":38700500
+              "2013":15000500
             }
           },
           "children":[
@@ -20135,10 +20112,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -20152,13 +20128,13 @@
           "gross_cost":{
             "budgets":{
               "2012":634934500,
-              "2013":634934500
+              "2013":525765400
             }
           },
           "revenue":{
             "budgets":{
               "2012":759902400,
-              "2013":759902400
+              "2013":746336700
             }
           },
           "children":[
@@ -21686,10 +21662,9 @@
               "id":"20_2015_4983 0000",
               "name":"Verg\u00fctung f\u00fcr Annuit\u00e4tenverpflichtung gegen\u00fcber der Pensionskasse (Abl\u00f6sung Leistungsprimat 1995)",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -21709,13 +21684,13 @@
           "gross_cost":{
             "budgets":{
               "2012":38041700,
-              "2013":38041700
+              "2013":16438200
             }
           },
           "revenue":{
             "budgets":{
               "2012":38041700,
-              "2013":38041700
+              "2013":16438200
             }
           },
           "children":[
@@ -22597,10 +22572,9 @@
               "id":"20_2016_4921 0000",
               "name":"Verg\u00fctung von Kontokorrentzinsen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -22620,13 +22594,13 @@
           "gross_cost":{
             "budgets":{
               "2012":21344300,
-              "2013":21344300
+              "2013":21292700
             }
           },
           "revenue":{
             "budgets":{
               "2012":21344300,
-              "2013":21344300
+              "2013":21292700
             }
           },
           "children":[
@@ -23470,10 +23444,9 @@
               "id":"20_2021_4989 0112",
               "name":"Verrechnung von Personalaufwand",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -23493,13 +23466,13 @@
           "gross_cost":{
             "budgets":{
               "2012":58609500,
-              "2013":58609500
+              "2013":55629800
             }
           },
           "revenue":{
             "budgets":{
               "2012":58609500,
-              "2013":58609500
+              "2013":55629800
             }
           },
           "children":[
@@ -24425,10 +24398,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -24442,13 +24414,13 @@
           "gross_cost":{
             "budgets":{
               "2012":4142700,
-              "2013":4142700
+              "2013":2766200
             }
           },
           "revenue":{
             "budgets":{
               "2012":5150200,
-              "2013":5150200
+              "2013":4255900
             }
           },
           "children":[
@@ -24836,10 +24808,9 @@
               "id":"20_2023_4921 0109",
               "name":"Verg\u00fctung von Kontokorrentzinsen: \u00dcbrige",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -24859,13 +24830,13 @@
           "gross_cost":{
             "budgets":{
               "2012":5978200,
-              "2013":5978200
+              "2013":4908900
             }
           },
           "revenue":{
             "budgets":{
               "2012":10412800,
-              "2013":10412800
+              "2013":10000400
             }
           },
           "children":[
@@ -25063,10 +25034,9 @@
               "id":"20_2024_4921 0109",
               "name":"Verg\u00fctung von Kontokorrentzinsen: \u00dcbrige",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -25086,13 +25056,13 @@
           "gross_cost":{
             "budgets":{
               "2012":17174300,
-              "2013":17174300
+              "2013":14241800
             }
           },
           "revenue":{
             "budgets":{
               "2012":17174300,
-              "2013":17174300
+              "2013":14241800
             }
           },
           "children":[
@@ -25752,10 +25722,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -25769,13 +25738,13 @@
           "gross_cost":{
             "budgets":{
               "2012":48288900,
-              "2013":48288900
+              "2013":70737700
             }
           },
           "revenue":{
             "budgets":{
               "2012":32796800,
-              "2013":32796800
+              "2013":55521200
             }
           },
           "children":[
@@ -26853,10 +26822,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -26870,13 +26838,13 @@
           "gross_cost":{
             "budgets":{
               "2012":38050600,
-              "2013":38050600
+              "2013":41230100
             }
           },
           "revenue":{
             "budgets":{
               "2012":38050600,
-              "2013":38050600
+              "2013":41230100
             }
           },
           "children":[
@@ -27821,10 +27789,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -27838,13 +27805,13 @@
           "gross_cost":{
             "budgets":{
               "2012":2486600,
-              "2013":2486600
+              "2013":3634500
             }
           },
           "revenue":{
             "budgets":{
               "2012":2587900,
-              "2013":2587900
+              "2013":2204400
             }
           },
           "children":[
@@ -28504,10 +28471,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -28521,13 +28487,13 @@
           "gross_cost":{
             "budgets":{
               "2012":7700800,
-              "2013":7700800
+              "2013":5383900
             }
           },
           "revenue":{
             "budgets":{
               "2012":8913700,
-              "2013":8913700
+              "2013":9110000
             }
           },
           "children":[
@@ -28864,10 +28830,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -28881,13 +28846,13 @@
           "gross_cost":{
             "budgets":{
               "2012":103605200,
-              "2013":103605200
+              "2013":99378300
             }
           },
           "revenue":{
             "budgets":{
               "2012":103605200,
-              "2013":103605200
+              "2013":99378300
             }
           },
           "children":[
@@ -29998,13 +29963,11 @@
               "name":"Beitr\u00e4ge von eigenen Unternehmungen",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2012":0
                 }
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
                   "2013":3200000
                 }
               },
@@ -30020,13 +29983,13 @@
           "gross_cost":{
             "budgets":{
               "2012":7577500,
-              "2013":7577500
+              "2013":7978400
             }
           },
           "revenue":{
             "budgets":{
               "2012":7577500,
-              "2013":7577500
+              "2013":7978400
             }
           },
           "children":[
@@ -30515,10 +30478,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -30532,13 +30494,13 @@
           "gross_cost":{
             "budgets":{
               "2012":81330800,
-              "2013":81330800
+              "2013":88682400
             }
           },
           "revenue":{
             "budgets":{
               "2012":2647563400,
-              "2013":2647563400
+              "2013":2583208000
             }
           },
           "children":[
@@ -30552,10 +30514,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -30569,13 +30530,13 @@
           "gross_cost":{
             "budgets":{
               "2012":24280500,
-              "2013":24280500
+              "2013":25210200
             }
           },
           "revenue":{
             "budgets":{
               "2012":3568400,
-              "2013":3568400
+              "2013":3530600
             }
           },
           "children":[
@@ -31704,10 +31665,9 @@
               "id":"20_2050_4982 0000",
               "name":"Verg\u00fctung f\u00fcr Verwaltungskosten",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -31727,7 +31687,7 @@
           "gross_cost":{
             "budgets":{
               "2012":5251900,
-              "2013":5251900
+              "2013":4693500
             }
           },
           "revenue":{
@@ -32197,10 +32157,9 @@
               "id":"20_2051_4367 0000",
               "name":"R\u00fcckerstattungen von Personalaufwendungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -32220,7 +32179,7 @@
           "gross_cost":{
             "budgets":{
               "2012":712700,
-              "2013":712700
+              "2013":1784600
             }
           },
           "revenue":{
@@ -32462,10 +32421,9 @@
               "id":"20_2052_4366 0000",
               "name":"Versicherungs- und Haftpflichtleistungen f\u00fcr das Personal",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -32499,10 +32457,9 @@
               "id":"20_2053_4367 0000",
               "name":"R\u00fcckerstattungen von Personalaufwendungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -32522,13 +32479,13 @@
           "gross_cost":{
             "budgets":{
               "2012":170090900,
-              "2013":170090900
+              "2013":173336100
             }
           },
           "revenue":{
             "budgets":{
               "2012":70708500,
-              "2013":70708500
+              "2013":72308900
             }
           },
           "children":[
@@ -33758,10 +33715,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -33777,13 +33733,13 @@
       "gross_cost":{
         "budgets":{
           "2012":568684900,
-          "2013":568684900
+          "2013":580381300
         }
       },
       "revenue":{
         "budgets":{
           "2012":259299900,
-          "2013":259299900
+          "2013":277724100
         }
       },
       "children":[
@@ -33793,13 +33749,13 @@
           "gross_cost":{
             "budgets":{
               "2012":4784500,
-              "2013":4784500
+              "2013":4540400
             }
           },
           "revenue":{
             "budgets":{
               "2012":97000,
-              "2013":97000
+              "2013":96300
             }
           },
           "children":[
@@ -34491,10 +34447,9 @@
               "id":"25_2500_4399 0000",
               "name":"\u00dcbrige Entgelte",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -34514,13 +34469,13 @@
           "gross_cost":{
             "budgets":{
               "2012":0,
-              "2013":0
+              "2013":560000
             }
           },
           "revenue":{
             "budgets":{
               "2012":0,
-              "2013":0
+              "2013":560000
             }
           },
           "children":[
@@ -34648,10 +34603,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -34665,13 +34619,13 @@
           "gross_cost":{
             "budgets":{
               "2012":16654000,
-              "2013":16654000
+              "2013":15973700
             }
           },
           "revenue":{
             "budgets":{
               "2012":16654000,
-              "2013":16654000
+              "2013":15973700
             }
           },
           "children":[
@@ -35135,10 +35089,9 @@
               "id":"25_2505_4921 0000",
               "name":"Verg\u00fctung von Kontokorrentzinsen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -35158,13 +35111,13 @@
           "gross_cost":{
             "budgets":{
               "2012":13681700,
-              "2013":13681700
+              "2013":22524900
             }
           },
           "revenue":{
             "budgets":{
               "2012":13681700,
-              "2013":13681700
+              "2013":22524900
             }
           },
           "children":[
@@ -36084,10 +36037,9 @@
               "id":"25_2506_4921 0000",
               "name":"Verg\u00fctung von Kontokorrentzinsen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -36107,13 +36059,13 @@
           "gross_cost":{
             "budgets":{
               "2012":349444700,
-              "2013":349444700
+              "2013":347049800
             }
           },
           "revenue":{
             "budgets":{
               "2012":115953500,
-              "2013":115953500
+              "2013":117068900
             }
           },
           "children":[
@@ -37970,10 +37922,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -37987,13 +37938,13 @@
           "gross_cost":{
             "budgets":{
               "2012":20515300,
-              "2013":20515300
+              "2013":21791800
             }
           },
           "revenue":{
             "budgets":{
               "2012":26075000,
-              "2013":26075000
+              "2013":30090000
             }
           },
           "children":[
@@ -38951,10 +38902,9 @@
               "id":"25_2525_4370 0000",
               "name":"Ertrag aus Bussen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -38974,13 +38924,13 @@
           "gross_cost":{
             "budgets":{
               "2012":129389700,
-              "2013":129389700
+              "2013":131801300
             }
           },
           "revenue":{
             "budgets":{
               "2012":73076700,
-              "2013":73076700
+              "2013":77615900
             }
           },
           "children":[
@@ -40641,10 +40591,9 @@
               "id":"25_2550_566100",
               "name":"Beitr\u00e4ge des Kantons",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -40664,13 +40613,13 @@
           "gross_cost":{
             "budgets":{
               "2012":34215000,
-              "2013":34215000
+              "2013":36139400
             }
           },
           "revenue":{
             "budgets":{
               "2012":13762000,
-              "2013":13762000
+              "2013":13794400
             }
           },
           "children":[
@@ -41989,10 +41938,9 @@
               "id":"25_2555_596610",
               "name":"Beitr\u00e4ge des Kantons",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -42014,13 +41962,13 @@
       "gross_cost":{
         "budgets":{
           "2012":1048714300,
-          "2013":1048714300
+          "2013":1074851300
         }
       },
       "revenue":{
         "budgets":{
           "2012":939593400,
-          "2013":939593400
+          "2013":967257900
         }
       },
       "children":[
@@ -42030,13 +41978,13 @@
           "gross_cost":{
             "budgets":{
               "2012":14965900,
-              "2013":14965900
+              "2013":13376100
             }
           },
           "revenue":{
             "budgets":{
               "2012":5574900,
-              "2013":5574900
+              "2013":1525300
             }
           },
           "children":[
@@ -43399,10 +43347,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -43416,13 +43363,13 @@
           "gross_cost":{
             "budgets":{
               "2012":71266100,
-              "2013":71266100
+              "2013":73107300
             }
           },
           "revenue":{
             "budgets":{
               "2012":15830800,
-              "2013":15830800
+              "2013":12107300
             }
           },
           "children":[
@@ -44969,10 +44916,9 @@
               "id":"30_3010_4620 0000",
               "name":"Beitr\u00e4ge von Gemeinden",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -45709,10 +45655,9 @@
               "id":"30_3015_4650 0000",
               "name":"Beitr\u00e4ge von privaten Unternehmungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -45732,13 +45677,13 @@
           "gross_cost":{
             "budgets":{
               "2012":232997500,
-              "2013":232997500
+              "2013":238008100
             }
           },
           "revenue":{
             "budgets":{
               "2012":227842500,
-              "2013":227842500
+              "2013":244796700
             }
           },
           "children":[
@@ -47158,10 +47103,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -47175,13 +47119,13 @@
           "gross_cost":{
             "budgets":{
               "2012":156194800,
-              "2013":156194800
+              "2013":159368400
             }
           },
           "revenue":{
             "budgets":{
               "2012":160303800,
-              "2013":160303800
+              "2013":159872600
             }
           },
           "children":[
@@ -48652,10 +48596,9 @@
               "id":"30_3026_4690 0000",
               "name":"\u00dcbrige Beitr\u00e4ge",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -48675,13 +48618,13 @@
           "gross_cost":{
             "budgets":{
               "2012":151910600,
-              "2013":151910600
+              "2013":151441000
             }
           },
           "revenue":{
             "budgets":{
               "2012":148624000,
-              "2013":148624000
+              "2013":143735000
             }
           },
           "children":[
@@ -48771,10 +48714,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -48788,13 +48730,13 @@
           "gross_cost":{
             "budgets":{
               "2012":390740600,
-              "2013":390740600
+              "2013":403776000
             }
           },
           "revenue":{
             "budgets":{
               "2012":369056200,
-              "2013":369056200
+              "2013":393004000
             }
           },
           "children":[
@@ -48922,10 +48864,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -48939,13 +48880,13 @@
           "gross_cost":{
             "budgets":{
               "2012":30638800,
-              "2013":30638800
+              "2013":35774400
             }
           },
           "revenue":{
             "budgets":{
               "2012":12361200,
-              "2013":12361200
+              "2013":12217000
             }
           },
           "children":[
@@ -50245,10 +50186,9 @@
               "id":"30_3045_4980 0491",
               "name":"Verg\u00fctung des Fonds des \u00fcberkommunalen Strassennetzes f\u00fcr Strassenl\u00e4rm-Immissionskataster",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -50270,13 +50210,13 @@
       "gross_cost":{
         "budgets":{
           "2012":753164100,
-          "2013":753164100
+          "2013":726292200
         }
       },
       "revenue":{
         "budgets":{
           "2012":563845700,
-          "2013":563845700
+          "2013":536172800
         }
       },
       "children":[
@@ -50286,13 +50226,13 @@
           "gross_cost":{
             "budgets":{
               "2012":4683800,
-              "2013":4683800
+              "2013":4688700
             }
           },
           "revenue":{
             "budgets":{
               "2012":2471000,
-              "2013":2471000
+              "2013":1765600
             }
           },
           "children":[
@@ -51174,10 +51114,9 @@
               "id":"35_3500_4980 0502",
               "name":"Verg\u00fctung von ERZ, Abfall f\u00fcr Verwaltungskosten",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -51197,13 +51136,13 @@
           "gross_cost":{
             "budgets":{
               "2012":54436700,
-              "2013":54436700
+              "2013":36120000
             }
           },
           "revenue":{
             "budgets":{
               "2012":54436700,
-              "2013":54436700
+              "2013":36120000
             }
           },
           "children":[
@@ -51611,8 +51550,8 @@
               "name":"Beitr\u00e4ge des Kantons f\u00fcr Strassenbau: Pauschalen, Entnahme aus dem Bestandeskonto des Spezialfonds",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -51630,13 +51569,11 @@
               "name":"Durchlaufende Beitr\u00e4ge des Kantons f\u00fcr Strassenbau: Pauschalen",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2012":0
                 }
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
                   "2013":8655000
                 }
               },
@@ -51723,10 +51660,9 @@
               "id":"35_3504_596751",
               "name":"Durchlaufende Ersatzabgaben von privaten Unternehmungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -51779,10 +51715,9 @@
               "id":"35_3506_596691",
               "name":"Entnahme aus dem Bestandeskonto der Vorfinanzierung",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -51802,13 +51737,13 @@
           "gross_cost":{
             "budgets":{
               "2012":146630200,
-              "2013":146630200
+              "2013":132589900
             }
           },
           "revenue":{
             "budgets":{
               "2012":68799800,
-              "2013":68799800
+              "2013":48610400
             }
           },
           "children":[
@@ -54711,8 +54646,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":1052200
+                  "2013":1052200,
+                  "2012":0
                 }
               },
               "children":[
@@ -54730,8 +54665,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":150000
+                  "2013":150000,
+                  "2012":0
                 }
               },
               "children":[
@@ -54749,8 +54684,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":239000
+                  "2013":239000,
+                  "2012":0
                 }
               },
               "children":[
@@ -54780,10 +54715,9 @@
               "id":"35_3515_596731",
               "name":"Durchlaufende Beitr\u00e4ge der Vorfinanzierung f\u00fcr die Einhausung der Autobahn in Schwamendingen f\u00fcr Investitionsausgaben",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -54803,13 +54737,13 @@
           "gross_cost":{
             "budgets":{
               "2012":11628500,
-              "2013":11628500
+              "2013":11946900
             }
           },
           "revenue":{
             "budgets":{
               "2012":7417800,
-              "2013":7417800
+              "2013":8084600
             }
           },
           "children":[
@@ -54842,10 +54776,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -54859,13 +54792,13 @@
           "gross_cost":{
             "budgets":{
               "2012":164859800,
-              "2013":164859800
+              "2013":165711500
             }
           },
           "revenue":{
             "budgets":{
               "2012":164859800,
-              "2013":164859800
+              "2013":165711500
             }
           },
           "children":[
@@ -56893,10 +56826,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -56910,13 +56842,13 @@
           "gross_cost":{
             "budgets":{
               "2012":143527300,
-              "2013":143527300
+              "2013":146700200
             }
           },
           "revenue":{
             "budgets":{
               "2012":143527300,
-              "2013":143527300
+              "2013":146700200
             }
           },
           "children":[
@@ -58773,10 +58705,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -58790,13 +58721,13 @@
           "gross_cost":{
             "budgets":{
               "2012":73630500,
-              "2013":73630500
+              "2013":72769000
             }
           },
           "revenue":{
             "budgets":{
               "2012":73630500,
-              "2013":73630500
+              "2013":72769000
             }
           },
           "children":[
@@ -60438,10 +60369,9 @@
               "id":"35_3555_509929",
               "name":"Anschlussgeb\u00fchren Verteilanlagen Hochschulquartier",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -60461,13 +60391,13 @@
           "gross_cost":{
             "budgets":{
               "2012":43402500,
-              "2013":43402500
+              "2013":45061400
             }
           },
           "revenue":{
             "budgets":{
               "2012":9279300,
-              "2013":9279300
+              "2013":17392200
             }
           },
           "children":[
@@ -61773,10 +61703,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -61790,13 +61719,13 @@
           "gross_cost":{
             "budgets":{
               "2012":110364800,
-              "2013":110364800
+              "2013":110704600
             }
           },
           "revenue":{
             "budgets":{
               "2012":39423500,
-              "2013":39423500
+              "2013":39019300
             }
           },
           "children":[
@@ -62527,13 +62456,11 @@
               "name":"\u00dcbrige Beitr\u00e4ge: FIFA-Fonds",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2012":0
                 }
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
                   "2013":4000000
                 }
               },
@@ -62551,13 +62478,13 @@
       "gross_cost":{
         "budgets":{
           "2012":460467000,
-          "2013":460467000
+          "2013":461036300
         }
       },
       "revenue":{
         "budgets":{
           "2012":431659200,
-          "2013":431659200
+          "2013":434901200
         }
       },
       "children":[
@@ -62567,13 +62494,13 @@
           "gross_cost":{
             "budgets":{
               "2012":10992100,
-              "2013":10992100
+              "2013":11038300
             }
           },
           "revenue":{
             "budgets":{
               "2012":120400,
-              "2013":120400
+              "2013":115000
             }
           },
           "children":[
@@ -63360,10 +63287,9 @@
               "id":"40_4000_4366 0000",
               "name":"Versicherungs- und Haftpflichtleistungen f\u00fcr das Personal",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -63383,13 +63309,13 @@
           "gross_cost":{
             "budgets":{
               "2012":27928200,
-              "2013":27928200
+              "2013":28673100
             }
           },
           "revenue":{
             "budgets":{
               "2012":6327800,
-              "2013":6327800
+              "2013":6772800
             }
           },
           "children":[
@@ -64594,10 +64520,9 @@
               "id":"40_4015_4399 0000",
               "name":"\u00dcbrige Entgelte",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -64617,13 +64542,13 @@
           "gross_cost":{
             "budgets":{
               "2012":29072700,
-              "2013":29072700
+              "2013":28280000
             }
           },
           "revenue":{
             "budgets":{
               "2012":19855400,
-              "2013":19855400
+              "2013":19561200
             }
           },
           "children":[
@@ -65549,10 +65474,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -65566,13 +65490,13 @@
           "gross_cost":{
             "budgets":{
               "2012":11894300,
-              "2013":11894300
+              "2013":11651400
             }
           },
           "revenue":{
             "budgets":{
               "2012":12789000,
-              "2013":12789000
+              "2013":12274600
             }
           },
           "children":[
@@ -66245,10 +66169,9 @@
               "id":"40_4035_4399 0000",
               "name":"\u00dcbrige Entgelte",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -66268,13 +66191,13 @@
           "gross_cost":{
             "budgets":{
               "2012":380579700,
-              "2013":380579700
+              "2013":381393500
             }
           },
           "revenue":{
             "budgets":{
               "2012":392566600,
-              "2013":392566600
+              "2013":396177600
             }
           },
           "children":[
@@ -68753,8 +68676,8 @@
               "name":"Beitrag des Kantons: Schulhaus Apfelbaum, Erweiterung",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -68791,8 +68714,8 @@
               "name":"Beitrag des Kantons: Schulhaus Falletsche, Erweiterung Turnhalle",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -69171,8 +69094,8 @@
               "name":"Beitrag des Kantons: Schulhaus Auhof, Instandsetzung",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -69234,8 +69157,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":30000
+                  "2013":30000,
+                  "2012":0
                 }
               },
               "children":[
@@ -69272,8 +69195,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":50000
+                  "2013":50000,
+                  "2012":0
                 }
               },
               "children":[
@@ -69304,8 +69227,8 @@
               "name":"Beitrag des Kantons: Sportanlage Heerensch\u00fcrli, Neubau Garderobengeb\u00e4ude",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -69323,8 +69246,8 @@
               "name":"Beitrag des Kantons: Stadion Letzigrund, Neubau",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -69386,8 +69309,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":900000
+                  "2013":900000,
+                  "2012":0
                 }
               },
               "children":[
@@ -69842,8 +69765,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":300000
+                  "2013":300000,
+                  "2012":0
                 }
               },
               "children":[
@@ -70032,8 +69955,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":5000
+                  "2013":5000,
+                  "2012":0
                 }
               },
               "children":[
@@ -70051,8 +69974,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":3500000
+                  "2013":3500000,
+                  "2012":0
                 }
               },
               "children":[
@@ -70539,8 +70462,8 @@
               "name":"Beitrag des Kantons: Abgeltung f\u00fcr die an den Kanton \u00fcbergegangenen Liegenschaften der Hochschule f\u00fcr Gestaltung und Kunst Z\u00fcrich (HGKZ)",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2013":0,
+                  "2012":0
                 }
               },
               "revenue":{
@@ -70716,8 +70639,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":58000
+                  "2013":58000,
+                  "2012":0
                 }
               },
               "children":[
@@ -70735,8 +70658,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":6500
+                  "2013":6500,
+                  "2012":0
                 }
               },
               "children":[
@@ -70754,8 +70677,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":19000
+                  "2013":19000,
+                  "2012":0
                 }
               },
               "children":[
@@ -70773,8 +70696,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":73000
+                  "2013":73000,
+                  "2012":0
                 }
               },
               "children":[
@@ -70792,8 +70715,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":17000
+                  "2013":17000,
+                  "2012":0
                 }
               },
               "children":[
@@ -71228,10 +71151,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -71247,13 +71169,13 @@
       "gross_cost":{
         "budgets":{
           "2012":1539167500,
-          "2013":1539167500
+          "2013":1508889200
         }
       },
       "revenue":{
         "budgets":{
           "2012":1495011900,
-          "2013":1495011900
+          "2013":1476098800
         }
       },
       "children":[
@@ -71263,13 +71185,13 @@
           "gross_cost":{
             "budgets":{
               "2012":116479000,
-              "2013":116479000
+              "2013":102716100
             }
           },
           "revenue":{
             "budgets":{
               "2012":1519000,
-              "2013":1519000
+              "2013":1525000
             }
           },
           "children":[
@@ -72342,14 +72264,12 @@
               "name":"R\u00fcckerstattung von Beitr\u00e4gen durch Tram Z\u00fcrich-West",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
                   "2013":0
                 }
               },
               "revenue":{
                 "budgets":{
-                  "2012":2038700,
-                  "2013":0
+                  "2012":2038700
                 }
               },
               "children":[
@@ -72364,13 +72284,13 @@
           "gross_cost":{
             "budgets":{
               "2012":8672300,
-              "2013":8672300
+              "2013":8922300
             }
           },
           "revenue":{
             "budgets":{
               "2012":8672300,
-              "2013":8672300
+              "2013":8922300
             }
           },
           "children":[
@@ -72536,10 +72456,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -72553,13 +72472,13 @@
           "gross_cost":{
             "budgets":{
               "2012":105607200,
-              "2013":105607200
+              "2013":104550800
             }
           },
           "revenue":{
             "budgets":{
               "2012":105607200,
-              "2013":105607200
+              "2013":104550800
             }
           },
           "children":[
@@ -74220,10 +74139,9 @@
               "id":"45_4525_593400",
               "name":"\u00dcbrige Beitr\u00e4ge",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -74243,13 +74161,13 @@
           "gross_cost":{
             "budgets":{
               "2012":715910800,
-              "2013":715910800
+              "2013":691607000
             }
           },
           "revenue":{
             "budgets":{
               "2012":786715200,
-              "2013":786715200
+              "2013":760007700
             }
           },
           "children":[
@@ -74396,10 +74314,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -74413,13 +74330,13 @@
           "gross_cost":{
             "budgets":{
               "2012":592498200,
-              "2013":592498200
+              "2013":601093000
             }
           },
           "revenue":{
             "budgets":{
               "2012":592498200,
-              "2013":592498200
+              "2013":601093000
             }
           },
           "children":[
@@ -76277,8 +76194,8 @@
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
-                  "2013":77279000
+                  "2013":77279000,
+                  "2012":0
                 }
               },
               "children":[
@@ -76290,13 +76207,11 @@
               "name":"Beitr\u00e4ge des Bundes",
               "gross_cost":{
                 "budgets":{
-                  "2012":0,
-                  "2013":0
+                  "2012":0
                 }
               },
               "revenue":{
                 "budgets":{
-                  "2012":0,
                   "2013":25760000
                 }
               },
@@ -76314,13 +76229,13 @@
       "gross_cost":{
         "budgets":{
           "2012":1008393300,
-          "2013":1008393300
+          "2013":1064795100
         }
       },
       "revenue":{
         "budgets":{
           "2012":159061900,
-          "2013":159061900
+          "2013":158755700
         }
       },
       "children":[
@@ -76330,13 +76245,13 @@
           "gross_cost":{
             "budgets":{
               "2012":31697000,
-              "2013":31697000
+              "2013":39209200
             }
           },
           "revenue":{
             "budgets":{
               "2012":193300,
-              "2013":193300
+              "2013":234100
             }
           },
           "children":[
@@ -77832,10 +77747,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -77849,13 +77763,13 @@
           "gross_cost":{
             "budgets":{
               "2012":20809100,
-              "2013":20809100
+              "2013":23018300
             }
           },
           "revenue":{
             "budgets":{
               "2012":21137600,
-              "2013":21137600
+              "2013":23271400
             }
           },
           "children":[
@@ -78851,10 +78765,9 @@
               "id":"50_5005_4980 0892",
               "name":"Verg\u00fctung des Schulamtes f\u00fcr Dienstleistungen im Schulbereich",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -78874,13 +78787,13 @@
           "gross_cost":{
             "budgets":{
               "2012":733552200,
-              "2013":733552200
+              "2013":778165500
             }
           },
           "revenue":{
             "budgets":{
               "2012":71335400,
-              "2013":71335400
+              "2013":70085900
             }
           },
           "children":[
@@ -80769,10 +80682,9 @@
               "id":"50_5010_4980 0811",
               "name":"Verg\u00fctung des Sportamtes zur Abgeltung von Schulturnhallen infolge Benutzung durch den Vereinsbetrieb",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -80792,13 +80704,13 @@
           "gross_cost":{
             "budgets":{
               "2012":49791400,
-              "2013":49791400
+              "2013":52550400
             }
           },
           "revenue":{
             "budgets":{
               "2012":16582700,
-              "2013":16582700
+              "2013":17362800
             }
           },
           "children":[
@@ -81851,10 +81763,9 @@
               "id":"50_5026_4690 0000",
               "name":"\u00dcbrige Beitr\u00e4ge",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -81874,13 +81785,13 @@
           "gross_cost":{
             "budgets":{
               "2012":24668300,
-              "2013":24668300
+              "2013":24619800
             }
           },
           "revenue":{
             "budgets":{
               "2012":6433100,
-              "2013":6433100
+              "2013":4334800
             }
           },
           "children":[
@@ -83180,10 +83091,9 @@
               "id":"50_5050_4803 0000",
               "name":"Entnahme aus dem Bestandeskonto der R\u00fcckstellung",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -83203,13 +83113,13 @@
           "gross_cost":{
             "budgets":{
               "2012":34463400,
-              "2013":34463400
+              "2013":32862600
             }
           },
           "revenue":{
             "budgets":{
               "2012":12325400,
-              "2013":12325400
+              "2013":11117100
             }
           },
           "children":[
@@ -84604,10 +84514,9 @@
               "id":"50_5063_4650 0000",
               "name":"Beitr\u00e4ge von privaten Unternehmungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -84627,13 +84536,13 @@
           "gross_cost":{
             "budgets":{
               "2012":113411900,
-              "2013":113411900
+              "2013":114369300
             }
           },
           "revenue":{
             "budgets":{
               "2012":31054400,
-              "2013":31054400
+              "2013":32349600
             }
           },
           "children":[
@@ -84666,10 +84575,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
@@ -84685,13 +84593,13 @@
       "gross_cost":{
         "budgets":{
           "2012":1324100000,
-          "2013":1324100000
+          "2013":1394685600
         }
       },
       "revenue":{
         "budgets":{
           "2012":516659600,
-          "2013":516659600
+          "2013":533544100
         }
       },
       "children":[
@@ -84701,13 +84609,13 @@
           "gross_cost":{
             "budgets":{
               "2012":119217700,
-              "2013":119217700
+              "2013":131288200
             }
           },
           "revenue":{
             "budgets":{
               "2012":3896200,
-              "2013":3896200
+              "2013":4038400
             }
           },
           "children":[
@@ -86615,10 +86523,9 @@
               "id":"55_5500_4630 0000",
               "name":"Beitr\u00e4ge von eigenen Unternehmungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -86638,13 +86545,13 @@
           "gross_cost":{
             "budgets":{
               "2012":25073100,
-              "2013":25073100
+              "2013":26052000
             }
           },
           "revenue":{
             "budgets":{
               "2012":203500,
-              "2013":203500
+              "2013":206300
             }
           },
           "children":[
@@ -87469,10 +87376,9 @@
               "id":"55_5510_4367 0000",
               "name":"R\u00fcckerstattungen von Personalaufwendungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -87492,13 +87398,13 @@
           "gross_cost":{
             "budgets":{
               "2012":608081200,
-              "2013":608081200
+              "2013":644151900
             }
           },
           "revenue":{
             "budgets":{
               "2012":269072300,
-              "2013":269072300
+              "2013":276833800
             }
           },
           "children":[
@@ -88760,10 +88666,9 @@
               "id":"55_5515_4610 2000",
               "name":"Beitr\u00e4ge des Kantons an die Akut- und \u00dcbergangspflege",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -88783,13 +88688,13 @@
           "gross_cost":{
             "budgets":{
               "2012":19640900,
-              "2013":19640900
+              "2013":20000500
             }
           },
           "revenue":{
             "budgets":{
               "2012":7090900,
-              "2013":7090900
+              "2013":7672500
             }
           },
           "children":[
@@ -89918,10 +89823,9 @@
               "id":"55_5520_4750 0500",
               "name":"Vermittlung von Stipendien: Stipendienstiftungen",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -89941,13 +89845,13 @@
           "gross_cost":{
             "budgets":{
               "2012":0,
-              "2013":0
+              "2013":16080200
             }
           },
           "revenue":{
             "budgets":{
               "2012":0,
-              "2013":0
+              "2013":2326100
             }
           },
           "children":[
@@ -91000,10 +90904,9 @@
               "id":"55_5530_4399 0000",
               "name":"\u00dcbrige Entgelte",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -91023,13 +90926,13 @@
           "gross_cost":{
             "budgets":{
               "2012":451187600,
-              "2013":451187600
+              "2013":455001000
             }
           },
           "revenue":{
             "budgets":{
               "2012":164151000,
-              "2013":164151000
+              "2013":169041000
             }
           },
           "children":[
@@ -92614,10 +92517,9 @@
               "id":"55_5550_4760 0000",
               "name":"Durchlaufende Beitr\u00e4ge von Privaten",
               "gross_cost":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "revenue":{
                 "budgets":{
@@ -92637,13 +92539,13 @@
           "gross_cost":{
             "budgets":{
               "2012":100899500,
-              "2013":100899500
+              "2013":102111800
             }
           },
           "revenue":{
             "budgets":{
               "2012":72245700,
-              "2013":72245700
+              "2013":73426000
             }
           },
           "children":[
@@ -94481,10 +94383,9 @@
                 }
               },
               "revenue":{
-                "budgets":{
-                  "2012":0,
-                  "2013":0
-                }
+                "budgets":[
+                  
+                ]
               },
               "children":[
                 
