@@ -3,9 +3,6 @@ class ApplicationController < ActionController::Base
 
   def index
     id = params[:id] || request.subdomains[0]
-    if id.blank?
-      id = 'bern'
-    end
     Rails.logger.info "request budget #{id} subdomain #{request.subdomains.to_s} id #{params[:id]}"
 
     # only allow word chars - no dots and slashes for filepath
@@ -13,15 +10,25 @@ class ApplicationController < ActionController::Base
       raise ActionController::RoutingError.new('Not Found')
     end
 
-    uploader = BudgetUploader.new
-
-    uploader.retrieve_from_store! "#{id}/data.json"
-    if !uploader.file.exists?
+    @data = get_budget id
+    if @data.blank?
       raise ActionController::RoutingError.new('Not Found')
     end
-    @data = JSON.parse uploader.file.read
 
     # automate upload
     # a.store! File.open('public/data/bern-budget2013.json')
+  end
+
+  def get_budget id
+    Rails.cache.fetch("#{id}/data.json", :expires_in => 5.minutes) do
+      uploader = BudgetUploader.new
+
+      uploader.retrieve_from_store! "#{id}/data.json"
+      if !uploader.file.exists?
+        return nil
+      end
+
+      JSON.parse uploader.file.read
+    end
   end
 end

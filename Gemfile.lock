@@ -41,6 +41,7 @@ GEM
       execjs
     coffee-script-source (1.6.2)
     daemons (1.1.9)
+    dalli (2.6.2)
     erubis (2.7.0)
     eventmachine (1.0.3)
     excon (0.13.4)
@@ -147,6 +148,7 @@ PLATFORMS
 DEPENDENCIES
   carrierwave
   coffee-rails (~> 3.2.1)
+  dalli
   fog (~> 1.3.1)
   haml-rails (>= 0.4)
   html2haml (>= 1.0.1)
