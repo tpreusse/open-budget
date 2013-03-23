@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   def index
-    id = params[:id]
+    id = params[:id] || request.subdomain
     if id.blank?
       id = 'bern'
     end
