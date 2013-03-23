@@ -1,10 +1,11 @@
-.blue {
-	
-#sidebar h1, #sidebar h2 {
-	color: #2E61B2;
-}
+$zurichBlue:#40BFFF;
 
-a {
-	color: #2E61B2;
-}
+.blue {
+    #sidebar h1, #sidebar h2 {
+        color:$zurichBlue;
+    }
+
+    a {
+        color:$zurichBlue;
+    }
 }

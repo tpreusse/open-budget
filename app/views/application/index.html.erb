@@ -61,7 +61,14 @@ end
 </div>
 <div id="footer">
     <a id="opendatach" href="http://www.opendata.ch/">
-        <%= image_tag "opendatach.png", alt: "OpenData.ch" %>
+        <%
+            image_name = if @data['meta']['html_class'].present?
+                "opendatach-#{@data['meta']['html_class']}.png"
+            else
+                "opendatach.png"
+            end
+        %>
+        <%= image_tag image_name, alt: "OpenData.ch" %>
     </a>
     <p>
         <a href="<%= @data['meta']['data_link'] %>"><%= @data['meta']['data_title'] %></a> -
