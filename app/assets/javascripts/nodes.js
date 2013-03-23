@@ -247,7 +247,7 @@ OpenBudget.nodes = (function() {
             });
         },
         loadFromCache: function(loadCallback) {
-            d3.json(OpenBudget.preproccesedDataUrl, function(data) {
+            var ready = function(data) {
                 rootNodes = data.nodes;
                 fn.meta = data.meta;
 
@@ -266,20 +266,32 @@ OpenBudget.nodes = (function() {
                     });
                 };
                 recursiveReferencing(rootNodes);
-            
+
                 fn.setup();
                 fn.calculateRadius();
 
                 loadCallback(rootNodes);
-            });
+            };
+            if(OpenBudget.preproccesedDataUrl) {
+                d3.json(OpenBudget.preproccesedDataUrl, ready);
+            }
+            else {
+                ready(OpenBudget.preproccesedData);
+            }
         },
         load: function(loadCallback) {
-            d3.json(OpenBudget.dataUrl, function(data) {
+            var ready = function(data) {
                 fn.process(data);
                 fn.setup();
 
                 loadCallback(rootNodes);
-            });
+            };
+            if(OpenBudget.dataUrl) {
+                d3.json(OpenBudget.dataUrl, ready);
+            }
+            else {
+                ready(OpenBudget.data);
+            }
         },
         resize: function(width, height) {
             centers.middle.x = width / 2;

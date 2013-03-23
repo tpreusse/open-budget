@@ -6,7 +6,8 @@ gem 'rails', '3.2.12'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-
+gem 'carrierwave'
+gem 'fog', '~> 1.3.1'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -37,7 +38,7 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 
-gem "thin", ">= 1.5.0", :group => [:development, :test]
-gem "unicorn", ">= 4.3.1", :group => :production
-gem "haml-rails", ">= 0.4"
-gem "html2haml", ">= 1.0.1", :group => :development
+gem 'thin', '>= 1.5.0', :group => [:development, :test]
+gem 'unicorn', '>= 4.3.1', :group => :production
+gem 'haml-rails', '>= 0.4'
+gem 'html2haml', '>= 1.0.1', :group => :development
