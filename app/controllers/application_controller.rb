@@ -2,11 +2,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   def index
-    id = params[:id] || request.subdomain
+    id = params[:id] || request.subdomains[0]
     if id.blank?
       id = 'bern'
     end
-    Rails.logger.info "request budget #{id}"
+    Rails.logger.info "request budget #{id} subdomain #{request.subdomains.to_s} id #{params[:id]}"
 
     # only allow word chars - no dots and slashes for filepath
     if !id.match(/^[\w-]+$/)
