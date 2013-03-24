@@ -11,6 +11,21 @@ content_for :html_class do
     @data['meta']['html_class']
 end
 
+if @data['meta']['uservoice'].present?
+    content_for :scripts do 
+        %>
+        <script type="text/javascript">
+          var uvOptions = {};
+          (function() {
+            var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+            uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/<%= @data['meta']['uservoice'] %>.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+          })();
+        </script>
+        <%
+    end
+end
+
 %>
 
 <svg id="canvas">
@@ -71,8 +86,11 @@ end
         <%= image_tag image_name, alt: "OpenData.ch" %>
     </a>
     <p>
-        <a href="<%= @data['meta']['data_link'] %>"><%= @data['meta']['data_title'] %></a> -
-        <a href="javascript:UserVoice.showPopupWidget();">Feedback &amp; Support</a>
+        <a href="<%= @data['meta']['data_link'] %>"><%= @data['meta']['data_title'] %></a>
+        <% if @data['meta']['uservoice'].present? %>
+            -
+            <a href="javascript:UserVoice.showPopupWidget();">Feedback &amp; Support</a>
+        <% end %>
     </p>
     <p class="links">
         <a href="https://github.com/tpreusse/open-budget">Quellcode</a>

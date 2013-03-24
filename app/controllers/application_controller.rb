@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
     Rails.logger.info "request budget #{id} subdomain #{@subdomain} subdomains #{request.subdomains.to_s} id #{params[:id]}"
 
     # only allow word chars - no dots and slashes for filepath
-    if !id.match(/^[\w-]+$/)
+    if !id.to_s.match(/^[\w-]+$/)
       raise ActionController::RoutingError.new('Not Found')
     end
 
