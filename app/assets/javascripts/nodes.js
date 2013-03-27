@@ -21,17 +21,16 @@ OpenBudget.nodes = (function() {
 
     var valuesAccessor = function(type, type2, year1, year2) {
         return function(d) {
-            var value = d[type] && d[type][type2] ? d[type][type2][year1] : 0,
-                value2 = d[type] && d[type][type2] ? d[type][type2][year2] : 0,
+            var dType = d[type],
+                value = dType && dType[type2] ? dType[type2][year1] || 0 : 0,
+                value2 = dType && dType[type2] ? dType[type2][year2] || 0 : 0,
                 numbers;
 
-            if(value > 0) {
+            if(value > 0 || value2 > 0) {
                 numbers = {
-                    'value': value
+                    value: value,
+                    value2: value2
                 };
-                if(value2) {
-                    numbers.value2 = value2;
-                }
             }
 
             return numbers;
