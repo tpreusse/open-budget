@@ -24,9 +24,16 @@ OpenBudget.nodes = (function() {
             var value = d[type] && d[type][type2] ? d[type][type2][year1] : 0,
                 value2 = d[type] && d[type][type2] ? d[type][type2][year2] : 0,
                 numbers;
-			if (value > 0 || value2 > 0) {
-				numbers = { 'value': value, 'value2': value2}
-			}
+
+            if(value > 0) {
+                numbers = {
+                    'value': value
+                };
+                if(value2) {
+                    numbers.value2 = value2;
+                }
+            }
+
             return numbers;
         };
     };
