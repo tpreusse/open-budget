@@ -33,8 +33,8 @@ end
     </defs>
 </svg>
 <div id="sidebar">
-    <h1><%= @data['meta']['h1'] %></h1>
-    <h2><%= @data['meta']['h2'] %></h2>
+    <h1><%= simple_format(@data['meta']['h1']) %></h1>
+    <h2><%= simple_format(@data['meta']['h2']) %></h2>
 
     <!--<div id="search">
         <label for="search-field">
@@ -49,8 +49,8 @@ end
         <thead>
             <tr class="overview">
                 <th><%= @data['meta']['hierarchy'][0] %></th>
-                <th style="text-align:right">Bruttokosten</th>
-                <th style="text-align:right">Erlöse</th>
+                <th style="text-align:right"><%= @data['meta']['gross_cost_label'] %></th>
+                <th style="text-align:right"><%= @data['meta']['revenue_label'] %></th>
             </tr>
             <tr class="compare">
                 <th></th>

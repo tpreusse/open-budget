@@ -10,14 +10,11 @@ OpenBudget.tooltip = (function() {
             'left': e.pageX + 10
         });
     });
-    
+
     $(document).on('mouseover', 'svg#canvas circle', function(){
         var d = this.__data__, valueLabel = '';
-        if(d.type == 'revenue') {
-            valueLabel = 'Erlöse: ';
-        }
-        else if(d.type == 'gross_cost') {
-            valueLabel = 'Bruttokosten: ';
+        if(d.type == 'revenue' || d.type == 'gross_cost') {
+            valueLabel = OpenBudget.data.meta[d.type + '_label'] + ': ';
         }
 
         $tipInner.html(

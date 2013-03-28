@@ -33,7 +33,7 @@ $(function() {
             highlightedCircles = d3.selectAll('svg circle#c-revenue-'+cleanId+', svg circle#c-gross_cost-'+cleanId).classed('hover', 1);
         }).on('mouseout', 'tr', helpers.removeCircleHighlight);
 
-        var labelOfDepth = [];
+        var labelOfDepth = OpenBudget.data.meta.hierarchy;
 
         var fn = {
             highlight: function(id) {
@@ -43,9 +43,6 @@ $(function() {
                 }
             },
             show: function(nodes) {
-                if(!labelOfDepth.length && OpenBudget.nodes && OpenBudget.nodes.meta) {
-                    labelOfDepth = OpenBudget.nodes.meta.hierarchy;
-                }
                 $table.stop(true).animate({
                     opacity: 0
                 }, {
@@ -55,18 +52,20 @@ $(function() {
 
                         _.each(nodes, function(node) {
                             var id = helpers.cleanId(node.id);
-                            var index = idToIndex[id];
-                            if(index === undefined) {
-                                index = dataSets.length;
-                                dataSets.push({
-                                    name: node.name,
-                                    id: id,
-                                    nodes: {}
-                                });
-                                idToIndex[id] = index;
-                            }
-                            var dataSet = dataSets[index];
-                            dataSet.nodes[node.type] = node;
+                            if(id != 'surplus') {
+                                var index = idToIndex[id];
+                                if(index === undefined) {
+                                    index = dataSets.length;
+                                    dataSets.push({
+                                        name: node.name,
+                                        id: id,
+                                        nodes: {}
+                                    });
+                                    idToIndex[id] = index;
+                                }
+                                var dataSet = dataSets[index];
+                                dataSet.nodes[node.type] = node;
+                        }
                         });
 
                         $tHead.empty();
@@ -123,7 +122,7 @@ $(function() {
 
                             createBreadcrumbItem(firstDataSet.nodes[type].parent);
 
-                            breadcrumbItems.unshift(type == 'gross_cost' ? 'Bruttokosten' : 'Erlöse');
+                            breadcrumbItems.unshift(OpenBudget.data.meta[type + '_label']);
                         }
 
                         breadcrumbItems.unshift('Übersicht');

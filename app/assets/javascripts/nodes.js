@@ -7,17 +7,21 @@ OpenBudget.nodes = (function() {
         'left': {x:0,y:0},
         'topLeft': {x:0,y:0}
     };
-    
-    var totals = {
-        'revenue': {
-            'value': 0,
-            'value2': 0
-        },
-        'gross_cost': {
-            'value': 0,
-            'value2': 0
-        }
-    };
+
+    var totals,
+        setupTotals = function() {
+            totals = {
+                'revenue': {
+                    'value': 0,
+                    'value2': 0
+                },
+                'gross_cost': {
+                    'value': 0,
+                    'value2': 0
+                }
+            };
+        };
+    setupTotals();
 
     var valuesAccessor = function(type, type2, year1, year2) {
         return function(d) {
@@ -36,7 +40,7 @@ OpenBudget.nodes = (function() {
             return numbers;
         };
     };
-    
+
     var valuesAccessorForNodeType = {
         'revenue': valuesAccessor('revenue', 'budgets', '2013', '2012'),
         'gross_cost': valuesAccessor('gross_cost', 'budgets', '2013', '2012')
@@ -154,22 +158,32 @@ OpenBudget.nodes = (function() {
 
             recursiveCreate(data.nodes);
 
-            // surplus = d3.round(totals.revenue.value - totals['gross_cost'].value, 2);
-            // surplus2 = d3.round(totals.revenue.value2 - totals['gross_cost'].value2, 2);
-            
-            // surplusNode = {
-            //     'name': surplus < 0 ? 'Defizit' : 'Überschuss',
-            //     'value': surplus,
-            //     'value2': surplus2,
-            //     'diff': diffPercent(surplus, surplus2),
-            //     'type': 'surplus',
-            //     'depth': 0,
-            //     'center': centers['middle'],
-            //     'id': 'surplus'
-            // };
-            // rootNodes.push(surplusNode);
-            // nodes.push(surplusNode);
-            
+            surplus = d3.round(totals.revenue.value - totals['gross_cost'].value, 2);
+            surplus2 = d3.round(totals.revenue.value2 - totals['gross_cost'].value2, 2);
+            var surplusDiff = diffPercent(surplus, surplus2),
+                isDeficit = surplus < 0;
+            if(isDeficit) {
+                surplus *= -1;
+                surplus2 *= -1;
+            }
+            if(surplus2 < 0) {
+                surplusDiff = 100;
+            }
+
+            surplusNode = {
+                'name': isDeficit ? 'Defizit' : 'Überschuss',
+                'value': surplus,
+                'value2': surplus2,
+                'diff': surplusDiff,
+                'type': 'surplus',
+                'depth': 0,
+                'center': centers['middle'],
+                'id': 'surplus'
+            };
+            rootNodes.push(surplusNode);
+            nodes.push(surplusNode);
+            // console.log(surplus, surplus2);
+
             var colorScale = d3.scale.linear()
                 .domain([-100, 0, 100]).clamp(true)
                 .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
@@ -195,16 +209,17 @@ OpenBudget.nodes = (function() {
             var valueAccessor = function(d) {
                 return d.value;
             };
-            
+
             var max = d3.max(nodes, valueAccessor);
             var min = d3.min(nodes, valueAccessor);
-            
+
             radiusScale.domain([0, d3.max([max, Math.abs(min)])]);
         },
         createCache: function() {
             var ready = function(data) {
                 rootNodes = [];
                 nodes = [];
+                setupTotals();
 
                 fn.process(data);
                 fn.setup();
@@ -261,6 +276,9 @@ OpenBudget.nodes = (function() {
                     _.each(someNodes, function(value) {
                         if(!value.depth) {
                             value.center = centers[value.type == 'gross_cost' ? 'left' : 'right'];
+                            if(value.type == 'surplus') {
+                                value.center = centers['middle'];
+                            }
                         }
                         if(value.children) {
                             _.each(value.children, function(value2) {

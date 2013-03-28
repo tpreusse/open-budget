@@ -22,12 +22,12 @@ $(function() {
             data: [
                 {
                     type: 'gross_cost',
-                    text: 'Bruttokosten',
+                    text: OpenBudget.data.meta.gross_cost_label,
                     center: nodes.centers.topLeft
                 },
                 {
                     type: 'revenue',
-                    text: 'Erlöse',
+                    text: OpenBudget.data.meta.revenue_label,
                     center: nodes.centers.topRight
                 }
             ],

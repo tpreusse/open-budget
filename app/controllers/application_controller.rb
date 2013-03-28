@@ -33,17 +33,18 @@ class ApplicationController < ActionController::Base
 
       source = JSON.parse uploader.file.read
 
-      budget = {}
       data = {
         meta: source['meta']
+      }
+      budget = {
+        data: data
       }
       if source['cache']
         data['nodes'] = source['cache']
         budget['usePreproccesedData'] = true
         budget['preproccesedData'] = data
       else
-        data['nodes'] = source['data']
-        budget['data'] = data
+        budget['data']['nodes'] = source['data']
       end
 
       {
