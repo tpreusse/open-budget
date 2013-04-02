@@ -144,8 +144,6 @@ OpenBudget.nodes = (function() {
 
     var fn = {
         process: function(data) {
-            fn.meta = data.meta;
-
             var recursiveCreate = function(nodes, parents) {
                 _.each(nodes, function(node) {
                     key = node.id;
@@ -156,7 +154,7 @@ OpenBudget.nodes = (function() {
                 });
             };
 
-            recursiveCreate(data.nodes);
+            recursiveCreate(data);
 
             surplus = d3.round(totals.revenue.value - totals['gross_cost'].value, 2);
             surplus2 = d3.round(totals.revenue.value2 - totals['gross_cost'].value2, 2);
@@ -257,20 +255,20 @@ OpenBudget.nodes = (function() {
                     left: '0px',
                     width: '100%',
                     height: '100%'
-                }).text(JSON.stringify({meta: fn.meta, nodes: rootNodes}));
+                }).text(JSON.stringify(rootNodes));
             };
 
-            if(OpenBudget.dataUrl) {
-                d3.json(OpenBudget.dataUrl, ready);
+            var dataUrl = OpenBudget.data.meta.data_url;
+            if(dataUrl) {
+                d3.json(dataUrl, ready);
             }
             else {
-                ready(OpenBudget.data);
+                ready(OpenBudget.data.nodes);
             }
         },
         loadFromCache: function(loadCallback) {
             var ready = function(data) {
-                rootNodes = data.nodes;
-                fn.meta = data.meta;
+                rootNodes = data;
 
                 var recursiveReferencing = function(someNodes) {
                     _.each(someNodes, function(value) {
@@ -296,11 +294,13 @@ OpenBudget.nodes = (function() {
 
                 loadCallback(rootNodes);
             };
-            if(OpenBudget.preproccesedDataUrl) {
-                d3.json(OpenBudget.preproccesedDataUrl, ready);
+
+            var cacheUrl = OpenBudget.data.meta.cache_url;
+            if(cacheUrl) {
+                d3.json(cacheUrl, ready);
             }
             else {
-                ready(OpenBudget.preproccesedData);
+                ready(OpenBudget.data.cache);
             }
         },
         load: function(loadCallback) {
@@ -310,11 +310,13 @@ OpenBudget.nodes = (function() {
 
                 loadCallback(rootNodes);
             };
-            if(OpenBudget.dataUrl) {
-                d3.json(OpenBudget.dataUrl, ready);
+
+            var dataUrl = OpenBudget.data.meta.data_url;
+            if(dataUrl) {
+                d3.json(dataUrl, ready);
             }
             else {
-                ready(OpenBudget.data);
+                ready(OpenBudget.data.nodes);
             }
         },
         resize: function(width, height) {
@@ -402,7 +404,6 @@ OpenBudget.nodes = (function() {
 
             node.stuffedChildrenRadius = nodeRadius;
         },
-        meta: {},
         centers: centers
     };
 

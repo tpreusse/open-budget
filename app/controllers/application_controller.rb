@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
       raise ActionController::RoutingError.new('Not Found')
     end
 
-    @data = get_budget id
+    @meta = get_budget id
 
-    if @data.blank?
+    if @meta.blank?
       raise ActionController::RoutingError.new('Not Found')
     end
 
@@ -26,31 +26,12 @@ class ApplicationController < ActionController::Base
 
       uploader = BudgetUploader.new
 
-      uploader.retrieve_from_store! "#{id}/data.json"
+      uploader.retrieve_from_store! "#{id}/meta.json"
       if !uploader.file.exists?
         return nil
       end
 
-      source = JSON.parse uploader.file.read
-
-      data = {
-        'meta' => source['meta']
-      }
-      budget = {
-        'data' => data
-      }
-      if source['cache']
-        data['nodes'] = source['cache']
-        budget['usePreproccesedData'] = true
-        budget['preproccesedData'] = data
-      else
-        budget['data']['nodes'] = source['data']
-      end
-
-      {
-        'meta' => source['meta'],
-        'json' => budget.to_json
-      }
+      JSON.parse uploader.file.read
     end
   end
 end

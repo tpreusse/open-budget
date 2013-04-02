@@ -618,9 +618,10 @@ $(function() {
 
             headlines.setup();
 
-            nodes[OpenBudget.usePreproccesedData ? 'loadFromCache': 'load'](function(rootNodes) {
+            var usePreproccesedData = !!OpenBudget.data.meta.cache_url;
+            nodes[usePreproccesedData ? 'loadFromCache': 'load'](function(rootNodes) {
                 $window.resize(vis.resize);
-                if(!OpenBudget.usePreproccesedData) {
+                if(!usePreproccesedData) {
                     vis.resize();
                 }
 

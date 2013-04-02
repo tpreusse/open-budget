@@ -1,24 +1,24 @@
 <%
 
 content_for :title do
-    @data['meta']['page_title']
+    @meta['page_title']
 end
 content_for :description do
-    @data['meta']['description']
+    @meta['description']
 end
 
 content_for :html_class do
-    @data['meta']['html_class']
+    @meta['html_class']
 end
 
-if @data['meta']['uservoice'].present?
+if @meta['uservoice'].present?
     content_for :scripts do 
         %>
         <script type="text/javascript">
           var uvOptions = {};
           (function() {
             var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
-            uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/<%= @data['meta']['uservoice'] %>.js';
+            uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/<%= @meta['uservoice'] %>.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
           })();
         </script>
@@ -33,8 +33,8 @@ end
     </defs>
 </svg>
 <div id="sidebar">
-    <h1><%= simple_format(@data['meta']['h1']) %></h1>
-    <h2><%= simple_format(@data['meta']['h2']) %></h2>
+    <h1><%= simple_format(@meta['h1']) %></h1>
+    <h2><%= simple_format(@meta['h2']) %></h2>
 
     <!--<div id="search">
         <label for="search-field">
@@ -48,9 +48,9 @@ end
     <table id="table" class="table table-hover">
         <thead>
             <tr class="overview">
-                <th><%= @data['meta']['hierarchy'][0] %></th>
-                <th style="text-align:right"><%= @data['meta']['gross_cost_label'] %></th>
-                <th style="text-align:right"><%= @data['meta']['revenue_label'] %></th>
+                <th><%= @meta['hierarchy'][0] %></th>
+                <th style="text-align:right"><%= @meta['gross_cost_label'] %></th>
+                <th style="text-align:right"><%= @meta['revenue_label'] %></th>
             </tr>
             <tr class="compare">
                 <th></th>
@@ -77,8 +77,8 @@ end
 <div id="footer">
     <a id="opendatach" href="http://www.opendata.ch/">
         <%
-            image_name = if @data['meta']['html_class'].present?
-                "opendatach-#{@data['meta']['html_class']}.png"
+            image_name = if @meta['html_class'].present?
+                "opendatach-#{@meta['html_class']}.png"
             else
                 "opendatach.png"
             end
@@ -86,8 +86,8 @@ end
         <%= image_tag image_name, alt: "OpenData.ch" %>
     </a>
     <p>
-        <a href="<%= @data['meta']['data_link'] %>"><%= @data['meta']['data_title'] %></a>
-        <% if @data['meta']['uservoice'].present? %>
+        <a href="<%= @meta['data_link'] %>"><%= @meta['data_title'] %></a>
+        <% if @meta['uservoice'].present? %>
             -
             <a href="javascript:UserVoice.showPopupWidget();">Feedback &amp; Support</a>
         <% end %>
@@ -96,12 +96,12 @@ end
         <a href="https://github.com/tpreusse/open-budget">Quellcode</a>
         <% if @subdomain.present? %>
             - 
-            <a href="https://twitter.com/intent/tweet?hashtags=ogd&amp;text=<%= u(@data['meta']['page_title']) %>&amp;url=http%3A%2F%2F<%= @subdomain %>.budget.opendata.ch%2F&amp;via=OpendataCH" target="_blank">Tweet</a> -
+            <a href="https://twitter.com/intent/tweet?hashtags=ogd&amp;text=<%= u(@meta['page_title']) %>&amp;url=http%3A%2F%2F<%= @subdomain %>.budget.opendata.ch%2F&amp;via=OpendataCH" target="_blank">Tweet</a> -
             <a href="https://www.facebook.com/sharer.php?u=http%3A%2F%2F<%= @subdomain %>.budget.opendata.ch%2F" target="_blank">Facebook</a>
         <% end %>
     </p>
 </div>
 
 <script type="text/javascript">
-    window.OpenBudget = <%= @data['json'].html_safe %>;
+    window.OpenBudget = <%= {data: {meta: @meta}}.to_json.html_safe %>;
 </script>

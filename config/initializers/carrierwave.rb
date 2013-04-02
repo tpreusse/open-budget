@@ -5,7 +5,7 @@ CarrierWave.configure do |config|
 
   case Rails.env.to_sym
 
-  when :production_disabled
+  when :production
     config.storage          = :fog
     config.fog_credentials  = {
       :provider                 => 'AWS',

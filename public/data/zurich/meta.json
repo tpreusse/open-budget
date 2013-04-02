@@ -1,0 +1,14 @@
+{
+    "hierarchy": ["Departement", "Dienstabteilung", "Konto"],
+    "page_title": "Stadt Zürich - Verwaltungsrechnung Budget 2013",
+    "h1": "Stadt Zürich",
+    "h2": "Verwaltungsrechnung Budget 2013\nLaufende Rechnung",
+    "description": "Die Ausgaben und Einnahmen des Zürcher Budget 2013 in Kreisen visualisiert. Spielerisch und einfach zu verstehen.",
+    "data_link": "http://www.stadt-zuerich.ch/content/dam/stzh/fd/Deutsch/Finanzen/Publikationen%20und%20Broschueren/Budget%202013/Budget%202013%20Beschluss%20des%20Gemeinderats%20(2).pdf",
+    "data_title": "Offizielles Budget-PDF",
+    "html_class": "blue",
+    "gross_cost_label": "Aufwand",
+    "revenue_label": "Ertrag",
+    "data_url": "/data/zurich/data.json",
+    "cache_url": "/data/zurich/cache.json"
+}
