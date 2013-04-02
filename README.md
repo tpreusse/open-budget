@@ -9,3 +9,7 @@ New developers, designers and ideator are welcomed to join.
 
 ## How to use (amateur)
 * stay tuned for cloud hosted solution
+
+## Documentation
+* [Wiki](https://github.com/tpreusse/open-budget/wiki)
+* [Data Format](https://github.com/tpreusse/open-budget/wiki/Data-Format)
