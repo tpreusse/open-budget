@@ -14,17 +14,15 @@ if (!window.OpenBudget) {
     window.OpenBudget = {};
 }
 
-_.extend(window.OpenBudget, {
-  SVGSupport: (!!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect),
-  track: function(category, action, opt_label, opt_value, opt_noninteraction) {
+window.OpenBudget.SVGSupport = (!!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect);
+window.OpenBudget.track = function(category, action, opt_label, opt_value, opt_noninteraction) {
     if(!window._gaq) {
         window._gaq = [];
     }
 
     window.console.log('track event', arguments);
     window._gaq.push(['_trackEvent', category, action, opt_label, opt_value, opt_noninteraction]);
-  }
-});
+};
 
 $(function() {
   if(!OpenBudget.SVGSupport) {

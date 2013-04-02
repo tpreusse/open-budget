@@ -1,8 +1,6 @@
 //= require underscore
-//= require jquery-1.7.2.min
 //= require d3/d3.v2.min
 //= require bootstrap
-//= require setup
 //= require tooltip
 //= require table
 //= require nodes
