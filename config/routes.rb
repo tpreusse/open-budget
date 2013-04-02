@@ -50,7 +50,10 @@ OpenBudget::Application.routes.draw do
   # just remember to delete public/index.html.
   root :to => 'application#index'
 
-  get ':id' => 'application#index', :constraints => {:id => /[\w-]+/}
+  id = /[\w-]+/
+  get ':id' => 'application#index', :constraints => {:id => id}
+
+  get 'data/:id/:file' => 'application#proxy', :constraints => {:id => id, :file => /(data|cache)/}
 
   # See how all your routes lay out with "rake routes"
 
