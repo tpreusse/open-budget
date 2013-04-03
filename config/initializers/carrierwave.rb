@@ -18,7 +18,7 @@ CarrierWave.configure do |config|
   else
     # settings for the local filesystem
     config.storage = :file
-    config.root = File.join(Rails.root, 'public')
+    config.root = File.join(Rails.root, 'app')
   end
 
 end
