@@ -8,6 +8,5 @@
   "data_title": "Datenquelle",
   "gross_cost_label": "Bruttokosten",
   "revenue_label": "Erlöse",
-  "data_url": "/data/winterthur/data.json",
-  "cache_url": "/data/winterthur/cache.json"
+  "data_url": "/data/winterthur/data.json"
 }
