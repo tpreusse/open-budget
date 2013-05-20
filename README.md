@@ -14,6 +14,10 @@ New developers, designers and ideator are welcomed to join.
 * recommended params: `curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby=1.9.3`
 * make sure to load rvm into your shell sessions: [RVM is not found...](https://rvm.io/support/faq/)
 
+### No JS runtime installed?
+* `bundle config --local without js`
+* or use `therubyracer` but I haven't had time to test it
+
 ### Starte the server
 * `bundle install` (needs to run everytime Gemfile changes)
 * `rails s thin`
