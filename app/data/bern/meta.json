@@ -11,14 +11,14 @@
     "revenue_label": "Erlöse",
     "data_url": "/data/bern/data.json",
     "cache_url": "/data/bern/cache.json",
-  "label1": "Budget 2013",
-  "label2": "Budget 2012",
-  "value1": {
-    "type": "budgets",
-    "year": "2013"
-  },
-  "value2": {
-    "type": "budgets",
-    "year": "2012"
-  }
+    "value": {
+        "label": "2013",
+        "type": "budgets",
+        "year": "2013"
+    },
+    "value2": {
+        "label": "2012",
+        "type": "budgets",
+        "year": "2012"
+    }
 }

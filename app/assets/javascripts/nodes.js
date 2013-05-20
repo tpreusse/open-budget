@@ -23,11 +23,16 @@ OpenBudget.nodes = (function() {
         };
     setupTotals();
 
-    var valuesAccessor = function(type, type2, year1, type3, year2) {
+    var valuesAccessor = function(sType, valueCfg, value2Cfg) {
+        var type = valueCfg.type,
+            type2 = value2Cfg.type,
+            year = valueCfg.year,
+            year2 = value2Cfg.year;
+
         return function(d) {
-            var dType = d[type],
-                value = dType && dType[type2] ? dType[type2][year1] || 0 : 0,
-                value2 = dType && dType[type3] ? dType[type3][year2] || 0 : 0,
+            var dType = d[sType],
+                value = dType && dType[type] ? dType[type][year] || 0 : 0,
+                value2 = dType && dType[type2] ? dType[type2][year2] || 0 : 0,
                 numbers;
 
             if(value > 0 || value2 > 0) {
@@ -41,9 +46,10 @@ OpenBudget.nodes = (function() {
         };
     };
 
-    var valuesAccessorForNodeType = {
-        'revenue': valuesAccessor('revenue', OpenBudget.data.meta.value1.type, OpenBudget.data.meta.value1.year, OpenBudget.data.meta.value2.type, OpenBudget.data.meta.value2.year),
-        'gross_cost': valuesAccessor('gross_cost', OpenBudget.data.meta.value1.type, OpenBudget.data.meta.value1.year, OpenBudget.data.meta.value2.type, OpenBudget.data.meta.value2.year)
+    var meta = OpenBudget.data.meta,
+        valuesAccessorForNodeType = {
+        'revenue': valuesAccessor('revenue', meta.value, meta.value2),
+        'gross_cost': valuesAccessor('gross_cost', meta.value, meta.value2)
     };
 
     var diffPercent = function(value, value2) {
