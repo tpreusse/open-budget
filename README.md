@@ -1,19 +1,24 @@
 New developers, designers and ideator are welcomed to join.
 
-## How to use (engineer, requires Ruby 1.9.3, RubyGems and Bundler)
-* curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby=1.9.3
-* cd open-budget
-* bundle install
-* rails s thin
+## Amateur: How to use
+* stay tuned for cloud hosted solution
+
+## Engineer: How to use
+### Prerequisites
+* ruby 1.9.3
+* RubyGems
+* Bundler
+
+### We recommend RVM
+* [see install documentation](https://rvm.io/rvm/install/)
+* recommended params: `curl -#L https://get.rvm.io | bash -s stable --autolibs=3 --ruby=1.9.3`
+* make sure to load rvm into your shell sessions: [RVM is not found...](https://rvm.io/support/faq/)
+
+### Starte the server
+* `bundle install` (needs to run everytime Gemfile changes)
+* `rails s thin`
 * create your own data file in the format of public/data/bern/data.json
 * send pull request with cool stuff
-
-please note:
-* after each git pull re-run: bundle install
-* in a new console, always first call: . ~/.rvm/scripts/rvm
-
-## How to use (amateur)
-* stay tuned for cloud hosted solution
 
 ## Documentation
 * [Wiki](https://github.com/tpreusse/open-budget/wiki)
