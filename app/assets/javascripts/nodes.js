@@ -23,11 +23,11 @@ OpenBudget.nodes = (function() {
         };
     setupTotals();
 
-    var valuesAccessor = function(type, type2, year1, year2) {
+    var valuesAccessor = function(type, type2, year1, type3, year2) {
         return function(d) {
             var dType = d[type],
                 value = dType && dType[type2] ? dType[type2][year1] || 0 : 0,
-                value2 = dType && dType[type2] ? dType[type2][year2] || 0 : 0,
+                value2 = dType && dType[type3] ? dType[type3][year2] || 0 : 0,
                 numbers;
 
             if(value > 0 || value2 > 0) {
@@ -42,8 +42,8 @@ OpenBudget.nodes = (function() {
     };
 
     var valuesAccessorForNodeType = {
-        'revenue': valuesAccessor('revenue', 'budgets', '2013', '2012'),
-        'gross_cost': valuesAccessor('gross_cost', 'budgets', '2013', '2012')
+        'revenue': valuesAccessor('revenue', OpenBudget.data.meta.value1.type, OpenBudget.data.meta.value1.year, OpenBudget.data.meta.value2.type, OpenBudget.data.meta.value2.year),
+        'gross_cost': valuesAccessor('gross_cost', OpenBudget.data.meta.value1.type, OpenBudget.data.meta.value1.year, OpenBudget.data.meta.value2.type, OpenBudget.data.meta.value2.year)
     };
 
     var diffPercent = function(value, value2) {
@@ -62,7 +62,6 @@ OpenBudget.nodes = (function() {
             depth = parent.depth+1,
             values = valuesAccessorForNodeType[type](datum);
         if(!values) return;
-
 
         var node = {
             'name': datum.name,
