@@ -10,5 +10,15 @@
     "gross_cost_label": "Bruttokosten",
     "revenue_label": "Erlöse",
     "data_url": "/data/bern/data.json",
-    "cache_url": "/data/bern/cache.json"
+    "cache_url": "/data/bern/cache.json",
+    "value": {
+        "label": "2013",
+        "type": "budgets",
+        "year": "2013"
+    },
+    "value2": {
+        "label": "2012",
+        "type": "budgets",
+        "year": "2012"
+    }
 }
