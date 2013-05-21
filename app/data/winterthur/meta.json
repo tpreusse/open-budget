@@ -9,14 +9,15 @@
     "gross_cost_label": "Aufwand",
     "revenue_label": "Ertrag",
     "data_url": "/data/winterthur/data.json",
-    "value2": {
-        "label": "Budget 2013",
-        "type": "budgets",
-        "year": "2013"
-    },
+    "cache_url": "/data/winterthur/cache.json",
     "value": {
         "label": "Rechnung 2012",
         "type": "accounts",
         "year": "2012"
+    },
+    "value2": {
+        "label": "Budget 2013",
+        "type": "budgets",
+        "year": "2013"
     }
 }
