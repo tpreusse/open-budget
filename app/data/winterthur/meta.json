@@ -3,16 +3,16 @@
     "page_title": "Finanzdaten der Stadt Winterthur",
     "description": "Von der Piratenpartei bearbeitete Finanzdaten der Stadt Winterthur.",
     "h1": "Finanzdaten Winterthur",
-    "h2": "Bearbeitung: <a href=\"http://winterthur.zh.piratenpartei.ch\">Piratenpartei   Winterthur</a>",
+    "h2": "Bearbeitung: <a href=\"http://winterthur.zh.piratenpartei.ch\">Piratenpartei   Winterthur</a><br/>Vergleich Rechnung 2012 mit Budget 2012",
     "data_link": "http://projects.piratenpartei.ch/projects/opendata-winterthur",
     "data_title": "Datenquelle",
     "gross_cost_label": "Aufwand",
     "revenue_label": "Ertrag",
     "data_url": "/data/winterthur/data.json",
     "value2": {
-        "label": "Budget 2013",
+        "label": "Budget 2012",
         "type": "budgets",
-        "year": "2013"
+        "year": "2012"
     },
     "value": {
         "label": "Rechnung 2012",
