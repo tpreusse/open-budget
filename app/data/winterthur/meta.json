@@ -9,6 +9,7 @@
     "gross_cost_label": "Aufwand",
     "revenue_label": "Ertrag",
     "data_url": "/data/winterthur/data.json",
+    "cache_url": "/data/winterthur/cache.json",
     "value": {
         "label": "Rechnung 2012",
         "type": "accounts",
