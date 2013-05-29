@@ -67,5 +67,6 @@ module OpenBudget
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     config.assets.precompile << 'setup.js'
+    config.assets.precompile << 'jquery.js'
   end
 end
