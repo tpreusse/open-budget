@@ -9,8 +9,8 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require bootstrap/css/bootstrap
- *= require_self
- *= require_tree .
+ *= require visualisation
+ *= require blue
 */
 
 .brand {

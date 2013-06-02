@@ -14,6 +14,7 @@ gem 'haml-rails', '>= 0.4'
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
+  gem 'zurb-foundation'
 end
 
 # For people who want to develop without a js runtime

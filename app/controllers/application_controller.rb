@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  def index
+  def load_meta
     @subdomain = request.subdomains.to_a[0]
     id = params[:id] || @subdomain
     Rails.logger.info "request budget #{id} subdomain #{@subdomain} subdomains #{request.subdomains.to_s} id #{params[:id]}"
@@ -16,9 +16,21 @@ class ApplicationController < ActionController::Base
     if @meta.blank?
       raise ActionController::RoutingError.new('Not Found')
     end
+  end
+
+  def index
+    load_meta
 
     # automate upload
     # a.store! File.open('public/data/bern-budget2013.json')
+  end
+
+  def experiment
+    load_meta
+
+    respond_to do |format|
+      format.html  { render :layout => 'experiment' }
+    end
   end
 
   def proxy
