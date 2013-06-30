@@ -1,5 +1,5 @@
 :javascript
-  window.OpenBudget = #{ {data: {meta: @meta}}.to_json.html_safe };
+  window.OpenBudget = #{ {meta: @meta}.to_json.html_safe };
 
 - content_for :title do
   = @meta['page_title']
@@ -13,6 +13,12 @@
       %h2= sanitize(@meta['h2'])
 
       %form.custom
+        %div{style:"float:left"}
+          %label{:for => "levels"} &nbsp;
+          %select#data.large
+            - @meta['data'].each do |dataSet|
+              %option{value:dataSet['url']}= dataSet['name']
+
         %div{style:"float:left"}
           %label{:for => "levels"} Detail
           %select#levels.large

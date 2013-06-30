@@ -10,6 +10,6 @@ OpenBudget::Application.routes.draw do
     get 'd/:node_id' => 'application#d'
   end
 
-  get 'data/:id/:file' => 'application#proxy', :constraints => {:id => id, :file => /(data|cache)/}
+  get 'data/:id/:file' => 'application#proxy', :constraints => {:id => id}
 
 end

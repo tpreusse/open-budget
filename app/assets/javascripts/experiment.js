@@ -62,142 +62,77 @@ $(function(){
 
     var formatCHF = d3.format(',f');
 
-    d3.json(OpenBudget.data.meta.data_url, function(data) {
+    var layers = OpenBudget.layers(),
+        nodes = [],
+        all = [],
+        levels = [],
+        maxCluster;
 
-        data = {"children": data};
+    var margin = {top: 0, right: 0, bottom: 0, left: 0},
+        width,
+        height = 500 - margin.top - margin.bottom;
 
-        // setup
-        var layers = OpenBudget.layers(),
-            nodes = [],
-            all = layers(data),
-            levels = [
-                all.filter(function(d) { return d.depth === 1; }),
-                all.filter(function(d) { return d.depth === 2; })
-            ],
-            maxCluster = levels[0].length;
+    var padding = 5,
+        maxValue,
+        radius,
+        color = d3.scale.category10(),
+        circle;
 
-        var margin = {top: 0, right: 0, bottom: 0, left: 0},
-            width,
-            height = 500 - margin.top - margin.bottom;
+    var force = d3.layout.force()
+        .gravity(0)
+        .charge(0)
+        .on("tick", tick);
 
-        var padding = 5,
-            maxValue,
-            radius,
-            color = d3.scale.category10().domain(d3.range(maxCluster)),
-            circle;
+    var svg = d3.select("svg.main")
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        var $levelSelect = $('select#levels'),
-            activeDepth = parseInt($levelSelect.val(), 10);
-        $levelSelect.change(function() {
-            activeDepth = parseInt($levelSelect.val(), 10);
+    $(window).resize(function() {
+        width = $(window).width()  - margin.left - margin.right;
+
+        svg.attr("width", width + margin.left + margin.right);
+        force
+            .size([width, height])
+            .start();
+    });
+
+    // selects for level, year and data
+    var $levelSelect = $('select#levels'),
+        activeDepth = parseInt($levelSelect.val(), 10);
+    $levelSelect.change(function() {
+        activeDepth = parseInt($levelSelect.val(), 10);
+        updateVis();
+    });
+
+    var $yearSelect = $('select#year'),
+        activeYear = $yearSelect.val();
+    $yearSelect.change(function() {
+        activeYear = $yearSelect.val();
+        updateVis();
+    });
+
+    var $dataSelect = $('select#data');
+    $dataSelect.change(function() {
+        d3.json($(this).val(), function(data) {
+            setup({"children": data});
+
             updateVis();
         });
+    }).change();
 
-        var $yearSelect = $('select#year'),
-            activeYear = $yearSelect.val();
-        $yearSelect.change(function() {
-            activeYear = $yearSelect.val();
-            updateVis();
-        });
+    // called after new data is loaded
+    function setup(data) {
+        all = layers(data);
+        levels = [
+            all.filter(function(d) { return d.depth === 1; }),
+            all.filter(function(d) { return d.depth === 2; })
+        ];
+        maxCluster = levels[0].length;
 
-        var force = d3.layout.force()
-            .gravity(0)
-            .charge(0)
-            .on("tick", tick);
+        color.domain(d3.range(maxCluster));
 
-        var svg = d3.select("svg.main")
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-        $(window).resize(function() {
-            width = $(window).width()  - margin.left - margin.right;
-
-            svg.attr("width", width + margin.left + margin.right);
-            force
-                .size([width, height])
-                .start();
-        }).resize();
-
-        function tick(e) {
-          circle
-              .each(cluster(10 * e.alpha * e.alpha))
-              .each(collide(0.5))
-              .attr("cx", function(d) { return d.x; })
-              .attr("cy", function(d) { return d.y; });
-        }
-
-        // Move d to be adjacent to the cluster node.
-        function cluster(alpha) {
-          var max = {};
-
-          // Find the largest node for each cluster.
-          nodes.forEach(function(d) {
-            if (!(d.color in max) || (d.radius > max[d.color].radius)) {
-              max[d.color] = d;
-            }
-          });
-
-          return function(d) {
-            var node = max[d.color],
-                l,
-                r,
-                x,
-                y,
-                k = 1,
-                i = -1;
-
-            // For cluster nodes, apply custom gravity.
-            if (node == d) {
-              node = {x: width / 2, y: height / 2, radius: -d.radius};
-              k = 0.1 * Math.sqrt(d.radius);
-            }
-
-            x = d.x - node.x;
-            y = d.y - node.y;
-            l = Math.sqrt(x * x + y * y);
-            r = d.radius + node.radius;
-            if (l != r) {
-              l = (l - r) / l * alpha * k;
-              d.x -= x *= l;
-              d.y -= y *= l;
-              node.x += x;
-              node.y += y;
-            }
-          };
-        }
-
-        // Resolves collisions between d and all other circles.
-        function collide(alpha) {
-          var quadtree = d3.geom.quadtree(nodes);
-          return function(d) {
-            var r = d.radius + radius.domain()[1] + padding,
-                nx1 = d.x - r,
-                nx2 = d.x + r,
-                ny1 = d.y - r,
-                ny2 = d.y + r;
-            quadtree.visit(function(quad, x1, y1, x2, y2) {
-              if (quad.point && (quad.point !== d)) {
-                var x = d.x - quad.point.x,
-                    y = d.y - quad.point.y,
-                    l = Math.sqrt(x * x + y * y),
-                    r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
-                if (l < r) {
-                  l = (l - r) / l * alpha;
-                  d.x -= x *= l;
-                  d.y -= y *= l;
-                  quad.point.x += x;
-                  quad.point.y += y;
-                }
-              }
-              return x1 > nx2
-                  || x2 < nx1
-                  || y1 > ny2
-                  || y2 < ny1;
-            });
-          };
-        }
-
+        d3.select('tbody').selectAll('tr').remove();
         var trs = d3.select('tbody')
             .selectAll('tr').data(levels[1])
                 .enter().append('tr');
@@ -225,66 +160,64 @@ $(function(){
             trs.append('td')
                 .text(function(d) { return formatCHF(d.revenue.budgets[year]); });
         });
+    }
 
-        // update
-        function updateVis() {
-            console.log(1);
-            nodes = levels[activeDepth - 1];
+    // called when level or year changes
+    function updateVis() {
+        nodes = levels[activeDepth - 1];
 
-            nodes.forEach(function(d) {
-                d.value = d.revenue.budgets[activeYear];
-            });
+        nodes.forEach(function(d) {
+            d.value = d.revenue.budgets[activeYear];
+        });
 
-            maxValue = d3.max(nodes, function(d) {
-                return d.value;
-            });
+        maxValue = d3.max(nodes, function(d) {
+            return d.value;
+        });
 
-            radius = d3.scale.sqrt().domain([0, maxValue]).range([0, 60]);
+        radius = d3.scale.sqrt().domain([0, maxValue]).range([0, 60]);
 
-            nodes.forEach(function(d) {
-                d.color = color(d.parent.id || d.id);
-                d.radius = radius(d.value);
-            });
+        nodes.forEach(function(d) {
+            d.color = color(d.parent.id || d.id);
+            d.radius = radius(d.value);
+        });
 
-            console.log(2);
-            force
-                .nodes(nodes)
-                .start();
+        force
+            .nodes(nodes);
 
-            circle = svg.selectAll("circle")
-                .data(nodes, function(d) { return d.id; });
+        // calls force.start
+        $(window).resize();
 
-            circle.enter().append("circle")
+        circle = svg.selectAll("circle")
+            .data(nodes, function(d) { return d.id; });
+
+        circle.enter().append("circle")
+            .attr("r", 0)
+            .classed(activeDepth === 2 ? 'has-detail' : 'no-detail', 1)
+            .style("stroke", function(d) { return d.color; })
+            .style("fill", function(d) {
+                var rgb = d3.rgb(d.color);
+                return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
+            })
+            .on('click', function(d) {
+                if(d.depth !== 2) return;
+                $('#myModal').foundation('reveal', 'open', {
+                    url: '/be-asp-topf-1/d/'+d.id
+                });
+            })
+            .call(force.drag);
+
+        circle.exit()
+            .transition().duration(750)
+                // .attr("cx", function(d) { return d.cx; })
+                // .attr("cx", function(d) { return d.x + width; })
                 .attr("r", 0)
-                .classed(activeDepth === 2 ? 'has-detail' : 'no-detail', 1)
-                .style("stroke", function(d) { return d.color; })
-                .style("fill", function(d) {
-                    var rgb = d3.rgb(d.color);
-                    return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
-                })
-                .on('click', function(d) {
-                    if(d.depth !== 2) return;
-                    $('#myModal').foundation('reveal', 'open', {
-                        url: '/be-asp-topf-1/d/'+d.id
-                    });
-                })
-                .call(force.drag);
+                .remove();
 
-            circle.exit()
-                .transition().duration(750)
-                    // .attr("cx", function(d) { return d.cx; })
-                    // .attr("cx", function(d) { return d.x + width; })
-                    .attr("r", 0)
-                    .remove();
-
-            circle
-                // .attr("cy", function(d) { return d.y - height; })
-                .transition().duration(750)
-                    .attr("r", function(d) { return d.radius; });
-        }
-
-        updateVis();
-    });
+        circle
+            // .attr("cy", function(d) { return d.y - height; })
+            .transition().duration(750)
+                .attr("r", function(d) { return d.radius; });
+    }
 
     (function() {
         var $body = $('body');
@@ -298,7 +231,7 @@ $(function(){
             });
         });
 
-        $(document).on('mouseover', 'svg circle', function(){
+        $(document).on('mouseover touchstart', 'svg circle', function(){
             var d = this.__data__, directionName = '';
             if(d.depth == 2) {
                 directionName = d.parent.name;
@@ -317,10 +250,91 @@ $(function(){
             $tip.show();
             // OpenBudget.table.highlight(d.id);
         });
-        $(document).on('mouseout', 'svg circle', function(){
+        $(document).on('mouseout touchend', 'svg circle', function(){
             $tip.hide();
             // OpenBudget.table.highlight(null);
         });
     })();
+
+    // clustered force by mbostock
+    // http://bl.ocks.org/mbostock/1748247
+    function tick(e) {
+      circle
+          .each(cluster(10 * e.alpha * e.alpha))
+          .each(collide(0.5))
+          .attr("cx", function(d) { return d.x; })
+          .attr("cy", function(d) { return d.y; });
+    }
+
+    // Move d to be adjacent to the cluster node.
+    function cluster(alpha) {
+      var max = {};
+
+      // Find the largest node for each cluster.
+      nodes.forEach(function(d) {
+        if (!(d.color in max) || (d.radius > max[d.color].radius)) {
+          max[d.color] = d;
+        }
+      });
+
+      return function(d) {
+        var node = max[d.color],
+            l,
+            r,
+            x,
+            y,
+            k = 1,
+            i = -1;
+
+        // For cluster nodes, apply custom gravity.
+        if (node == d) {
+          node = {x: width / 2, y: height / 2, radius: -d.radius};
+          k = 0.1 * Math.sqrt(d.radius);
+        }
+
+        x = d.x - node.x;
+        y = d.y - node.y;
+        l = Math.sqrt(x * x + y * y);
+        r = d.radius + node.radius;
+        if (l != r) {
+          l = (l - r) / l * alpha * k;
+          d.x -= x *= l;
+          d.y -= y *= l;
+          node.x += x;
+          node.y += y;
+        }
+      };
+    }
+
+    // Resolves collisions between d and all other circles.
+    function collide(alpha) {
+      var quadtree = d3.geom.quadtree(nodes);
+      return function(d) {
+        var r = d.radius + radius.domain()[1] + padding,
+            nx1 = d.x - r,
+            nx2 = d.x + r,
+            ny1 = d.y - r,
+            ny2 = d.y + r;
+        quadtree.visit(function(quad, x1, y1, x2, y2) {
+          if (quad.point && (quad.point !== d)) {
+            var x = d.x - quad.point.x,
+                y = d.y - quad.point.y,
+                l = Math.sqrt(x * x + y * y),
+                r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+            if (l < r) {
+              l = (l - r) / l * alpha;
+              d.x -= x *= l;
+              d.y -= y *= l;
+              quad.point.x += x;
+              quad.point.y += y;
+            }
+          }
+          return x1 > nx2
+              || x2 < nx1
+              || y1 > ny2
+              || y2 < ny1;
+        });
+      };
+    }
 
 });

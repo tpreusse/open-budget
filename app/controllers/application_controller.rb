@@ -51,10 +51,10 @@ class ApplicationController < ActionController::Base
   end
 
   def proxy
-    file = if params[:file] == 'data'
-      'data'
+    if ['data', 'cache', 'topf-1', 'topf-2'].include? params[:file]
+      file = params[:file]
     else
-      'cache'
+      raise ActionController::RoutingError.new('Not Found')
     end
     id = params[:id]
     # only allow word chars - no dots and slashes for filepath
