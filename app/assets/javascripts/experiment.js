@@ -146,34 +146,6 @@ $(function(){
         maxCluster = levels[0].length;
 
         color.domain(d3.range(maxCluster));
-
-        d3.select('tbody').selectAll('tr').remove();
-        var trs = d3.select('tbody')
-            .selectAll('tr').data(levels[1])
-                .enter().append('tr')
-                    .attr('class', function(d) {
-                        return d.detail ? 'has-detail' : '';
-                    });
-
-        trs.on('click', showDetail);
-
-        trs.append('td')
-            .append('span')
-                .attr('title', function(d) { return d.parent.name; })
-                .style('border-color', function(d) {
-                    return color(d.parent.id || d.id);
-                })
-                .style('background-color', function(d) {
-                    var rgb = d3.rgb(color(d.parent.id || d.id));
-                    return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
-                });
-
-        trs.append('td')
-            .text(function(d) { return d.name; });
-        ['2014', '2015', '2016', '2017'].forEach(function(year) {
-            trs.append('td')
-                .text(function(d) { return formatCHF(d.revenue.budgets[year]); });
-        });
     }
 
     // called when level or year changes
@@ -193,6 +165,34 @@ $(function(){
         nodes.forEach(function(d) {
             d.color = color(d.parent.id || d.id);
             d.radius = radius(d.value);
+        });
+
+        d3.select('tbody').selectAll('tr').remove();
+        var trs = d3.select('tbody')
+            .selectAll('tr').data(nodes)
+                .enter().append('tr')
+                    .attr('class', function(d) {
+                        return d.detail ? 'has-detail' : '';
+                    });
+
+        trs.on('click', showDetail);
+
+        trs.append('td')
+            .append('span')
+                .attr('title', function(d) { return d.parent.name; })
+                .style('border-color', function(d) {
+                    return d.color;
+                })
+                .style('background-color', function(d) {
+                    var rgb = d3.rgb(d.color);
+                    return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
+                });
+
+        trs.append('td')
+            .text(function(d) { return d.name; });
+        ['2014', '2015', '2016', '2017'].forEach(function(year) {
+            trs.append('td')
+                .text(function(d) { return formatCHF(d.revenue.budgets[year]); });
         });
 
         force

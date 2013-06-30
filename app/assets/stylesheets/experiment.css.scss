@@ -24,11 +24,17 @@ circle {
 }
 
 table {
+	width: 100%;
+
 	tbody tr td, thead  tr th {
 		line-height: 1.5em;
 		text-align: right;
 		&:first-child, &:nth-child(2) {
 			text-align: left;
+		}
+
+		#detail-modal &:nth-child(2) {
+			text-align: right;
 		}
 	}
 
@@ -46,6 +52,10 @@ table {
 		cursor: pointer;
 		background-color:lighten($openDataRed, 48%);
 	}
+}
+
+.opendatach img {
+	height: 50px
 }
 
 #tooltip {

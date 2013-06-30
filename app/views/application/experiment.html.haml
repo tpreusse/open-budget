@@ -14,19 +14,16 @@
 
       %form.custom
         %div{style:"float:left"}
-          %label{:for => "levels"} &nbsp;
           %select#data.large
             - @meta['data'].each do |dataSet|
               %option{value:dataSet['url']}= dataSet['name']
 
         %div{style:"float:left"}
-          %label{:for => "levels"} Detail
           %select#levels.large
             %option{value:'1'} Direktionen
             %option{value:'2', selected: 'selected'} Massnahmen
 
         %div{style:"float:left"}
-          %label{:for => "year"} Jahr
           %select#year.large
             %optgroup{label: 'Voranschlag'}
               %option{value: '2014'} 2014
@@ -43,8 +40,7 @@
     #no-detail-modal.reveal-modal.small
       %p
         Es sind keine zusätzlichen Informationen verfügbar. Versuchen sie es bei der Datenquelle:
-        %a{href: @meta['data_link']}
-          = @meta['data_title']
+        = link_to @meta['source']['text'], @meta['source']['url']
 
     .large-12.columns
       %h3 Tabulare Auflistung
@@ -58,6 +54,23 @@
             %th 2016
             %th 2017
         %tbody
+
+      %p
+        = link_to 'https://github.com/tpreusse/open-budget/tree/experiment' do
+          Quellcode
+        \-
+        = link_to @meta['source']['text'], @meta['source']['url']
+        \-
+        = link_to 'mailto:t@preus.se' do
+          Feedback
+
+      %p
+        - if @subdomain.present?
+          = link_to "https://twitter.com/intent/tweet?hashtags=ogd&text=#{u(@meta['page_title'])}&url=http%3A%2F%2F#{@subdomain}.budget.opendata.ch%2F&amp;via=OpendataCH", {target: '_blank'} do
+            Tweet
+          \-
+          = link_to "https://www.facebook.com/sharer.php?u=http%3A%2F%2F#{@subdomain}.budget.opendata.ch%2F", {target: '_blank'} do
+            Facebook
 
       .opendatach
         %p
