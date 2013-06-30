@@ -1,17 +1,21 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  def load_meta
-    @subdomain = request.subdomains.to_a[0]
-    id = params[:id] || @subdomain
-    Rails.logger.info "request budget #{id} subdomain #{@subdomain} subdomains #{request.subdomains.to_s} id #{params[:id]}"
+  def get_id_and_subdomain
+    subdomain = request.subdomains.to_a[0]
+    id = params[:id] || subdomain
+    Rails.logger.info "request budget #{id} subdomain #{subdomain} subdomains #{request.subdomains.to_s} id #{params[:id]}"
 
     # only allow word chars - no dots and slashes for filepath
     if !id.to_s.match(/^[\w-]+$/)
       raise ActionController::RoutingError.new('Not Found')
     end
 
-    @meta = get_budget id
+    [id, subdomain]
+  end
+
+  def load_meta
+    @meta = get_budget @id
 
     if @meta.blank?
       raise ActionController::RoutingError.new('Not Found')
@@ -19,6 +23,11 @@ class ApplicationController < ActionController::Base
   end
 
   def index
+    @id, @subdomain = get_id_and_subdomain
+    if @id.match(/be-asp.*/)
+      return experiment
+    end
+
     load_meta
 
     # automate upload
@@ -26,10 +35,12 @@ class ApplicationController < ActionController::Base
   end
 
   def experiment
+    @id, @subdomain = get_id_and_subdomain
+
     load_meta
 
     respond_to do |format|
-      format.html  { render :layout => 'experiment' }
+      format.html  { render 'experiment', :layout => 'experiment' }
     end
   end
 

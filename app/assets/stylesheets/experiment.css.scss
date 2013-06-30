@@ -1,1 +1,57 @@
 //= require foundation_and_overrides
+
+circle {
+	fill:rgba(0,0,0,0.0);
+	stroke-width:2px;
+
+	&:hover {
+		stroke-width:4px;
+	}
+}
+
+.header, .rest {
+	box-shadow:0 0 20px 1px #ddd;
+}
+
+table {
+	tbody tr td, thead  tr th {
+		line-height: 1.5em;
+		text-align: right;
+		&:first-child, &:nth-child(2) {
+			text-align: left;
+		}
+	}
+
+	td span {
+		border: 2px solid;
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		-webkit-border-radius: 1em;
+		-moz-border-radius: 1em;
+		border-radius: 1em;
+	}
+}
+
+#tooltip {
+  font-size: 14px;
+  line-height: 1.5em;
+  position:absolute;
+  padding:5px;
+  z-index:100000;
+
+  div {
+    background-color:#000;
+    color:#fff;
+    color:#fff;
+    padding:5px 8px 4px 8px;
+    text-align:left;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius:3px;
+
+    span {
+      font-weight:bold;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+:javascript
+  window.OpenBudget = #{ {data: {meta: @meta}}.to_json.html_safe };
+
+- content_for :title do
+  = @meta['page_title']
+- content_for :description do
+  = @meta['description']
+
+.header
+  .row
+    .large-12.columns
+      %h1= sanitize(@meta['h1'])
+      %h2= sanitize(@meta['h2'])
+
+      %form.custom
+        %div{style:"float:left"}
+          %label{:for => "levels"} Detail
+          %select#levels.large
+            %option{value:'1'} Direktionen
+            %option{value:'2', selected: 'selected'} Massnahmen
+
+        %div{style:"float:left"}
+          %label{:for => "year"} Jahr
+          %select#year.large
+            %optgroup{label: 'Voranschlag'}
+              %option{value: '2014'} 2014
+            %optgroup{label: 'Aufgaben-/Finanzplan'}
+              %option{value: '2015'} 2015
+              %option{value: '2016'} 2016
+              %option{value: '2017'} 2017
+
+%svg.main
+
+.rest
+  .row
+    .large-12.columns
+      %h3 Tabulare Auflistung
+      %table
+        %thead
+          %tr
+            %th
+            %th Massnahme
+            %th 2014
+            %th 2015
+            %th 2016
+            %th 2017
+        %tbody
+
+      .opendatach
+        %p
+          = link_to 'http://www.opendata.ch/' do
+            = image_tag 'opendatach.png', alt: 'OpenData.ch'
