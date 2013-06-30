@@ -202,6 +202,12 @@ $(function(){
             .selectAll('tr').data(levels[1])
                 .enter().append('tr');
 
+        trs.on('click', function(d) {
+            $('#myModal').foundation('reveal', 'open', {
+                url: '/be-asp-topf-1/d/'+d.id
+            });
+        });
+
         trs.append('td')
             .append('span')
                 .attr('title', function(d) { return d.parent.name; })
@@ -222,6 +228,7 @@ $(function(){
 
         // update
         function updateVis() {
+            console.log(1);
             nodes = levels[activeDepth - 1];
 
             nodes.forEach(function(d) {
@@ -239,6 +246,7 @@ $(function(){
                 d.radius = radius(d.value);
             });
 
+            console.log(2);
             force
                 .nodes(nodes)
                 .start();
@@ -248,10 +256,17 @@ $(function(){
 
             circle.enter().append("circle")
                 .attr("r", 0)
+                .classed(activeDepth === 2 ? 'has-detail' : 'no-detail', 1)
                 .style("stroke", function(d) { return d.color; })
                 .style("fill", function(d) {
                     var rgb = d3.rgb(d.color);
                     return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
+                })
+                .on('click', function(d) {
+                    if(d.depth !== 2) return;
+                    $('#myModal').foundation('reveal', 'open', {
+                        url: '/be-asp-topf-1/d/'+d.id
+                    });
                 })
                 .call(force.drag);
 
@@ -298,7 +313,7 @@ $(function(){
                 'CHF '+formatCHF(d.value)+''/*+'<br />'+
                 valueLabel+'CHF '+formatCHF(d.value2)+' '+formatDiffPercent(d.diff)+'%'*/
             );
-            $tipInner.find('span.percent').css('color', d.stroke);
+            // $tipInner.find('span.percent').css('color', d.stroke);
             $tip.show();
             // OpenBudget.table.highlight(d.id);
         });

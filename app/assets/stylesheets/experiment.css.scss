@@ -1,5 +1,7 @@
 //= require foundation_and_overrides
 
+$openDataRed:#E61414;
+
 circle {
 	fill:rgba(0,0,0,0.0);
 	stroke-width:2px;
@@ -7,10 +9,18 @@ circle {
 	&:hover {
 		stroke-width:4px;
 	}
+
+	&.has-detail {
+		cursor: pointer;
+	}
 }
 
 .header, .rest {
 	box-shadow:0 0 20px 1px #ddd;
+}
+
+.rest {
+	padding-top: 10px;
 }
 
 table {
@@ -30,6 +40,11 @@ table {
 		-webkit-border-radius: 1em;
 		-moz-border-radius: 1em;
 		border-radius: 1em;
+	}
+
+	tbody tr:hover {
+		cursor: pointer;
+		background-color:lighten($openDataRed, 48%);
 	}
 }
 

@@ -44,6 +44,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def d
+    respond_to do |format|
+      format.html  { render :layout => false }
+    end
+  end
+
   def proxy
     file = if params[:file] == 'data'
       'data'
