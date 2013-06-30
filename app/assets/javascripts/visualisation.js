@@ -619,6 +619,13 @@ $(function() {
             headlines.setup();
 
             var usePreproccesedData = !!OpenBudget.data.meta.cache_url;
+
+            // temporary workaround
+            // unresolved issue with IE9 on Vista with zurich cache
+            if($.browser.msie && $.browser.version <= 9) {
+                usePreproccesedData = false;
+            }
+
             nodes[usePreproccesedData ? 'loadFromCache': 'load'](function(rootNodes) {
                 $window.resize(vis.resize);
                 if(!usePreproccesedData) {
