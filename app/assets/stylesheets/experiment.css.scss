@@ -42,7 +42,7 @@ table {
 		border-radius: 1em;
 	}
 
-	tbody tr:hover {
+	tbody tr.has-detail:hover {
 		cursor: pointer;
 		background-color:lighten($openDataRed, 48%);
 	}

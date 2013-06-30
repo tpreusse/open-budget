@@ -93,8 +93,12 @@ $(function(){
 
         svg.attr("width", width + margin.left + margin.right);
         force
-            .size([width, height])
-            .start();
+            .size([width, height]);
+
+        if(circle) {
+            // will lead to fatal error otherwise
+            force.start();
+        }
     });
 
     // selects for level, year and data
@@ -121,6 +125,17 @@ $(function(){
         });
     }).change();
 
+    function showDetail(d) {
+        if(d.detail) {
+            $('#detail-modal').foundation('reveal', 'open', {
+                url: '/be-asp/d/'+d.id
+            });
+        }
+        else {
+            $('#no-detail-modal').foundation('reveal', 'open');
+        }
+    }
+
     // called after new data is loaded
     function setup(data) {
         all = layers(data);
@@ -135,13 +150,12 @@ $(function(){
         d3.select('tbody').selectAll('tr').remove();
         var trs = d3.select('tbody')
             .selectAll('tr').data(levels[1])
-                .enter().append('tr');
+                .enter().append('tr')
+                    .attr('class', function(d) {
+                        return d.detail ? 'has-detail' : '';
+                    });
 
-        trs.on('click', function(d) {
-            $('#myModal').foundation('reveal', 'open', {
-                url: '/be-asp-topf-1/d/'+d.id
-            });
-        });
+        trs.on('click', showDetail);
 
         trs.append('td')
             .append('span')
@@ -184,26 +198,20 @@ $(function(){
         force
             .nodes(nodes);
 
-        // calls force.start
-        $(window).resize();
-
         circle = svg.selectAll("circle")
             .data(nodes, function(d) { return d.id; });
 
         circle.enter().append("circle")
             .attr("r", 0)
-            .classed(activeDepth === 2 ? 'has-detail' : 'no-detail', 1)
+            .attr("class", function(d) {
+                return d.detail ? 'has-detail' : '';
+            })
             .style("stroke", function(d) { return d.color; })
             .style("fill", function(d) {
                 var rgb = d3.rgb(d.color);
                 return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
             })
-            .on('click', function(d) {
-                if(d.depth !== 2) return;
-                $('#myModal').foundation('reveal', 'open', {
-                    url: '/be-asp-topf-1/d/'+d.id
-                });
-            })
+            .on('click', showDetail)
             .call(force.drag);
 
         circle.exit()
@@ -217,8 +225,12 @@ $(function(){
             // .attr("cy", function(d) { return d.y - height; })
             .transition().duration(750)
                 .attr("r", function(d) { return d.radius; });
+
+        // calls force.start
+        $(window).resize();
     }
 
+    // tooltip
     (function() {
         var $body = $('body');
         var formatDiffPercent = d3.format('+.2');

@@ -39,7 +39,12 @@
 
 .rest
   .row
-    #myModal.reveal-modal.large
+    #detail-modal.reveal-modal.large
+    #no-detail-modal.reveal-modal.small
+      %p
+        Es sind keine zusätzlichen Informationen verfügbar. Versuchen sie es bei der Datenquelle:
+        %a{href: @meta['data_link']}
+          = @meta['data_title']
 
     .large-12.columns
       %h3 Tabulare Auflistung

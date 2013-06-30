@@ -45,6 +45,16 @@ class ApplicationController < ActionController::Base
   end
 
   def d
+    @id, @subdomain = get_id_and_subdomain
+
+    load_meta
+
+    @detail = get_details(@id)[params[:node_id]]
+
+    if @detail.blank?
+      raise ActionController::RoutingError.new('Not Found')
+    end
+
     respond_to do |format|
       format.html  { render :layout => false }
     end
@@ -79,6 +89,20 @@ class ApplicationController < ActionController::Base
       uploader = BudgetUploader.new
 
       uploader.retrieve_from_store! "#{id}/meta.json"
+      if !uploader.file.exists?
+        return nil
+      end
+
+      JSON.parse uploader.file.read
+    end
+  end
+
+  def get_details id
+    Rails.cache.fetch("#{id}/details.json", :expires_in => 5.minutes) do
+
+      uploader = BudgetUploader.new
+
+      uploader.retrieve_from_store! "#{id}/details.json"
       if !uploader.file.exists?
         return nil
       end
