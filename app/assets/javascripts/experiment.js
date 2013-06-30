@@ -167,8 +167,8 @@ $(function(){
             d.radius = radius(d.value);
         });
 
-        d3.select('tbody').selectAll('tr').remove();
-        var trs = d3.select('tbody')
+        d3.select('table.main').select('tbody').selectAll('tr').remove();
+        var trs = d3.select('table.main').select('tbody')
             .selectAll('tr').data(nodes)
                 .enter().append('tr')
                     .attr('class', function(d) {
