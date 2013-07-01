@@ -131,7 +131,7 @@ $(function(){
                 url: '/be-asp/d/'+d.id
             });
         }
-        else {
+        else if(d.depth !== 1) {
             $('#no-detail-modal').foundation('reveal', 'open');
         }
     }
