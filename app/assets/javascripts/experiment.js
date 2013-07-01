@@ -1,6 +1,7 @@
 //= require underscore
 //= require d3/d3.v3.min
 //= require foundation
+//= require responsive-tables
 
 (function() {
     OpenBudget.layers = function() {
