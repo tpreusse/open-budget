@@ -25,6 +25,7 @@ circle {
 }
 
 g text {
+	fill:gray;
 	font-size: 10px;
 }
 
@@ -57,7 +58,13 @@ table {
 	tbody tr td, thead  tr th {
 		line-height: 1.5em;
 		text-align: right;
-		&:first-child, &:nth-child(2) {
+		&:first-child {
+			text-align: left;
+		}
+	}
+
+	tbody tr td {
+		&:nth-child(2) {
 			text-align: left;
 		}
 

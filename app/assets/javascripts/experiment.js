@@ -99,7 +99,7 @@ $(function(){
             .size([width, height]);
 
         legendG
-            .attr("transform", "translate(120,"+(height - 20)+")");
+            .attr("transform", "translate(90,"+(height - 20)+")");
 
         if(circle) {
             // will lead to fatal error otherwise
@@ -217,7 +217,7 @@ $(function(){
 
         d3.select('table.main').select('tbody').selectAll('tr').remove();
 
-        d3.select('table.main').select('th:nth-child(2)')
+        d3.select('table.main').select('th:nth-child(1)')
             .text(OpenBudget.meta.hierarchy[activeDepth - 1]);
 
         var trs = d3.select('table.main').select('tbody')
@@ -243,9 +243,15 @@ $(function(){
 
         trs.append('td')
             .text(function(d) { return d.name; });
-        ['2014', '2015', '2016', '2017'].forEach(function(year) {
+
+        ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
+            var total = d3.sum(nodes, function(d) { return d.revenue.budgets[year]; });
+            d3.select('table.main').select('tfoot td:nth-child('+ (index + 2) +')')
+                .text(formatCHF(total));
+
             trs.append('td')
                 .text(function(d) { return formatCHF(d.revenue.budgets[year]); });
+
         });
 
         force
