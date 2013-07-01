@@ -14,6 +14,15 @@ circle {
 	&.has-detail {
 		cursor: pointer;
 	}
+
+	&.legend {
+		stroke-dasharray:5,5;
+		stroke:gray;
+	}
+}
+
+g text {
+	font-size: 10px;
 }
 
 .header, .rest {
@@ -22,6 +31,21 @@ circle {
 
 .rest {
 	padding-top: 10px;
+}
+
+span.circle {
+	border: 2px solid;
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	-webkit-border-radius: 1em;
+	-moz-border-radius: 1em;
+	border-radius: 1em;
+	margin-right: 0.5em;
+}
+
+.legend {
+	margin-top: 10px;
 }
 
 table {
@@ -37,16 +61,6 @@ table {
 		#detail-modal &:nth-child(2) {
 			text-align: right;
 		}
-	}
-
-	td span {
-		border: 2px solid;
-		display: inline-block;
-		width: 1em;
-		height: 1em;
-		-webkit-border-radius: 1em;
-		-moz-border-radius: 1em;
-		border-radius: 1em;
 	}
 
 	tbody tr.has-detail:hover {

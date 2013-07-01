@@ -76,7 +76,7 @@ $(function(){
     var padding = 5,
         maxValue,
         radius,
-        color = d3.scale.category10(),
+        color = d3.scale.category10().domain(d3.range(10)),
         circle;
 
     var force = d3.layout.force()
@@ -85,9 +85,12 @@ $(function(){
         .on("tick", tick);
 
     var svg = d3.select("svg.main")
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("height", height + margin.top + margin.bottom);
+
+    var mainG = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var legendG = svg.append("g");
 
     $(window).resize(function() {
         width = $(window).width()  - margin.left - margin.right;
@@ -95,6 +98,9 @@ $(function(){
         svg.attr("width", width + margin.left + margin.right);
         force
             .size([width, height]);
+
+        legendG
+            .attr("transform", "translate(120,"+(height - 20)+")");
 
         if(circle) {
             // will lead to fatal error otherwise
@@ -146,7 +152,24 @@ $(function(){
         ];
         maxCluster = levels[0].length;
 
-        color.domain(d3.range(maxCluster));
+        d3.select('.legend').selectAll('li').remove();
+        var lis = d3.select('.legend').selectAll('li')
+            .data(levels[0]);
+
+        lis.enter().append('li');
+
+        lis.html(function(d) { return '<span class="circle"></span>' + d.name; });
+        lis.select('span')
+            .style('border-color', function(d) {
+                return color(d.parent.id || d.id);
+            })
+            .style('background-color', function(d) {
+                var rgb = d3.rgb(color(d.parent.id || d.id));
+                return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
+            });
+
+        // only needed if maxCluster > 10
+        // color.domain(d3.range(maxCluster));
     }
 
     // called when level or year changes
@@ -162,6 +185,31 @@ $(function(){
         });
 
         radius = d3.scale.sqrt().domain([0, maxValue]).range([0, 60]);
+
+        var legendData = [
+            {value: 50000000, name: '50 mio', color:'gray'},
+            {value: 10000000, name: '10 mio', color:'gray'},
+            {value: 1000000, name: '1 mio', color:'gray'}
+        ];
+        var legendCircles = legendG.selectAll('circle').data(legendData);
+
+        legendCircles.enter().append('circle')
+            .classed('legend', 1);
+
+        legendCircles
+            .transition().duration(750)
+                .attr('r', function(d) { return radius(d.value); })
+                .attr('cx', 0)
+                .attr('cy', function(d) { return -radius(d.value); });
+
+        var legendLabels = legendG.selectAll('text').data(legendData);
+
+        legendLabels.enter().append('text');
+        legendLabels
+            .transition().duration(750)
+                .text(function(d) { return d.name; })
+                .attr('x', -10)
+                .attr('y', function(d) { return -5 + (-radius(d.value)*2); });
 
         nodes.forEach(function(d) {
             d.color = color(d.parent.id || d.id);
@@ -184,6 +232,7 @@ $(function(){
 
         trs.append('td')
             .append('span')
+                .classed('circle', 1)
                 .attr('title', function(d) { return d.parent.name; })
                 .style('border-color', function(d) {
                     return d.color;
@@ -203,7 +252,7 @@ $(function(){
         force
             .nodes(nodes);
 
-        circle = svg.selectAll("circle")
+        circle = mainG.selectAll("circle")
             .data(nodes, function(d) { return d.id; });
 
         circle.enter().append("circle")
