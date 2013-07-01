@@ -86,10 +86,10 @@ $(function(){
     var svg = d3.select("svg.main")
         .attr("height", height + margin.top + margin.bottom);
 
+    var legendG = svg.append("g");
+
     var mainG = svg.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    var legendG = svg.append("g");
 
     $(window).resize(function() {
         width = $(window).width()  - margin.left - margin.right;

@@ -15,8 +15,12 @@ circle {
 	}
 
 	&.legend {
+		stroke-width:1px;
 		stroke-dasharray:5,5;
 		stroke:gray;
+		&:hover {
+			stroke-width:2px;
+		}
 	}
 }
 
