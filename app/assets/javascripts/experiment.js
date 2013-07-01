@@ -168,6 +168,10 @@ $(function(){
         });
 
         d3.select('table.main').select('tbody').selectAll('tr').remove();
+
+        d3.select('table.main').select('th:nth-child(2)')
+            .text(OpenBudget.meta.hierarchy[activeDepth - 1]);
+
         var trs = d3.select('table.main').select('tbody')
             .selectAll('tr').data(nodes)
                 .enter().append('tr')
@@ -254,17 +258,19 @@ $(function(){
 
             $tipInner.html(
                 '<span class="name" style="color:'+d.color+'">'+directionName+'</span><br />'+
-                '<span class="name">'+d.name+'</span><br />'+
-                'CHF '+formatCHF(d.value)+''/*+'<br />'+
-                valueLabel+'CHF '+formatCHF(d.value2)+' '+formatDiffPercent(d.diff)+'%'*/
+                (d.depth == 2 ?
+                    '<span class="name">'+d.name+'</span><br />' : ''
+                ) +
+                'CHF '+ formatCHF(d.value)
             );
-            // $tipInner.find('span.percent').css('color', d.stroke);
+
+            $(document).one('touchend', function() {
+                $tip.hide();
+            });
             $tip.show();
-            // OpenBudget.table.highlight(d.id);
         });
-        $(document).on('mouseout touchend', 'svg circle', function(){
+        $(document).on('mouseout', 'svg circle', function(){
             $tip.hide();
-            // OpenBudget.table.highlight(null);
         });
     })();
 
