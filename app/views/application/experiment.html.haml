@@ -46,22 +46,23 @@
       %ul.inline-list.legend
 
       %h3 Tabulare Auflistung
-      %table.main
-        %thead
-          %tr
-            %th{colspan:2} Massnahme
-            %th 2014
-            %th 2015
-            %th 2016
-            %th 2017
-        %tfoot
-          %tr
-            %td{colspan:2} Total
-            %td
-            %td
-            %td
-            %td
-        %tbody
+      .table-container
+        %table.main
+          %thead
+            %tr
+              %th{colspan:2} Massnahme
+              %th 2014
+              %th 2015
+              %th 2016
+              %th 2017
+          %tfoot
+            %tr
+              %td{colspan:2} Total
+              %td
+              %td
+              %td
+              %td
+          %tbody
 
       %p
         = link_to 'https://github.com/tpreusse/open-budget/tree/experiment' do
