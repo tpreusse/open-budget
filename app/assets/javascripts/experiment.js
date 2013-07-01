@@ -60,7 +60,11 @@ $(function(){
 
     $(document).foundation();
 
-    var formatCHF = d3.format(',f');
+    var formatCHF = d3.format(',.2f');
+
+    function formatMioCHF(n) {
+        return formatCHF(n / Math.pow(10, 6));
+    }
 
     var layers = OpenBudget.layers(),
         nodes = [],
@@ -89,6 +93,7 @@ $(function(){
     var legendG = svg.append("g");
 
     var mainG = svg.append("g")
+        .classed('main', 1)
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     $(window).resize(function() {
@@ -186,9 +191,9 @@ $(function(){
         radius = d3.scale.sqrt().domain([0, maxValue]).range([0, 60]);
 
         var legendData = [
-            {value: 50000000, name: '50 mio', color:'gray'},
-            {value: 10000000, name: '10 mio', color:'gray'},
-            {value: 1000000, name: '1 mio', color:'gray'}
+            {value: 50000000, name: '50 Mio.', color:'gray'},
+            {value: 10000000, name: '10 Mio.', color:'gray'},
+            {value: 1000000, name: '1 Mio.', color:'gray'}
         ];
         var legendCircles = legendG.selectAll('circle').data(legendData);
 
@@ -247,10 +252,10 @@ $(function(){
         ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
             var total = d3.sum(nodes, function(d) { return d.revenue.budgets[year]; });
             d3.select('table.main').select('tfoot td:nth-child('+ (index + 2) +')')
-                .text(formatCHF(total));
+                .text(formatMioCHF(total));
 
             trs.append('td')
-                .text(function(d) { return formatCHF(d.revenue.budgets[year]); });
+                .text(function(d) { return formatMioCHF(d.revenue.budgets[year]); });
 
         });
 
@@ -302,7 +307,7 @@ $(function(){
             });
         });
 
-        $(document).on('mouseover touchstart', 'svg circle', function(){
+        $(document).on('mouseover touchstart', 'svg g.main circle', function(){
             var d = this.__data__, directionName = '';
             if(d.depth == 2) {
                 directionName = d.parent.name;
@@ -316,7 +321,7 @@ $(function(){
                 (d.depth == 2 ?
                     '<span class="name">'+d.name+'</span><br />' : ''
                 ) +
-                'CHF '+ formatCHF(d.value)
+                formatMioCHF(d.value) + ' Mio. CHF'
             );
 
             $(document).one('touchend', function() {
@@ -324,7 +329,7 @@ $(function(){
             });
             $tip.show();
         });
-        $(document).on('mouseout', 'svg circle', function(){
+        $(document).on('mouseout', 'svg g.main circle', function(){
             $tip.hide();
         });
     })();
