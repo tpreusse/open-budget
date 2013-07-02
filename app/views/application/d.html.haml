@@ -3,67 +3,75 @@
 %h3= @detail['Massnahme']
 %p= @detail['Kurzbeschrieb']
 
-%p
-  %strong Nr.:
-  = @detail['Nr']
-  %br
-  %strong Aufgabenfeld:
-  = @detail['Aufgabenfeld']
-  %br
-  %strong Rechtsgrundlage:
-  = @detail['Rechtsgrundlage']
 
-.table-container
-  %table
-    %thead
-      %tr
-        %th
-        %th Voranschlag
-        %th{colspan: 3} Aufgaben-/Finanzplan
-      %tr
-        %th
-        %th 2014
-        %th 2015
-        %th 2016
-        %th 2017
-    %tbody
-      - if @detail['Auswirkungen']['Finanzielle'].present?
-        %tr
-          %td
-            Finanzielle Auswirkungen
-            %span.format (Mio. CHF)
-          %td= sprintf '%.2f', @detail['Auswirkungen']['Finanzielle']['2014'].to_f
-          %td= sprintf '%.2f', @detail['Auswirkungen']['Finanzielle']['2015'].to_f
-          %td= sprintf '%.2f', @detail['Auswirkungen']['Finanzielle']['2016'].to_f
-          %td= sprintf '%.2f', @detail['Auswirkungen']['Finanzielle']['2017'].to_f
-      - elsif @detail['node'].present?
-        %tr
-          %td
-            Finanzielle Auswirkungen
-            %span.format (Mio. CHF)
-          %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2014'].to_f / (10 ** 6))
-          %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2015'].to_f / (10 ** 6))
-          %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2016'].to_f / (10 ** 6))
-          %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2017'].to_f / (10 ** 6))
-      - if @detail['Auswirkungen']['Finanzielle'].present?
-        %tr
-          %td Auswirkungen Vollzeitstellen
-          %td= @detail['Auswirkungen']['Vollzeitstellen']['2014']
-          %td= @detail['Auswirkungen']['Vollzeitstellen']['2015']
-          %td= @detail['Auswirkungen']['Vollzeitstellen']['2016']
-          %td= @detail['Auswirkungen']['Vollzeitstellen']['2017']
-      - if @detail['Auswirkungen']['Gemeinden'].present?
-        %tr
-          %td
-            Auswirkungen Gemeinden
-            %span.format (Mio. CHF)
-          %td= sprintf '%.2f', @detail['Auswirkungen']['Gemeinden']['2014'].to_f
-          %td= sprintf '%.2f', @detail['Auswirkungen']['Gemeinden']['2015'].to_f
-          %td= sprintf '%.2f', @detail['Auswirkungen']['Gemeinden']['2016'].to_f
-          %td= sprintf '%.2f', @detail['Auswirkungen']['Gemeinden']['2017'].to_f
+- if @detail['Nr'].present?
+  %p.panel
+    %strong Nr.:
+    = @detail['Nr']
+    %br
+    %strong Aufgabenfeld:
+    = @detail['Aufgabenfeld']
+    %br
+    %strong Rechtsgrundlage:
+    = @detail['Rechtsgrundlage']
 
-%p= "+ = Entlastung / - = Belastung"
+- if @detail['Auswirkungen'].present?
+  .table-container
+    %table
+      %thead
+        %tr
+          %th
+          %th Voranschlag
+          %th{colspan: 3} Aufgaben-/Finanzplan
+        %tr
+          %th
+          %th 2014
+          %th 2015
+          %th 2016
+          %th 2017
+      %tbody
+        - if @detail['Auswirkungen']['Finanzielle'].present?
+          %tr
+            %td
+              - if @detail['Auswirkungen']['Finanzielle']['Label'].present?
+                = @detail['Auswirkungen']['Finanzielle']['Label']
+              - else
+                Finanzielle Auswirkungen
+              %span.format (Mio. CHF)
+            %td= sprintf '%.2f', @detail['Auswirkungen']['Finanzielle']['2014'].to_f
+            %td= sprintf '%.2f', @detail['Auswirkungen']['Finanzielle']['2015'].to_f
+            %td= sprintf '%.2f', @detail['Auswirkungen']['Finanzielle']['2016'].to_f
+            %td= sprintf '%.2f', @detail['Auswirkungen']['Finanzielle']['2017'].to_f
+        - elsif @detail['node'].present?
+          %tr
+            %td
+              Finanzielle Auswirkungen
+              %span.format (Mio. CHF)
+            %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2014'].to_f / (10 ** 6))
+            %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2015'].to_f / (10 ** 6))
+            %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2016'].to_f / (10 ** 6))
+            %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2017'].to_f / (10 ** 6))
+        - if @detail['Auswirkungen']['Vollzeitstellen'].present?
+          %tr
+            %td Auswirkungen Vollzeitstellen
+            %td= @detail['Auswirkungen']['Vollzeitstellen']['2014']
+            %td= @detail['Auswirkungen']['Vollzeitstellen']['2015']
+            %td= @detail['Auswirkungen']['Vollzeitstellen']['2016']
+            %td= @detail['Auswirkungen']['Vollzeitstellen']['2017']
+        - if @detail['Auswirkungen']['Gemeinden'].present?
+          %tr
+            %td
+              Auswirkungen Gemeinden
+              %span.format (Mio. CHF)
+            %td= sprintf '%.2f', @detail['Auswirkungen']['Gemeinden']['2014'].to_f
+            %td= sprintf '%.2f', @detail['Auswirkungen']['Gemeinden']['2015'].to_f
+            %td= sprintf '%.2f', @detail['Auswirkungen']['Gemeinden']['2016'].to_f
+            %td= sprintf '%.2f', @detail['Auswirkungen']['Gemeinden']['2017'].to_f
 
+  %p= "+ = Entlastung / - = Belastung"
+
+- if @detail['Postfix'].present?
+  %p= @detail['Postfix']
 
 %strong Quelle:
 = link_to 'http://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.assetref/content/dam/documents/portal/Medienmitteilungen/de/2013/06/2013-06-28-asp-2014-bericht-de.pdf', {target: '_blank'} do
