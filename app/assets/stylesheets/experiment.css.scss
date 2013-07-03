@@ -1,14 +1,15 @@
 //= require foundation_and_overrides
 //= require font-awesome
 
-$openDataRed:#E61414;
+$opendata-red:#E61414;
 
 body {
+	height: 100%;
 }
 
 svg.main {
 	width: 100%;
-	height: 520px;
+	height: 75%;
 }
 
 circle {
@@ -51,7 +52,7 @@ g text {
 		a {
 			color: #000;
 			&:hover {
-				color: darken($openDataRed, 10%);
+				color: darken($opendata-red, 10%);
 			}
 		}
 		// vertical-align: center;
@@ -123,7 +124,7 @@ table {
 
 	tbody tr.has-detail:hover {
 		cursor: pointer;
-		background-color:lighten($openDataRed, 48%);
+		background-color:lighten($opendata-red, 48%);
 	}
 }
 

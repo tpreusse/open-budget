@@ -73,13 +73,14 @@ $(function(){
         maxCluster;
 
     var width,
-        height = $('svg.main').height();
+        height;
 
     var padding = 5,
         maxValue,
-        radius = d3.scale.sqrt().range([0, 65]),
+        radius = d3.scale.sqrt(),
         color = d3.scale.category10().domain(d3.range(10)),
-        circle;
+        // svg eles for radius update
+        circle, legendCircles, legendLabels;
 
     var force = d3.layout.force()
         .gravity(0)
@@ -93,8 +94,11 @@ $(function(){
     var mainG = svg.append("g")
         .classed('main', 1);
 
-    $(window).resize(function() {
+    function resize() {
         width = $('svg.main').width();
+        height = $('svg.main').height();
+
+        radius.range([0, height/8]);
 
         force
             .size([width, height]);
@@ -102,11 +106,14 @@ $(function(){
         legendG
             .attr("transform", "translate(90,"+(height - 20)+")");
 
+        // will lead to fatal error otherwise
         if(circle) {
-            // will lead to fatal error otherwise
             force.start();
+
+            updateRadius();
         }
-    });
+    }
+    $(window).resize(_.debounce(resize, 100));
 
     // selects for level, year and data
     var $levelSelect = $('select#levels'),
@@ -191,29 +198,20 @@ $(function(){
             {value: 10000000, name: '10 Mio.', color:'gray'},
             {value: 1000000, name: '1 Mio.', color:'gray'}
         ];
-        var legendCircles = legendG.selectAll('circle').data(legendData);
+        legendCircles = legendG.selectAll('circle').data(legendData);
 
         legendCircles.enter().append('circle')
-            .classed('legend', 1);
+            .classed('legend', 1)
+            .attr('cx', 0);
 
-        legendCircles
-            .transition().duration(750)
-                .attr('r', function(d) { return radius(d.value); })
-                .attr('cx', 0)
-                .attr('cy', function(d) { return -radius(d.value); });
+        legendLabels = legendG.selectAll('text').data(legendData);
 
-        var legendLabels = legendG.selectAll('text').data(legendData);
-
-        legendLabels.enter().append('text');
-        legendLabels
-            .transition().duration(750)
-                .text(function(d) { return d.name; })
-                .attr('x', -10)
-                .attr('y', function(d) { return -5 + (-radius(d.value)*2); });
+        legendLabels.enter().append('text')
+            .attr('x', -10)
+            .text(function(d) { return d.name; });
 
         nodes.forEach(function(d) {
             d.color = color(d.parent.id || d.id);
-            d.radius = radius(d.value);
         });
 
         d3.select('table.main').select('tbody').selectAll('tr').remove();
@@ -281,14 +279,28 @@ $(function(){
                 .attr("r", 0)
                 .remove();
 
-        circle
-            // .attr("cy", function(d) { return d.y - height; })
-            .transition().duration(750)
-                .attr("r", function(d) { return d.radius; });
-
-        // calls force.start
+        // calls force.start and updateRadius
         $(window).resize();
     }
+
+    var updateRadius = _.debounce(function() {
+        nodes.forEach(function(d) {
+            d.radius = radius(d.value);
+        });
+
+        legendCircles
+            .transition().duration(750)
+                .attr('r', function(d) { return radius(d.value); })
+                .attr('cy', function(d) { return -radius(d.value); });
+
+        legendLabels
+            .transition().duration(750)
+                .attr('y', function(d) { return -5 + (-radius(d.value)*2); });
+
+        circle
+            .transition().duration(750)
+                .attr("r", function(d) { return d.radius; });
+    }, 300, true);
 
     // tooltip
     (function() {
