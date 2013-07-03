@@ -80,7 +80,8 @@ $(function(){
         radius = d3.scale.sqrt(),
         color = d3.scale.category10().domain(d3.range(10)),
         // svg eles for radius update
-        circle, legendCircles, legendLabels;
+        circle, legendCircles, legendLabels,
+        legendData;
 
     var force = d3.layout.force()
         .gravity(0)
@@ -102,9 +103,6 @@ $(function(){
 
         force
             .size([width, height]);
-
-        legendG
-            .attr("transform", "translate(90,"+(height - 20)+")");
 
         // will lead to fatal error otherwise
         if(circle) {
@@ -193,7 +191,7 @@ $(function(){
 
         radius.domain([0, maxValue]);
 
-        var legendData = [
+        legendData = [
             {value: 50000000, name: '50 Mio.', color:'gray'},
             {value: 10000000, name: '10 Mio.', color:'gray'},
             {value: 1000000, name: '1 Mio.', color:'gray'}
@@ -274,15 +272,14 @@ $(function(){
 
         circle.exit()
             .transition().duration(750)
-                // .attr("cx", function(d) { return d.cx; })
-                // .attr("cx", function(d) { return d.x + width; })
                 .attr("r", 0)
                 .remove();
 
         // calls force.start and updateRadius
-        $(window).resize();
+        resize();
     }
 
+    var firstRadiusUpdate = true;
     var updateRadius = _.debounce(function() {
         nodes.forEach(function(d) {
             d.radius = radius(d.value);
@@ -300,6 +297,13 @@ $(function(){
         circle
             .transition().duration(750)
                 .attr("r", function(d) { return d.radius; });
+
+        legendR = radius(legendData[0].value);
+        legendG
+            .transition().duration(firstRadiusUpdate ? 0 : 750)
+                .attr("transform", "translate("+(legendR + 20)+","+(height - 20)+")");
+
+        if(firstRadiusUpdate) firstRadiusUpdate = false;
     }, 300, true);
 
     // tooltip
