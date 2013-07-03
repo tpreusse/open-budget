@@ -42,11 +42,12 @@ g text {
 	h1 {
 		font-size: 1.85em;
 		line-height: 1.4em;
+		margin: 0.3em 0;
 	}
 	.share {
 		float: right;
 		font-size: 1.5em;
-		padding: 0.5em 0 0.5em 0.5em;
+		margin: 0.7em 0 0.7em 0.7em;
 		a {
 			color: #000;
 			&:hover {
