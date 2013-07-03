@@ -72,13 +72,12 @@ $(function(){
         levels = [],
         maxCluster;
 
-    var margin = {top: 0, right: 0, bottom: 0, left: 0},
-        width,
-        height = 500 - margin.top - margin.bottom;
+    var width,
+        height = $('svg.main').height();
 
     var padding = 5,
         maxValue,
-        radius,
+        radius = d3.scale.sqrt().range([0, 65]),
         color = d3.scale.category10().domain(d3.range(10)),
         circle;
 
@@ -87,19 +86,16 @@ $(function(){
         .charge(0)
         .on("tick", tick);
 
-    var svg = d3.select("svg.main")
-        .attr("height", height + margin.top + margin.bottom);
+    var svg = d3.select("svg.main");
 
     var legendG = svg.append("g");
 
     var mainG = svg.append("g")
-        .classed('main', 1)
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .classed('main', 1);
 
     $(window).resize(function() {
-        width = $(window).width()  - margin.left - margin.right;
+        width = $('svg.main').width();
 
-        svg.attr("width", width + margin.left + margin.right);
         force
             .size([width, height]);
 
@@ -188,7 +184,7 @@ $(function(){
             return d.value;
         });
 
-        radius = d3.scale.sqrt().domain([0, maxValue]).range([0, 60]);
+        radius.domain([0, maxValue]);
 
         var legendData = [
             {value: 50000000, name: '50 Mio.', color:'gray'},

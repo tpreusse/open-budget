@@ -17,6 +17,7 @@ gem 'haml-rails', '>= 0.4'
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'zurb-foundation'
+  gem 'font-awesome-rails'
 end
 
 # For people who want to develop without a js runtime

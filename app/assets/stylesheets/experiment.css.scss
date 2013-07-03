@@ -1,6 +1,15 @@
 //= require foundation_and_overrides
+//= require font-awesome
 
 $openDataRed:#E61414;
+
+body {
+}
+
+svg.main {
+	width: 100%;
+	height: 520px;
+}
 
 circle {
 	fill:rgba(0,0,0,0.0);
@@ -27,6 +36,33 @@ circle {
 g text {
 	fill:gray;
 	font-size: 10px;
+}
+
+.header {
+	h1 {
+		font-size: 1.85em;
+		line-height: 1.4em;
+	}
+	.share {
+		float: right;
+		font-size: 1.5em;
+		padding: 0.5em 0 0.5em 0.5em;
+		a {
+			color: #000;
+			&:hover {
+				color: darken($openDataRed, 10%);
+			}
+		}
+		// vertical-align: center;
+	}
+}
+
+.controls-container {
+	position: relative;
+	.controls {
+		position: absolute;
+		top: 20px;
+	}
 }
 
 .header, .rest {

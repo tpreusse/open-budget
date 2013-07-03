@@ -9,10 +9,27 @@
 .header
   .row
     .large-12.columns
-      %h1= sanitize(@meta['h1'])
-      %h2= sanitize(@meta['h2'])
+      .share
+        - if @subdomain.present? || 1
+          = link_to "https://twitter.com/intent/tweet?hashtags=ogd&text=#{u(@meta['page_title'])}&url=http%3A%2F%2F#{@subdomain}.budget.opendata.ch%2F&amp;via=OpendataCH", target: '_blank', title: 'Tweet', data: {tooltip: '', options: 'disable-for-touch:true'} do
+            %i.icon-twitter
+          = link_to "https://www.facebook.com/sharer.php?u=http%3A%2F%2F#{@subdomain}.budget.opendata.ch%2F", target: '_blank', title: 'Share', data: {tooltip: '', options: 'disable-for-touch:true'} do
+            %i.icon-facebook-sign
+          - mail_html = capture_haml do
+            %i.icon-envelope
+          = mail_to '', mail_html, subject: "#{@meta['h1']}: #{@meta['h2']}", body: "Link:\nhttp://#{@subdomain}.budget.opendata.ch", title: 'per Email weiterempfehlen', data: {tooltip: '', options: 'disable-for-touch:true'}
+          - mail_html = capture_haml do
+            %i.icon-bullhorn
+          = mail_to 't@preus.se', mail_html, subject: "OpenBudget Feedback: #{@subdomain}", title: 'Feedback', data: {tooltip: '', options: 'disable-for-touch:true'}
 
-      %form.custom
+        = link_to 'https://github.com/tpreusse/open-budget/tree/experiment', target: '_blank', title: 'Quellcode', data: {tooltip: '', options: 'disable-for-touch:true'} do
+          %i.icon-github
+
+      %h1= "#{sanitize(@meta['h1'])}: #{sanitize(@meta['h2'])}"
+
+
+    .large-12.columns.controls-container
+      %form.custom.controls
         %div{style:"float:left"}
           %select#data.large
             - @meta['data'].each do |dataSet|
@@ -45,7 +62,9 @@
     .large-12.columns
       %ul.inline-list.legend
 
-      %h3 Tabulare Auflistung
+      %p= link_to @meta['source']['text'], @meta['source']['url']
+
+      %h3 Tabellarische Auflistung
       .table-container
         %table.main
           %thead
@@ -75,23 +94,6 @@
               %td
               %td
           %tbody
-
-      %p
-        = link_to 'https://github.com/tpreusse/open-budget/tree/experiment' do
-          Quellcode
-        \-
-        = link_to @meta['source']['text'], @meta['source']['url']
-        \-
-        = link_to 'mailto:t@preus.se' do
-          Feedback
-
-      %p
-        - if @subdomain.present?
-          = link_to "https://twitter.com/intent/tweet?hashtags=ogd&text=#{u(@meta['page_title'])}&url=http%3A%2F%2F#{@subdomain}.budget.opendata.ch%2F&amp;via=OpendataCH", {target: '_blank'} do
-            Tweet
-          \-
-          = link_to "https://www.facebook.com/sharer.php?u=http%3A%2F%2F#{@subdomain}.budget.opendata.ch%2F", {target: '_blank'} do
-            Facebook
 
       .opendatach
         %p
