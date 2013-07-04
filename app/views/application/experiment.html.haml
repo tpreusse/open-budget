@@ -33,6 +33,12 @@
 
     .large-12.columns.controls-container
       .left.large-12.columns
+        %ul.segmented-control.type.button-group.radius
+          %li
+            %a.button.secondary.active{title: 'Finanzielle Auswirkungen', data: {tooltip: '', options: 'disable-for-touch:true', value:'budgets'}} Geld
+          %li
+            %a.button.secondary{title: 'Auswirkungen Vollzeitstellen', data: {tooltip: '', options: 'disable-for-touch:true', value:'positions'}} Stellen
+
         %ul.segmented-control.data.button-group.radius
           - @meta['data'].each do |dataSet|
             %li

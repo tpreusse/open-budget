@@ -66,6 +66,17 @@ $(function(){
         return formatCHF(n / Math.pow(10, 6));
     }
 
+    types = {
+        'budgets': {
+            format: formatMioCHF,
+            suffix: 'Mio. CHF'
+        },
+        'positions': {
+            format: d3.format(',.1f'),
+            suffix: 'Vollzeitstellen'
+        }
+    };
+
     $.fn.segmentedControl = function(fn) {
         if(fn == 'val') {
             var $ele = $('.active', this);
@@ -153,6 +164,13 @@ $(function(){
         updateVis();
     });
 
+    var $typeControl = $('.segmented-control.type'),
+        activeType = $typeControl.segmentedControl('val');
+    $typeControl.change(function() {
+        activeType = $typeControl.segmentedControl('val');
+        updateVis();
+    });
+
     var $dataControl = $('.segmented-control.data');
     $dataControl.find('a:first').addClass('active');
     $dataControl.change(function() {
@@ -205,10 +223,12 @@ $(function(){
 
     // called when level or year changes
     function updateVis() {
-        nodes = levels[activeDepth - 1];
+        nodes = levels[activeDepth - 1].filter(function(d) {
+            return d.revenue[activeType];
+        });
 
         nodes.forEach(function(d) {
-            d.value = d.revenue.budgets[activeYear];
+            d.value = d.revenue[activeType][activeYear];
         });
 
         maxValue = d3.max(nodes, function(d) {
@@ -217,7 +237,11 @@ $(function(){
 
         radius.domain([0, maxValue]);
 
-        legendData = [
+        legendData = activeType == 'positions' ? [
+            {value: 100, name: '100 Stellen', color:'gray'},
+            {value: 10, name: '10 Stellen', color:'gray'},
+            {value: 1, name: '1 Stellen', color:'gray'}
+        ] : [
             {value: 50000000, name: '50 Mio.', color:'gray'},
             {value: 10000000, name: '10 Mio.', color:'gray'},
             {value: 1000000, name: '1 Mio.', color:'gray'}
@@ -231,7 +255,9 @@ $(function(){
         legendLabels = legendG.selectAll('text').data(legendData);
 
         legendLabels.enter().append('text')
-            .attr('x', -10)
+            .attr('x', -10);
+
+        legendLabels
             .text(function(d) { return d.name; });
 
         nodes.forEach(function(d) {
@@ -242,6 +268,11 @@ $(function(){
 
         d3.select('table.main').select('th:nth-child(1)')
             .text(OpenBudget.meta.hierarchy[activeDepth - 1]);
+
+        d3.select('table.main').select('thead').selectAll('tr')
+            .selectAll('th')
+                .selectAll('.format')
+                    .text('(' + types[activeType].suffix + ')');
 
         var trs = d3.select('table.main').select('tbody')
             .selectAll('tr').data(nodes)
@@ -268,12 +299,12 @@ $(function(){
             .text(function(d) { return d.name; });
 
         ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
-            var total = d3.sum(nodes, function(d) { return d.revenue.budgets[year]; });
+            var total = d3.sum(nodes, function(d) { return d.revenue[activeType][year]; });
             d3.select('table.main').select('tfoot td:nth-child('+ (index + 2) +')')
-                .text(formatMioCHF(total));
+                .text(types[activeType].format(total));
 
             trs.append('td')
-                .text(function(d) { return formatMioCHF(d.revenue.budgets[year]); });
+                .text(function(d) { return types[activeType].format(d.revenue[activeType][year]); });
 
         });
 
@@ -359,7 +390,7 @@ $(function(){
                 (d.depth == 2 ?
                     '<span class="name">'+d.name+'</span><br />' : ''
                 ) +
-                formatMioCHF(d.value) + ' Mio. CHF'
+                types[activeType].format(d.value) + ' ' + types[activeType].suffix
             );
 
             $(document).one('touchend', function() {

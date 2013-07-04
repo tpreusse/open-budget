@@ -100,11 +100,20 @@ g text {
             float: left;
             margin-right: 20px;
 
-            &.year {
+            &.type {
+                // float: none;
+            }
+
+            &.data {
+                // float: none;
+            }
+
+            &.year, &.levels {
                 @media #{$small} {
                     float: right;
+                    margin-left: 20px;
+                    margin-right: 0px;
                 }
-                margin-right: 0px;
             }
         }
     }
