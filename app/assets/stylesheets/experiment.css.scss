@@ -15,6 +15,21 @@ svg.main {
     height: 520px;
 }
 
+.upgrade-browser {
+    display: none;
+
+    padding: 100px 0;
+}
+
+.no-svg {
+    .upgrade-browser {
+        display: block;
+    }
+    .controls-container, .rest {
+        display: none;
+    }
+}
+
 circle {
     fill:rgba(0,0,0,0.0);
     stroke-width:2px;
