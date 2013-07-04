@@ -125,9 +125,10 @@ $(function(){
         .classed('main', 1);
 
     function resize() {
-        width = $('svg.main').width();
+        width = $(window).width();
         height = Math.max($(window).height() / 100 * 75, 520);
 
+        svg.style('width', Math.round(width) + 'px');
         svg.style('height', Math.round(height) + 'px');
 
         var radiusHeight = height;
