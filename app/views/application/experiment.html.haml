@@ -20,7 +20,7 @@
           = mail_to '', mail_html, subject: "#{@meta['h1']}: #{@meta['h2']}", body: "Link:\nhttp://#{@subdomain}.budget.opendata.ch", title: 'per Email weiterempfehlen', data: {tooltip: '', options: 'disable-for-touch:true'}
           - mail_html = capture_haml do
             %i.icon-bullhorn
-          = mail_to 't@preus.se', mail_html, subject: "OpenBudget Feedback: #{@subdomain}", title: 'Feedback', data: {tooltip: '', options: 'disable-for-touch:true'}
+          = mail_to 'openfinance@opendata.ch', mail_html, subject: "OpenBudget Feedback: #{@subdomain}", title: 'Feedback', data: {tooltip: '', options: 'disable-for-touch:true'}
 
         = link_to 'https://github.com/tpreusse/open-budget/tree/experiment', target: '_blank', title: 'Quellcode', data: {tooltip: '', options: 'disable-for-touch:true'} do
           %i.icon-github
