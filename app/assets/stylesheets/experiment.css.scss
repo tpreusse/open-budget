@@ -1,135 +1,177 @@
 //= require foundation_and_overrides
 //= require font-awesome
 
+@import "foundation/variables", "foundation/components/global", "foundation/components/buttons", "foundation/components/button-groups";
+@import 'foundation_variables';
+
 $opendata-red:#E61414;
 
 body {
-	height: 100%;
+    height: 100%;
 }
 
 svg.main {
-	width: 100%;
-	height: 75%;
+    width: 100%;
+    height: 520px;
 }
 
 circle {
-	fill:rgba(0,0,0,0.0);
-	stroke-width:2px;
+    fill:rgba(0,0,0,0.0);
+    stroke-width:2px;
 
-	&:hover {
-		stroke-width:4px;
-	}
+    &:hover {
+        stroke-width:4px;
+    }
 
-	&.has-detail {
-		cursor: pointer;
-	}
+    &.has-detail {
+        cursor: pointer;
+    }
 
-	&.legend {
-		stroke-width:1px;
-		stroke-dasharray:5,5;
-		stroke:gray;
-		&:hover {
-			stroke-width:1px;
-		}
-	}
+    &.legend {
+        stroke-width:1px;
+        stroke-dasharray:5,5;
+        stroke:gray;
+        &:hover {
+            stroke-width:1px;
+        }
+    }
 }
 
 g text {
-	fill:gray;
-	font-size: 10px;
+    fill:gray;
+    font-size: 10px;
+}
+
+.segmented-control {
+    $button-color: #fafafa;
+    $button-function-factor: 5%;
+    .button {
+        @include button($bg:$button-color);
+        font-size: 0.8em;
+
+        &.active {
+            cursor: default;
+            background-color: darken($button-color, $button-function-factor);
+
+            @if $experimental {
+                -webkit-box-shadow: $shiny-edge-size $shiny-edge-active-color inset;
+            }
+            box-shadow: $shiny-edge-size $shiny-edge-active-color inset;
+        }
+    }
 }
 
 .header {
-	h1 {
-		font-size: 1.85em;
-		line-height: 1.4em;
-		margin: 0.3em 0;
-	}
-	.share {
-		float: right;
-		font-size: 1.5em;
-		margin: 0.7em 0 0.7em 0.7em;
-		a {
-			color: #000;
-			&:hover {
-				color: darken($opendata-red, 10%);
-			}
-		}
-		// vertical-align: center;
-	}
+    h1 {
+        font-size: 1.85em;
+        line-height: 1.4em;
+        margin: 0.3em 0;
+    }
+    .share {
+        float: right;
+        font-size: 1.5em;
+        margin: 0.7em 0 0.7em 0.7em;
+        a {
+            color: #000;
+            &:hover {
+                color: darken($opendata-red, 10%);
+            }
+        }
+        // vertical-align: center;
+    }
 }
 
 .controls-container {
-	position: relative;
-	.controls {
-		position: absolute;
-		top: 20px;
-	}
+    position: relative;
+
+    .left {
+        position: absolute;
+        top: 20px;
+        left: 0;
+
+        .segmented-control {
+            float: left;
+            margin-right: 20px;
+
+            &.year {
+                @media #{$small} {
+                    float: right;
+                }
+                margin-right: 0px;
+            }
+        }
+    }
+
+    .right {
+        position: absolute;
+        top: 20px;
+        right: $column-gutter / 2;
+    }
 }
 
 .header, .rest {
-	box-shadow:0 0 20px 1px #ddd;
+    box-shadow:0 0 20px 1px #ddd;
 }
 
 .rest {
-	padding-top: 10px;
+    padding-top: 10px;
 }
 
 span.circle {
-	border: 2px solid;
-	display: inline-block;
-	width: 1em;
-	height: 1em;
-	-webkit-border-radius: 1em;
-	-moz-border-radius: 1em;
-	border-radius: 1em;
-	margin-right: 0.5em;
+    border: 2px solid;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+    margin-right: 0.5em;
 }
 
 .legend {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 .table-container {
-	max-width: 100%;
-	overflow: auto;
+    max-width: 100%;
+    overflow: auto;
 }
 
 span.format {
-	font-size: 0.5em;
-	color: gray;
-	white-space: nowrap;
+    font-size: 0.5em;
+    color: gray;
+    white-space: nowrap;
 }
 
 table {
-	width: 100%;
+    width: 100%;
 
-	tbody tr td, thead  tr th, tfoot tr td {
-		line-height: 1.5em;
-		text-align: right;
-		&:first-child {
-			text-align: left;
-		}
-	}
+    tbody tr td, thead  tr th, tfoot tr td {
+        line-height: 1.5em;
+        text-align: right;
+        &:first-child {
+            text-align: left;
+        }
+    }
 
-	tbody tr td {
-		&:nth-child(2) {
-			text-align: left;
-		}
+    tbody tr td {
+        &:nth-child(2) {
+            text-align: left;
+        }
 
-		#detail-modal &:nth-child(2) {
-			text-align: right;
-		}
-	}
+        #detail-modal &:nth-child(2) {
+            text-align: right;
+        }
+    }
 
-	tbody tr.has-detail:hover {
-		cursor: pointer;
-		background-color:lighten($opendata-red, 48%);
-	}
+    tbody tr.has-detail:hover {
+        cursor: pointer;
+        background-color:lighten($opendata-red, 48%);
+    }
 }
 
 .opendatach img {
-	height: 50px
+    height: 50px
 }
 
 #tooltip {

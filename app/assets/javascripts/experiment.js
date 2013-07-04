@@ -66,6 +66,24 @@ $(function(){
         return formatCHF(n / Math.pow(10, 6));
     }
 
+    $.fn.segmentedControl = function(fn) {
+        if(fn == 'val') {
+            var $ele = $('.active', this);
+            return $ele.data('value') || $ele.text();
+        }
+        return this.each(function() {
+            var $control = $(this),
+                $options = $control.find('a');
+
+            $('a', this).click(function() {
+                $options.removeClass('active');
+                $(this).addClass('active');
+                $control.change();
+            });
+        });
+    };
+    $('.segmented-control').segmentedControl();
+
     var layers = OpenBudget.layers(),
         nodes = [],
         all = [],
@@ -97,9 +115,16 @@ $(function(){
 
     function resize() {
         width = $('svg.main').width();
-        height = $('svg.main').height();
+        height = Math.max($(window).height() / 100 * 75, 520);
 
-        radius.range([0, height/8]);
+        svg.style('height', height);
+
+        var radiusHeight = height;
+        if(width < 768) {
+            radiusHeight -= 200;
+        }
+
+        radius.range([0, radiusHeight/8]);
 
         force
             .size([width, height]);
@@ -113,24 +138,25 @@ $(function(){
     }
     $(window).resize(_.debounce(resize, 100));
 
-    // selects for level, year and data
-    var $levelSelect = $('select#levels'),
-        activeDepth = parseInt($levelSelect.val(), 10);
-    $levelSelect.change(function() {
-        activeDepth = parseInt($levelSelect.val(), 10);
+    // controls for level, year and data
+    var $levelControl = $('.segmented-control.levels'),
+        activeDepth = parseInt($levelControl.segmentedControl('val'), 10);
+    $levelControl.change(function() {
+        activeDepth = parseInt($levelControl.segmentedControl('val'), 10);
         updateVis();
     });
 
-    var $yearSelect = $('select#year'),
-        activeYear = $yearSelect.val();
-    $yearSelect.change(function() {
-        activeYear = $yearSelect.val();
+    var $yearControl = $('.segmented-control.year'),
+        activeYear = $yearControl.segmentedControl('val');
+    $yearControl.change(function() {
+        activeYear = $yearControl.segmentedControl('val');
         updateVis();
     });
 
-    var $dataSelect = $('select#data');
-    $dataSelect.change(function() {
-        d3.json($(this).val(), function(data) {
+    var $dataControl = $('.segmented-control.data');
+    $dataControl.find('a:first').addClass('active');
+    $dataControl.change(function() {
+        d3.json($(this).segmentedControl('val'), function(data) {
             setup({"children": data});
 
             updateVis();

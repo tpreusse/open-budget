@@ -10,7 +10,7 @@
   .row
     .large-12.columns
       .share
-        - if @subdomain.present? || 1
+        - if @subdomain.present?
           = link_to "https://twitter.com/intent/tweet?hashtags=ogd&text=#{u(@meta['page_title'])}&url=http%3A%2F%2F#{@subdomain}.budget.opendata.ch%2F&amp;via=OpendataCH", target: '_blank', title: 'Tweet', data: {tooltip: '', options: 'disable-for-touch:true'} do
             %i.icon-twitter
           = link_to "https://www.facebook.com/sharer.php?u=http%3A%2F%2F#{@subdomain}.budget.opendata.ch%2F", target: '_blank', title: 'Share', data: {tooltip: '', options: 'disable-for-touch:true'} do
@@ -29,25 +29,29 @@
 
 
     .large-12.columns.controls-container
-      %form.custom.controls
-        %div{style:"float:left"}
-          %select#data.large
-            - @meta['data'].each do |dataSet|
-              %option{value:dataSet['url']}= dataSet['name']
+      .left.large-12.columns
+        %ul.segmented-control.data.button-group.radius
+          - @meta['data'].each do |dataSet|
+            %li
+              %a.button.secondary{data:{value:dataSet['url']}}= dataSet['name']
 
-        %div{style:"float:left"}
-          %select#levels.large
-            %option{value:'1'} Direktionen
-            %option{value:'2', selected: 'selected'} Massnahmen
+        %ul.segmented-control.levels.button-group.radius
+          %li
+            %a.button.secondary{data:{value:1}} Direktionen
+          %li
+            %a.button.active.secondary{data:{value:2}} Massnahmen
 
-        %div{style:"float:left"}
-          %select#year.large
-            %optgroup{label: 'Voranschlag'}
-              %option{value: '2014'} 2014
-            %optgroup{label: 'Aufgaben-/Finanzplan'}
-              %option{value: '2015'} 2015
-              %option{value: '2016'} 2016
-              %option{value: '2017'} 2017
+        %ul.segmented-control.year.button-group.radius
+          / Voranschlag
+          %li
+            %a.button.secondary.active 2014
+          / Aufgaben-/Finanzplan
+          %li
+            %a.button.secondary 2015
+          %li
+            %a.button.secondary 2016
+          %li
+            %a.button.secondary 2017
 
 %svg.main
 
