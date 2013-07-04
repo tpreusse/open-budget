@@ -25,7 +25,10 @@
         = link_to 'https://github.com/tpreusse/open-budget/tree/experiment', target: '_blank', title: 'Quellcode', data: {tooltip: '', options: 'disable-for-touch:true'} do
           %i.icon-github
 
-      %h1= "#{sanitize(@meta['h1'])}: #{sanitize(@meta['h2'])}"
+      %h1
+        = link_to 'http://www.opendata.ch/' do
+          = image_tag 'opendatach-icon.png', alt: 'OpenData.ch', title: 'OpenData.ch'
+        = "#{sanitize(@meta['h1'])}: #{sanitize(@meta['h2'])}"
 
 
     .large-12.columns.controls-container

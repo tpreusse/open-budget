@@ -66,6 +66,13 @@ g text {
         font-size: 1.85em;
         line-height: 1.4em;
         margin: 0.3em 0;
+
+        color: $opendata-red;
+
+        img {
+            vertical-align: text-top;
+            height: 1.2em;
+        }
     }
     .share {
         float: right;
@@ -168,6 +175,10 @@ table {
         cursor: pointer;
         background-color:lighten($opendata-red, 48%);
     }
+}
+
+p.source {
+    margin-bottom: 0;
 }
 
 .opendatach img {

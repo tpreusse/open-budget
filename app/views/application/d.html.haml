@@ -73,8 +73,9 @@
 - if @detail['Postfix'].present?
   %p= @detail['Postfix']
 
-%strong Quelle:
-= link_to 'http://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.assetref/content/dam/documents/portal/Medienmitteilungen/de/2013/06/2013-06-28-asp-2014-bericht-de.pdf', {target: '_blank'} do
-  Bericht des Regierungsrates an den Grossen Rat vom 26. Juni 2013 - Angebots- und Strukturüberprüfung (ASP 2014)
+%p.source
+  %strong Quelle:
+  = link_to 'http://www.be.ch/portal/de/index/mediencenter/medienmitteilungen.assetref/content/dam/documents/portal/Medienmitteilungen/de/2013/06/2013-06-28-asp-2014-bericht-de.pdf', {target: '_blank'} do
+    Bericht des Regierungsrates an den Grossen Rat vom 26. Juni 2013 - Angebots- und Strukturüberprüfung (ASP 2014)
 
 %a.close-reveal-modal &#215;
