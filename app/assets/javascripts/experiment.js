@@ -1,5 +1,5 @@
 //= require underscore
-//= require d3/d3.v3.min
+//= require d3/d3.v3
 //= require foundation
 
 (function() {
@@ -128,7 +128,7 @@ $(function(){
         width = $('svg.main').width();
         height = Math.max($(window).height() / 100 * 75, 520);
 
-        svg.style('height', height);
+        svg.style('height', Math.round(height) + 'px');
 
         var radiusHeight = height;
         if(width < 768) {
