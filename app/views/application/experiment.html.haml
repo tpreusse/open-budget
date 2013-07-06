@@ -44,7 +44,8 @@
             %li
               - data = {value:dataSet['url']}
               - if dataSet['description']
-                - data[:tooltip] = '' && data[:options] = 'disable-for-touch:true'
+                - data[:tooltip] = ''
+                - data[:options] = 'disable-for-touch:true'
               %a.button.secondary{title: dataSet['description'], data:data}= dataSet['name']
 
         %ul.segmented-control.levels.button-group.radius
