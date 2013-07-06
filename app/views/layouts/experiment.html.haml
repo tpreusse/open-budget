@@ -11,8 +11,8 @@
 
   %title= content_for?(:title) ? yield(:title) : "Untitled"
 
-  = stylesheet_link_tag "//fonts.googleapis.com/css?family=Droid+Sans:regular,bold"
-  = stylesheet_link_tag "experiment"
+  = stylesheet_link_tag "//fonts.googleapis.com/css?family=Droid+Sans:regular,bold", :media => "all"
+  = stylesheet_link_tag "experiment", :media => "all"
   = javascript_include_tag "vendor/custom.modernizr"
   = csrf_meta_tag
 
