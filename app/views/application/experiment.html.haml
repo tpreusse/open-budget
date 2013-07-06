@@ -42,7 +42,10 @@
         %ul.segmented-control.data.button-group.radius
           - @meta['data'].each do |dataSet|
             %li
-              %a.button.secondary{data:{value:dataSet['url']}}= dataSet['name']
+              - data = {value:dataSet['url']}
+              - if dataSet['description']
+                - data[:tooltip] = '' && data[:options] = 'disable-for-touch:true'
+              %a.button.secondary{title: dataSet['description'], data:data}= dataSet['name']
 
         %ul.segmented-control.levels.button-group.radius
           %li
@@ -85,9 +88,29 @@
         = link_to @meta['source']['text'], @meta['source']['url']
 
     .large-12.columns
-      %ul.inline-list.legend
-
-      %p= link_to @meta['source']['text'], @meta['source']['url']
+      %h3 Legende
+      .row
+        .large-6.columns
+          %h4 Direktionen
+          %ul.inline-list.legend
+        .large-6.columns
+          %h4 Begriffe
+          %p
+            - @meta['data'].each do |dataSet|
+              - if dataSet['description']
+                %strong= "#{dataSet['name']}:"
+                = dataSet['description']
+                %br
+            %strong Geld:
+            Finaanzielle Auswirkungen
+            %br
+            %strong Stellen:
+            Auswirkungen Vollzeitstellen
+            %br
+      %p
+        = link_to 'Medienmitteilung Verein OpenData.ch', 'http://opendata.ch/2013/07/asp-2014/'
+        \-
+        = link_to @meta['source']['text'], @meta['source']['url']
 
       %h3 Tabellarische Auflistung
       .table-container
