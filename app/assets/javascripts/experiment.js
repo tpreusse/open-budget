@@ -325,7 +325,11 @@ $(function(){
                 var rgb = d3.rgb(d.color);
                 return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
             })
-            .on('click', showDetail)
+            .on('click', function(d) {
+                if(!d3.event.defaultPrevented) {
+                    showDetail(d);
+                }
+            })
             .call(force.drag);
 
         circle.exit()
@@ -370,14 +374,23 @@ $(function(){
         var formatDiffPercent = d3.format('+.2');
         var $tip = $('<div id="tooltip"></div>').html('<div></div>').hide().appendTo($body);
         var $tipInner = $tip.find('div');
-        $(document).mousemove(function(e){
+
+        var updatePos = function(e) {
+            if(e.originalEvent.changedTouches) {
+                e = e.originalEvent.changedTouches[0];
+            }
             $tip.css({
                 'top': e.pageY + 0,
                 'left': e.pageX + 10
             });
-        });
+        };
+        var hide = function(e) {
+            $(document)
+                .off('touchmove', updatePos);
+            $tip.hide();
+        };
 
-        $(document).on('mouseover touchstart', 'svg g.main circle', function(){
+        $(document).on('touchstart mouseover', 'svg g.main circle', function(e){
             var d = this.__data__, directionName = '';
             if(d.depth == 2) {
                 directionName = d.parent.name;
@@ -394,13 +407,11 @@ $(function(){
                 types[activeType].format(d.value) + ' ' + types[activeType].suffix
             );
 
-            $(document).one('touchend', function() {
-                $tip.hide();
-            });
+            updatePos(e);
+            $(document)
+                .on('touchmove mousemove', updatePos)
+                .one('touchend mouseout', hide);
             $tip.show();
-        });
-        $(document).on('mouseout', 'svg g.main circle', function(){
-            $tip.hide();
         });
     })();
 
