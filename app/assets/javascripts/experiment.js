@@ -109,7 +109,7 @@ $(function(){
         radius = d3.scale.sqrt(),
         color = d3.scale.category10().domain(d3.range(10)),
         // svg eles for radius update
-        circle, legendCircles, legendLabels,
+        circleGroups, legendCircles, legendLabels,
         legendData;
 
     var force = d3.layout.force()
@@ -142,7 +142,7 @@ $(function(){
             .size([width, height]);
 
         // will lead to fatal error otherwise
-        if(circle) {
+        if(circleGroups) {
             force.start();
 
             updateRadius();
@@ -312,19 +312,10 @@ $(function(){
         force
             .nodes(nodes);
 
-        circle = mainG.selectAll("circle")
+        circleGroups = mainG.selectAll("g")
             .data(nodes, function(d) { return d.id; });
 
-        circle.enter().append("circle")
-            .attr("r", 0)
-            .attr("class", function(d) {
-                return d.detail ? 'has-detail' : '';
-            })
-            .style("stroke", function(d) { return d.color; })
-            .style("fill", function(d) {
-                var rgb = d3.rgb(d.color);
-                return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
-            })
+        circleGroups.enter().append('g')
             .on('touchstart', function(d) {
                 d3.event.preventDefault();
             })
@@ -333,12 +324,31 @@ $(function(){
                     showDetail(d);
                 }
             })
-            .call(force.drag);
-
-        circle.exit()
-            .transition().duration(750)
+            .call(force.drag)
+            .append("circle")
                 .attr("r", 0)
-                .remove();
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("class", function(d) {
+                    return d.detail ? 'has-detail' : '';
+                })
+                .style("stroke", function(d) { return d.color; })
+                .style("fill", function(d) {
+                    var rgb = d3.rgb(d.color);
+                    return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
+                });
+
+        circleGroups
+            .selectAll('circle')
+                .datum(function() {
+                    return this.parentNode.__data__;
+                });
+
+        circleGroups.exit()
+            .transition().duration(750)
+                .remove()
+                .selectAll('circle')
+                    .attr("r", 0);
 
         // calls force.start and updateRadius
         resize();
@@ -359,7 +369,8 @@ $(function(){
             .transition().duration(750)
                 .attr('y', function(d) { return -5 + (-radius(d.value)*2); });
 
-        circle
+        circleGroups
+            .selectAll('circle')
             .transition().duration(750)
                 .attr("r", function(d) { return d.radius; });
 
@@ -421,11 +432,12 @@ $(function(){
     // clustered force by mbostock
     // http://bl.ocks.org/mbostock/1748247
     function tick(e) {
-      circle
+      circleGroups
           .each(cluster(10 * e.alpha * e.alpha))
           .each(collide(0.5))
-          .attr("cx", function(d) { return d.x; })
-          .attr("cy", function(d) { return d.y; });
+          .attr('transform', function(d) {
+            return 'translate('+d.x+', '+d.y+')';
+          });
     }
 
     // Move d to be adjacent to the cluster node.
