@@ -30,7 +30,8 @@
           %th 2016
           %th 2017
       %tbody
-        - if @detail['Auswirkungen']['Finanzielle'].present?
+        - # disbaled pending data review
+        - if false && @detail['Auswirkungen']['Finanzielle'].present?
           %tr
             %td
               - if @detail['Auswirkungen']['Finanzielle']['Label'].present?
@@ -51,14 +52,16 @@
             %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2015'].to_f / (10 ** 6))
             %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2016'].to_f / (10 ** 6))
             %td= sprintf '%.2f', (@detail['node']['revenue']['budgets']['2017'].to_f / (10 ** 6))
-        - if @detail['Auswirkungen']['Vollzeitstellen'].present?
+        - # disbaled pending data review
+        - if false && @detail['Auswirkungen']['Vollzeitstellen'].present?
           %tr
             %td Auswirkungen Vollzeitstellen
             %td= @detail['Auswirkungen']['Vollzeitstellen']['2014']
             %td= @detail['Auswirkungen']['Vollzeitstellen']['2015']
             %td= @detail['Auswirkungen']['Vollzeitstellen']['2016']
             %td= @detail['Auswirkungen']['Vollzeitstellen']['2017']
-        - if @detail['Auswirkungen']['Gemeinden'].present?
+        - # disbaled pending data review
+        - if false && @detail['Auswirkungen']['Gemeinden'].present?
           %tr
             %td
               Auswirkungen Gemeinden
