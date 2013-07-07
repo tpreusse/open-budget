@@ -316,7 +316,7 @@ $(function(){
             .data(nodes, function(d) { return d.id; });
 
         var enterGs = circleGroups.enter().append('g')
-            .on('touchstart', function(d) {
+            .on('touchmove', function(d) {
                 d3.event.preventDefault();
             })
             .on('click', function(d) {
