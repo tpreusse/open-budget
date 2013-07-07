@@ -315,7 +315,7 @@ $(function(){
         circleGroups = mainG.selectAll("g")
             .data(nodes, function(d) { return d.id; });
 
-        circleGroups.enter().append('g')
+        var enterGs = circleGroups.enter().append('g')
             .on('touchstart', function(d) {
                 d3.event.preventDefault();
             })
@@ -324,19 +324,28 @@ $(function(){
                     showDetail(d);
                 }
             })
-            .call(force.drag)
+            .attr('class', function(d) {
+                return d.detail ? 'has-detail' : '';
+            })
+            .call(force.drag);
+
+        enterGs
             .append("circle")
                 .attr("r", 0)
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .attr("class", function(d) {
-                    return d.detail ? 'has-detail' : '';
-                })
                 .style("stroke", function(d) { return d.color; })
                 .style("fill", function(d) {
                     var rgb = d3.rgb(d.color);
                     return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
                 });
+        enterGs
+            .append('text')
+                .style('opacity', 0)
+                .style('fill', function(d) { return d.color; })
+                .attr('text-anchor', 'middle')
+                .attr('dy', function(d) { return '.5em'; })
+                .text(function(d) { return d.short_name; });
 
         circleGroups
             .selectAll('circle')
@@ -344,11 +353,14 @@ $(function(){
                     return this.parentNode.__data__;
                 });
 
-        circleGroups.exit()
+        var cGET = circleGroups.exit()
             .transition().duration(750)
-                .remove()
-                .selectAll('circle')
-                    .attr("r", 0);
+                .remove();
+
+        cGET.selectAll('circle')
+            .attr("r", 0);
+        cGET.selectAll('text')
+            .style('opacity', 0);
 
         // calls force.start and updateRadius
         resize();
@@ -369,10 +381,14 @@ $(function(){
             .transition().duration(750)
                 .attr('y', function(d) { return -5 + (-radius(d.value)*2); });
 
-        circleGroups
-            .selectAll('circle')
-            .transition().duration(750)
-                .attr("r", function(d) { return d.radius; });
+        cGT = circleGroups
+            .transition().duration(750);
+
+        cGT.selectAll('circle')
+            .attr("r", function(d) { return d.radius; });
+
+        cGT.selectAll('text')
+            .style('opacity', function(d) { return d.radius > 15 ? 1: 0; });
 
         legendR = radius(legendData[0].value);
         legendG
@@ -404,7 +420,7 @@ $(function(){
             $tip.hide();
         };
 
-        $(document).on('touchstart mouseover', 'svg g.main circle', function(e){
+        $(document).on('touchstart mouseover', 'svg g.main g', function(e){
             var d = this.__data__, directionName = '';
             if(d.depth == 2) {
                 directionName = d.parent.name;
@@ -416,7 +432,7 @@ $(function(){
             $tipInner.html(
                 '<span class="name" style="color:'+d.color+'">'+directionName+'</span><br />'+
                 (d.depth == 2 ?
-                    '<span class="name">'+d.name+'</span><br />' : ''
+                    '<span class="name">'+ (d.short_name ? d.short_name + ' ' : '') + d.name+'</span><br />' : ''
                 ) +
                 types[activeType].format(d.value) + ' ' + types[activeType].suffix
             );

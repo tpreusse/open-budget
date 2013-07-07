@@ -34,12 +34,8 @@ circle {
     fill:rgba(0,0,0,0.0);
     stroke-width:2px;
 
-    &:active, .no-touch &:hover {
+    g.main g:active &, .no-touch g.main g:hover & {
         stroke-width:4px;
-    }
-
-    &.has-detail {
-        cursor: pointer;
     }
 
     &.legend {
@@ -49,6 +45,12 @@ circle {
         &:hover {
             stroke-width:1px;
         }
+    }
+}
+
+g.main g {
+    &.has-detail {
+        cursor: pointer;
     }
 }
 
