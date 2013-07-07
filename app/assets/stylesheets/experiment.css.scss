@@ -34,7 +34,7 @@ circle {
     fill:rgba(0,0,0,0.0);
     stroke-width:2px;
 
-    &:hover {
+    &:active, .no-touch &:hover {
         stroke-width:4px;
     }
 

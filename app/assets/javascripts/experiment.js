@@ -325,6 +325,9 @@ $(function(){
                 var rgb = d3.rgb(d.color);
                 return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
             })
+            .on('touchstart', function(d) {
+                d3.event.preventDefault();
+            })
             .on('click', function(d) {
                 if(!d3.event.defaultPrevented) {
                     showDetail(d);
