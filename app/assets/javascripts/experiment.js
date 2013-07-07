@@ -419,8 +419,8 @@ $(function(){
                 .off('touchmove', updatePos);
             $tip.hide();
         };
-
-        $(document).on('touchstart mouseover', 'svg g.main g', function(e){
+        var touch = Modernizr.touch;
+        $(document).on(touch ? 'touchstart' : 'mouseover', 'svg g.main g', function(e){
             var d = this.__data__, directionName = '';
             if(d.depth == 2) {
                 directionName = d.parent.name;
@@ -439,8 +439,8 @@ $(function(){
 
             updatePos(e);
             $(document)
-                .on('touchmove mousemove', updatePos)
-                .one('touchend mouseout', hide);
+                .on(touch ? 'touchmove' : 'mousemove', updatePos)
+                .one(touch? 'touchend' : 'mouseout', hide);
             $tip.show();
         });
     })();
