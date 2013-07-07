@@ -62,7 +62,7 @@ g text {
     $button-function-factor: 5%;
     .button {
         @include button($bg:$button-color);
-        font-size: 0.8em;
+        font-size: 0.79em; // fit four years on iOS screens
 
         &.active {
             cursor: default;
