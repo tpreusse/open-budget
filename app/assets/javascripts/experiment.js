@@ -297,7 +297,7 @@ $(function(){
                 });
 
         trs.append('td')
-            .text(function(d) { return d.name; });
+            .text(function(d) { return (d.short_name ? d.short_name + ' ' : '') + d.name; });
 
         ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
             var total = d3.sum(nodes, function(d) { return d.revenue[activeType][year]; });
