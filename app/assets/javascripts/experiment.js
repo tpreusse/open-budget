@@ -60,7 +60,8 @@ $(function(){
 
     $(document).foundation();
 
-    var formatCHF = d3.format(',.2f');
+    var formatCHF = d3.format(',.2f'),
+        formatPercent = d3.format('+.2');
 
     function formatMioCHF(n) {
         return formatCHF(n / Math.pow(10, 6));
@@ -225,11 +226,19 @@ $(function(){
     // called when level or year changes
     function updateVis() {
         nodes = levels[activeDepth - 1].filter(function(d) {
-            return d.revenue[activeType];
+            return d.cuts[activeType];
         });
 
         nodes.forEach(function(d) {
-            d.value = d.revenue[activeType][activeYear];
+            d.value = d.cuts[activeType][activeYear];
+            var value2 = ((d.gross_cost || {})[activeType] || {})["2012"];
+            if(value2) {
+                d.value2 = value2;
+                d.diff = d3.round((100 + ((d.value - value2) / (value2 / 100))) * -1, 2);
+            }
+            else {
+                d.value2 = d.diff = undefined;
+            }
         });
 
         maxValue = d3.max(nodes, function(d) {
@@ -300,12 +309,12 @@ $(function(){
             .text(function(d) { return (d.short_name ? d.short_name + ' ' : '') + d.name; });
 
         ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
-            var total = d3.sum(nodes, function(d) { return d.revenue[activeType][year]; });
+            var total = d3.sum(nodes, function(d) { return d.cuts[activeType][year]; });
             d3.select('table.main').select('tfoot td:nth-child('+ (index + 2) +')')
                 .text(types[activeType].format(total));
 
             trs.append('td')
-                .text(function(d) { return types[activeType].format(d.revenue[activeType][year]); });
+                .text(function(d) { return types[activeType].format(d.cuts[activeType][year]); });
 
         });
 
@@ -401,7 +410,6 @@ $(function(){
     // tooltip
     (function() {
         var $body = $('body');
-        var formatDiffPercent = d3.format('+.2');
         var $tip = $('<div id="tooltip"></div>').html('<div></div>').hide().appendTo($body);
         var $tipInner = $tip.find('div');
 
@@ -434,7 +442,11 @@ $(function(){
                 (d.depth == 2 ?
                     '<span class="name">'+ (d.short_name ? d.short_name + ' ' : '') + d.name+'</span><br />' : ''
                 ) +
-                types[activeType].format(d.value) + ' ' + types[activeType].suffix
+                'Sparmassnahme '+activeYear+': ' + types[activeType].format(d.value) + ' ' + types[activeType].suffix +
+                (d.value2 ? '<br />' +
+                    'Budget 2012: ' + types[activeType].format(d.value2) + ' ' + types[activeType].suffix +
+                    ', ' + formatPercent(d.diff) + '%' : ''
+                )
             );
 
             updatePos(e);
