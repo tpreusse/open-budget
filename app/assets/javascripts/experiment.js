@@ -361,6 +361,11 @@ $(function(){
                 .datum(function() {
                     return this.parentNode.__data__;
                 });
+        circleGroups
+            .selectAll('text')
+                .datum(function() {
+                    return this.parentNode.__data__;
+                });
 
         var cGET = circleGroups.exit()
             .transition().duration(750)
