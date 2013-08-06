@@ -149,7 +149,7 @@ $(function(){
             updateRadius();
         }
     }
-    $(window).resize(_.debounce(resize, 100));
+    $(window).resize(_.debounce(resize, 166)); // 166 = 5 * 33.3 = every 5th frame
 
     // controls for level, year and data
     var $levelControl = $('.segmented-control.levels'),
