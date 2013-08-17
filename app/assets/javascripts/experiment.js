@@ -1,5 +1,7 @@
 //= require underscore
 //= require d3/d3.v3
+//= require experiment/force_extension
+//= require experiment/segmented_control
 //= require foundation
 
 (function() {
@@ -78,22 +80,6 @@ $(function(){
         }
     };
 
-    $.fn.segmentedControl = function(fn) {
-        if(fn == 'val') {
-            var $ele = $('.active', this);
-            return $ele.data('value') || $ele.text();
-        }
-        return this.each(function() {
-            var $control = $(this),
-                $options = $control.find('a');
-
-            $('a', this).click(function() {
-                $options.removeClass('active');
-                $(this).addClass('active');
-                $control.change();
-            });
-        });
-    };
     $('.segmented-control').segmentedControl();
 
     var layers = OpenBudget.layers(),
@@ -105,8 +91,7 @@ $(function(){
     var width,
         height;
 
-    var padding = 5,
-        maxValue,
+    var maxValue,
         radius = d3.scale.sqrt(),
         color = d3.scale.category10().domain(d3.range(10)),
         // svg eles for radius update
@@ -117,6 +102,18 @@ $(function(){
         .gravity(0)
         .charge(0)
         .on("tick", tick);
+
+    function tick(e) {
+      circleGroups
+          .each(forceExt.cluster(10 * e.alpha * e.alpha))
+          .each(forceExt.collide(0.5))
+          .attr('transform', function(d) {
+            return 'translate('+d.x+', '+d.y+')';
+          });
+    }
+
+    var forceExt = d3.layout.forceExtension()
+        .radius(radius);
 
     var svg = d3.select("svg.main");
 
@@ -140,6 +137,8 @@ $(function(){
         radius.range([0, radiusHeight/8]);
 
         force
+            .size([width, height]);
+        forceExt
             .size([width, height]);
 
         // will lead to fatal error otherwise
@@ -320,6 +319,8 @@ $(function(){
 
         force
             .nodes(nodes);
+        forceExt
+            .nodes(nodes);
 
         circleGroups = mainG.selectAll("g")
             .data(nodes, function(d) { return d.id; });
@@ -461,87 +462,5 @@ $(function(){
             $tip.show();
         });
     })();
-
-    // clustered force by mbostock
-    // http://bl.ocks.org/mbostock/1748247
-    function tick(e) {
-      circleGroups
-          .each(cluster(10 * e.alpha * e.alpha))
-          .each(collide(0.5))
-          .attr('transform', function(d) {
-            return 'translate('+d.x+', '+d.y+')';
-          });
-    }
-
-    // Move d to be adjacent to the cluster node.
-    function cluster(alpha) {
-      var max = {};
-
-      // Find the largest node for each cluster.
-      nodes.forEach(function(d) {
-        if (!(d.color in max) || (d.radius > max[d.color].radius)) {
-          max[d.color] = d;
-        }
-      });
-
-      return function(d) {
-        var node = max[d.color],
-            l,
-            r,
-            x,
-            y,
-            k = 1,
-            i = -1;
-
-        // For cluster nodes, apply custom gravity.
-        if (node == d) {
-          node = {x: width / 2, y: height / 2, radius: -d.radius};
-          k = 0.1 * Math.sqrt(d.radius);
-        }
-
-        x = d.x - node.x;
-        y = d.y - node.y;
-        l = Math.sqrt(x * x + y * y);
-        r = d.radius + node.radius;
-        if (l != r) {
-          l = (l - r) / l * alpha * k;
-          d.x -= x *= l;
-          d.y -= y *= l;
-          node.x += x;
-          node.y += y;
-        }
-      };
-    }
-
-    // Resolves collisions between d and all other circles.
-    function collide(alpha) {
-      var quadtree = d3.geom.quadtree(nodes);
-      return function(d) {
-        var r = d.radius + radius.domain()[1] + padding,
-            nx1 = d.x - r,
-            nx2 = d.x + r,
-            ny1 = d.y - r,
-            ny2 = d.y + r;
-        quadtree.visit(function(quad, x1, y1, x2, y2) {
-          if (quad.point && (quad.point !== d)) {
-            var x = d.x - quad.point.x,
-                y = d.y - quad.point.y,
-                l = Math.sqrt(x * x + y * y),
-                r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
-            if (l < r) {
-              l = (l - r) / l * alpha;
-              d.x -= x *= l;
-              d.y -= y *= l;
-              quad.point.x += x;
-              quad.point.y += y;
-            }
-          }
-          return x1 > nx2
-              || x2 < nx1
-              || y1 > ny2
-              || y2 < ny1;
-        });
-      };
-    }
 
 });
