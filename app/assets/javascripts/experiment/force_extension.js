@@ -2,7 +2,7 @@ d3.layout.forceExtension = function() {
     var nodes = [], size, width, height, radius, padding = 5;
 
     function forceExtension() {
-
+        this.size([1, 1]);
     }
 
     forceExtension.size = function(value) {
@@ -12,7 +12,6 @@ d3.layout.forceExtension = function() {
         height = value[1];
         return forceExtension;
     };
-    forceExtension([1, 1]);
 
     forceExtension.radius = function(value) {
         if (!arguments.length) return radius;

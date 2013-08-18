@@ -2,6 +2,7 @@
 //= require d3/d3.v3
 //= require experiment/force_extension
 //= require experiment/segmented_control
+//= require experiment/tooltip
 //= require foundation
 
 (function() {
@@ -115,6 +116,9 @@ $(function(){
     var forceExt = d3.layout.forceExtension()
         .radius(radius);
 
+    var tooltip = OpenBudget.tooltip()
+        .types(types);
+
     var svg = d3.select("svg.main");
 
     var legendG = svg.append("g");
@@ -224,6 +228,9 @@ $(function(){
 
     // called when level or year changes
     function updateVis() {
+        tooltip.activeType(activeType);
+        tooltip.activeYear(activeYear);
+
         nodes = levels[activeDepth - 1].filter(function(d) {
             return d.cuts[activeType];
         });
@@ -412,55 +419,5 @@ $(function(){
 
         if(firstRadiusUpdate) firstRadiusUpdate = false;
     }, 300, true);
-
-    // tooltip
-    (function() {
-        var $body = $('body');
-        var $tip = $('<div id="tooltip"></div>').html('<div></div>').hide().appendTo($body);
-        var $tipInner = $tip.find('div');
-
-        var updatePos = function(e) {
-            if(e.originalEvent.changedTouches) {
-                e = e.originalEvent.changedTouches[0];
-            }
-            $tip.css({
-                'top': e.pageY + 0,
-                'left': e.pageX + 10
-            });
-        };
-        var hide = function(e) {
-            $(document)
-                .off('touchmove', updatePos);
-            $tip.hide();
-        };
-        var touch = Modernizr.touch;
-        $(document).on(touch ? 'touchstart' : 'mouseover', 'svg g.main g', function(e){
-            var d = this.__data__, directionName = '';
-            if(d.depth == 2) {
-                directionName = d.parent.name;
-            }
-            else {
-                directionName = d.name;
-            }
-
-            $tipInner.html(
-                '<span class="name" style="color:'+d.color+'">'+directionName+'</span><br />'+
-                (d.depth == 2 ?
-                    '<span class="name">'+ (d.short_name ? d.short_name + ' ' : '') + d.name+'</span><br />' : ''
-                ) +
-                'Sparmassnahme '+activeYear+': ' + types[activeType].format(d.value) + ' ' + types[activeType].suffix +
-                (d.value2 ? '<br />' +
-                    'Budget 2012: ' + types[activeType].format(d.value2) + ' ' + types[activeType].suffix +
-                    ', ' + formatPercent(d.diff) + '%' : ''
-                )
-            );
-
-            updatePos(e);
-            $(document)
-                .on(touch ? 'touchmove' : 'mousemove', updatePos)
-                .one(touch? 'touchend' : 'mouseout', hide);
-            $tip.show();
-        });
-    })();
 
 });
