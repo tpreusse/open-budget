@@ -4,6 +4,7 @@ OpenBudget.tooltip = function() {
     var touch = Modernizr.touch;
 
     var $body, $tip, $tipInner;
+    var formatPercent = d3.format('+.2');
 
     function tooltip() {
 

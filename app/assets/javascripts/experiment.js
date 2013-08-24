@@ -63,8 +63,7 @@ $(function(){
 
     $(document).foundation();
 
-    var formatCHF = d3.format(',.2f'),
-        formatPercent = d3.format('+.2');
+    var formatCHF = d3.format(',.2f');
 
     function formatMioCHF(n) {
         return formatCHF(n / Math.pow(10, 6));
