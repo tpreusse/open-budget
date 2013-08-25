@@ -3,6 +3,7 @@
 //= require experiment/force_extension
 //= require experiment/segmented_control
 //= require experiment/tooltip
+//= require experiment/circle_manager
 //= require foundation
 
 (function() {
@@ -42,23 +43,6 @@
     }
 })();
 
-OpenBudget.vis = function() {
-    var x;
-
-    function vis(selection) {
-        selection.each(function(levels, i) {
-        });
-    }
-
-    vis.x = function(value) {
-        if (!arguments.length) return x;
-        x = value;
-        return vis;
-    };
-
-    return vis;
-};
-
 $(function(){
 
     $(document).foundation();
@@ -95,7 +79,7 @@ $(function(){
         radius = d3.scale.sqrt(),
         color = d3.scale.category10().domain(d3.range(10)),
         // svg eles for radius update
-        circleGroups, legendCircles, legendLabels,
+        legendCircles, legendLabels,
         legendData;
 
     var force = d3.layout.force()
@@ -104,13 +88,17 @@ $(function(){
         .on("tick", tick);
 
     function tick(e) {
-      circleGroups
-          .each(forceExt.cluster(10 * e.alpha * e.alpha))
-          .each(forceExt.collide(0.5))
-          .attr('transform', function(d) {
-            return 'translate('+d.x+', '+d.y+')';
-          });
+        var cluster = forceExt.cluster(10 * e.alpha * e.alpha),
+            collide = forceExt.collide(0.5);
+
+        cutsCircles.tick(cluster, collide);
     }
+
+    var cutsCircles = OpenBudget.circles({
+            forceLayout: force,
+            detailCallback: showDetail
+        })
+        .colorScale(color);
 
     var forceExt = d3.layout.forceExtension()
         .radius(radius);
@@ -145,7 +133,7 @@ $(function(){
             .size([width, height]);
 
         // will lead to fatal error otherwise
-        if(circleGroups) {
+        if(nodes.length) {
             force.start();
 
             updateRadius();
@@ -185,13 +173,13 @@ $(function(){
         });
     }).change();
 
-    function showDetail(d) {
-        if(d.detail) {
+    function showDetail(n) {
+        if(n.data.detail) {
             $('#detail-modal').foundation('reveal', 'open', {
-                url: '/be-asp/d/'+d.id
+                url: '/be-asp/d/'+n.data.id
             });
         }
-        else if(d.depth !== 1) {
+        else if(n.data.depth !== 1) {
             $('#no-detail-modal').foundation('reveal', 'open');
         }
     }
@@ -214,10 +202,10 @@ $(function(){
         lis.html(function(d) { return '<span class="circle"></span>' + d.name; });
         lis.select('span')
             .style('border-color', function(d) {
-                return color(d.parent.id || d.id);
+                return color(d.id);
             })
             .style('background-color', function(d) {
-                var rgb = d3.rgb(color(d.parent.id || d.id));
+                var rgb = d3.rgb(color(d.id));
                 return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
             });
 
@@ -230,21 +218,19 @@ $(function(){
         tooltip.activeType(activeType);
         tooltip.activeYear(activeYear);
 
-        nodes = levels[activeDepth - 1].filter(function(d) {
-            return d.cuts[activeType];
-        });
+        cutsCircles
+            .valueAccessor(function(d) {
+                return d.cuts[activeType][activeYear];
+            })
+            .value2Accessor(function(d) {
+                return ((d.gross_cost || {})[activeType] || {})["2012"];
+            });
 
-        nodes.forEach(function(d) {
-            d.value = d.cuts[activeType][activeYear];
-            var value2 = ((d.gross_cost || {})[activeType] || {})["2012"];
-            if(value2) {
-                d.value2 = value2;
-                d.diff = d3.round((100 + ((d.value - value2) / (value2 / 100))) * -1, 2);
-            }
-            else {
-                d.value2 = d.diff = undefined;
-            }
-        });
+        mainG
+            .datum(levels[activeDepth - 1])
+            .call(cutsCircles);
+
+        nodes = cutsCircles.nodes();
 
         maxValue = d3.max(nodes, function(d) {
             return d.value;
@@ -275,10 +261,6 @@ $(function(){
         legendLabels
             .text(function(d) { return d.name; });
 
-        nodes.forEach(function(d) {
-            d.color = color(d.parent.id || d.id);
-        });
-
         d3.select('table.main').select('tbody').selectAll('tr').remove();
 
         d3.select('table.main').select('th:nth-child(1)')
@@ -292,8 +274,8 @@ $(function(){
         var trs = d3.select('table.main').select('tbody')
             .selectAll('tr').data(nodes)
                 .enter().append('tr')
-                    .attr('class', function(d) {
-                        return d.detail ? 'has-detail' : '';
+                    .attr('class', function(n) {
+                        return n.data.detail ? 'has-detail' : '';
                     });
 
         trs.on('click', showDetail);
@@ -301,7 +283,7 @@ $(function(){
         trs.append('td')
             .append('span')
                 .classed('circle', 1)
-                .attr('title', function(d) { return d.parent.name; })
+                .attr('title', function(n) { return n.data.parent.name; })
                 .style('border-color', function(d) {
                     return d.color;
                 })
@@ -311,15 +293,15 @@ $(function(){
                 });
 
         trs.append('td')
-            .text(function(d) { return (d.short_name ? d.short_name + ' ' : '') + d.name; });
+            .text(function(n) { return (n.data.short_name ? n.data.short_name + ' ' : '') + n.data.name; });
 
         ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
-            var total = d3.sum(nodes, function(d) { return d.cuts[activeType][year]; });
+            var total = d3.sum(nodes, function(n) { return n.data.cuts[activeType][year]; });
             d3.select('table.main').select('tfoot td:nth-child('+ (index + 2) +')')
                 .text(types[activeType].format(total));
 
             trs.append('td')
-                .text(function(d) { return types[activeType].format(d.cuts[activeType][year]); });
+                .text(function(n) { return types[activeType].format(n.data.cuts[activeType][year]); });
 
         });
 
@@ -328,70 +310,13 @@ $(function(){
         forceExt
             .nodes(nodes);
 
-        circleGroups = mainG.selectAll("g")
-            .data(nodes, function(d) { return d.id; });
-
-        var enterGs = circleGroups.enter().append('g')
-            .on('touchmove', function(d) {
-                d3.event.preventDefault();
-            })
-            .on('click', function(d) {
-                if(!d3.event.defaultPrevented) {
-                    showDetail(d);
-                }
-            })
-            .attr('class', function(d) {
-                return d.detail ? 'has-detail' : '';
-            })
-            .call(force.drag);
-
-        enterGs
-            .append("circle")
-                .attr("r", 0)
-                .attr("cx", 0)
-                .attr("cy", 0)
-                .style("stroke", function(d) { return d.color; })
-                .style("fill", function(d) {
-                    var rgb = d3.rgb(d.color);
-                    return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
-                });
-        enterGs
-            .append('text')
-                .style('opacity', 0)
-                .style('fill', function(d) { return d.color; })
-                .attr('text-anchor', 'middle')
-                .attr('dy', function(d) { return '.5em'; })
-                .text(function(d) { return d.short_name; });
-
-        circleGroups
-            .selectAll('circle')
-                .datum(function() {
-                    return this.parentNode.__data__;
-                });
-        circleGroups
-            .selectAll('text')
-                .datum(function() {
-                    return this.parentNode.__data__;
-                });
-
-        var cGET = circleGroups.exit()
-            .transition().duration(750)
-                .remove();
-
-        cGET.selectAll('circle')
-            .attr("r", 0);
-        cGET.selectAll('text')
-            .style('opacity', 0);
-
         // calls force.start and updateRadius
         resize();
     }
 
     var firstRadiusUpdate = true;
     var updateRadius = _.debounce(function() {
-        nodes.forEach(function(d) {
-            d.radius = radius(d.value);
-        });
+        cutsCircles.updateRadius(radius);
 
         legendCircles
             .transition().duration(750)
@@ -402,14 +327,6 @@ $(function(){
             .transition().duration(750)
                 .attr('y', function(d) { return -5 + (-radius(d.value)*2); });
 
-        cGT = circleGroups
-            .transition().duration(750);
-
-        cGT.selectAll('circle')
-            .attr("r", function(d) { return d.radius; });
-
-        cGT.selectAll('text')
-            .style('opacity', function(d) { return d.radius > 15 ? 1: 0; });
 
         legendR = radius(legendData[0].value);
         legendG

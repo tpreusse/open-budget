@@ -4,7 +4,7 @@
 - content_for :title do
   = @meta['page_title']
 - content_for :description do
-  = @meta['description']
+  = @meta['meta_description']
 
 .header
   .row
@@ -17,7 +17,7 @@
             %i.icon-facebook-sign
           - mail_html = capture_haml do
             %i.icon-envelope
-          = mail_to '', mail_html, subject: "#{@meta['h1']}: #{@meta['h2']}", body: "Link:\nhttp://#{@subdomain}.budget.opendata.ch", title: 'per Email weiterempfehlen', data: {tooltip: '', options: 'disable-for-touch:true'}
+          = mail_to '', mail_html, subject: "#{@meta['title']}: #{@meta['subtitle']}", body: "Link:\nhttp://#{@subdomain}.budget.opendata.ch", title: 'per Email weiterempfehlen', data: {tooltip: '', options: 'disable-for-touch:true'}
           - mail_html = capture_haml do
             %i.icon-bullhorn
           = mail_to 'openfinance@opendata.ch', mail_html, subject: "OpenBudget Feedback: #{@subdomain}", title: 'Feedback', data: {tooltip: '', options: 'disable-for-touch:true'}
@@ -28,7 +28,7 @@
       %h1
         = link_to 'http://www.opendata.ch/' do
           = image_tag 'opendatach-icon.png', alt: 'OpenData.ch', title: 'OpenData.ch'
-        = "#{sanitize(@meta['h1'])}: #{sanitize(@meta['h2'])}"
+        = "#{sanitize(@meta['title'])}: #{sanitize(@meta['subtitle'])}"
 
 
     .large-12.columns.controls-container

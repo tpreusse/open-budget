@@ -53,7 +53,9 @@ OpenBudget.tooltip = function() {
     $tipInner = $tip.find('div');
 
     $(document).on(touch ? 'touchstart' : 'mouseover', 'svg g.main g', function(e){
-        var d = this.__data__, directionName = '';
+        var n = this.__data__,
+            d = n.data,
+            directionName = '';
         if(d.depth == 2) {
             directionName = d.parent.name;
         }
@@ -62,14 +64,14 @@ OpenBudget.tooltip = function() {
         }
 
         $tipInner.html(
-            '<span class="name" style="color:'+d.color+'">'+directionName+'</span><br />'+
+            '<span class="name" style="color:'+n.color+'">'+directionName+'</span><br />'+
             (d.depth == 2 ?
                 '<span class="name">'+ (d.short_name ? d.short_name + ' ' : '') + d.name+'</span><br />' : ''
             ) +
-            'Sparmassnahme '+activeYear+': ' + types[activeType].format(d.value) + ' ' + types[activeType].suffix +
-            (d.value2 ? '<br />' +
-                'Budget 2012: ' + types[activeType].format(d.value2) + ' ' + types[activeType].suffix +
-                ', ' + formatPercent(d.diff) + '%' : ''
+            'Sparmassnahme '+activeYear+': ' + types[activeType].format(n.value) + ' ' + types[activeType].suffix +
+            (n.value2 ? '<br />' +
+                'Budget 2012: ' + types[activeType].format(n.value2) + ' ' + types[activeType].suffix +
+                ', ' + formatPercent(n.diff) + '%' : ''
             )
         );
 
