@@ -45,12 +45,12 @@ OpenBudget.circles = function(config) {
                 else {
                     n = {
                         id: id + d.id,
-                        cluster: d.parent.id || d.id,
                         data: d
                     };
                 }
                 nodesIndex[d.id] = n;
 
+                n.cluster = d.cluster;
                 n.color = colorScale(n.cluster);
 
                 n.value = valueAccessor(d);
@@ -71,9 +71,9 @@ OpenBudget.circles = function(config) {
                     return n.data.detail ? 'has-detail' : '';
                 })
                 .call(config.forceLayout.drag)
-                .on('click', function(d) {
+                .on('click', function(n) {
                     if(!d3.event.defaultPrevented) {
-                        config.detailCallback(d);
+                        config.detailCallback(n.data);
                     }
                 });
 
@@ -146,12 +146,6 @@ OpenBudget.circles = function(config) {
     circleManager.nodes = function(value) {
         if (!arguments.length) return nodes;
         nodes = value;
-        return circleManager;
-    };
-
-    circleManager.circleGroups = function(value) {
-        if (!arguments.length) return circleGroups;
-        circleGroups = value;
         return circleManager;
     };
 

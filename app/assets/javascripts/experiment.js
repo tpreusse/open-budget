@@ -3,7 +3,8 @@
 //= require experiment/force_extension
 //= require experiment/segmented_control
 //= require experiment/tooltip
-//= require experiment/circle_manager
+//= require experiment/circles
+//= require experiment/table
 //= require foundation
 
 (function() {
@@ -100,6 +101,12 @@ $(function(){
         })
         .colorScale(color);
 
+    var table = OpenBudget.table({
+            detailCallback: showDetail
+        })
+        .types(types)
+        .colorScale(color);
+
     var forceExt = d3.layout.forceExtension()
         .radius(radius);
 
@@ -173,13 +180,13 @@ $(function(){
         });
     }).change();
 
-    function showDetail(n) {
-        if(n.data.detail) {
+    function showDetail(d) {
+        if(d.detail) {
             $('#detail-modal').foundation('reveal', 'open', {
-                url: '/be-asp/d/'+n.data.id
+                url: '/be-asp/d/'+d.id
             });
         }
-        else if(n.data.depth !== 1) {
+        else if(d.depth !== 1) {
             $('#no-detail-modal').foundation('reveal', 'open');
         }
     }
@@ -218,6 +225,9 @@ $(function(){
         tooltip.activeType(activeType);
         tooltip.activeYear(activeYear);
 
+        table.activeType(activeType);
+        table.activeDepth(activeDepth);
+
         cutsCircles
             .valueAccessor(function(d) {
                 return d.cuts[activeType][activeYear];
@@ -226,8 +236,13 @@ $(function(){
                 return ((d.gross_cost || {})[activeType] || {})["2012"];
             });
 
+        var level = levels[activeDepth - 1];
+        level.forEach(function(d) {
+            d.cluster = d.parent.id || d.id;
+        });
+
         mainG
-            .datum(levels[activeDepth - 1])
+            .datum(level)
             .call(cutsCircles);
 
         nodes = cutsCircles.nodes();
@@ -261,49 +276,10 @@ $(function(){
         legendLabels
             .text(function(d) { return d.name; });
 
-        d3.select('table.main').select('tbody').selectAll('tr').remove();
 
-        d3.select('table.main').select('th:nth-child(1)')
-            .text(OpenBudget.meta.hierarchy[activeDepth - 1]);
-
-        d3.select('table.main').select('thead').selectAll('tr')
-            .selectAll('th')
-                .selectAll('.format')
-                    .text('(' + types[activeType].suffix + ')');
-
-        var trs = d3.select('table.main').select('tbody')
-            .selectAll('tr').data(nodes)
-                .enter().append('tr')
-                    .attr('class', function(n) {
-                        return n.data.detail ? 'has-detail' : '';
-                    });
-
-        trs.on('click', showDetail);
-
-        trs.append('td')
-            .append('span')
-                .classed('circle', 1)
-                .attr('title', function(n) { return n.data.parent.name; })
-                .style('border-color', function(d) {
-                    return d.color;
-                })
-                .style('background-color', function(d) {
-                    var rgb = d3.rgb(d.color);
-                    return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
-                });
-
-        trs.append('td')
-            .text(function(n) { return (n.data.short_name ? n.data.short_name + ' ' : '') + n.data.name; });
-
-        ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
-            var total = d3.sum(nodes, function(n) { return n.data.cuts[activeType][year]; });
-            d3.select('table.main').select('tfoot td:nth-child('+ (index + 2) +')')
-                .text(types[activeType].format(total));
-
-            trs.append('td')
-                .text(function(n) { return types[activeType].format(n.data.cuts[activeType][year]); });
-
-        });
+        d3.select('table.main')
+            .datum(level)
+            .call(table);
 
         force
             .nodes(nodes);
