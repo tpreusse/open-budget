@@ -5,44 +5,8 @@
 //= require experiment/tooltip
 //= require experiment/circles
 //= require experiment/table
+//= require experiment/layers
 //= require foundation
-
-(function() {
-    OpenBudget.layers = function() {
-        var hierarchy = d3.layout.hierarchy();
-
-        function layers(d, i) {
-            var nodes = hierarchy.call(this, d, i);
-
-            return nodes;
-        }
-
-        return d3_layout_hierarchyRebind(layers, hierarchy);
-        // return layers;
-    };
-
-    // ToDo properly import from d3
-
-    // A method assignment helper for hierarchy subclasses.
-    function d3_layout_hierarchyRebind(object, hierarchy) {
-        d3.rebind(object, hierarchy, "sort", "children", "value");
-
-        // Add an alias for nodes and links, for convenience.
-        object.nodes = object;
-        object.links = d3_layout_hierarchyLinks;
-
-        return object;
-    }
-
-    // Returns an array source+target objects for the specified nodes.
-    function d3_layout_hierarchyLinks(nodes) {
-        return d3.merge(nodes.map(function(parent) {
-          return (parent.children || []).map(function(child) {
-            return {source: parent, target: child};
-          });
-        }));
-    }
-})();
 
 $(function(){
 
@@ -54,7 +18,7 @@ $(function(){
         return formatCHF(n / Math.pow(10, 6));
     }
 
-    types = {
+    var types = {
         'budgets': {
             format: formatMioCHF,
             suffix: 'Mio. CHF'
@@ -69,15 +33,12 @@ $(function(){
 
     var layers = OpenBudget.layers(),
         nodes = [],
-        all = [],
-        levels = [],
-        maxCluster;
+        levels = [];
 
     var width,
         height;
 
-    var maxValue,
-        radius = d3.scale.sqrt(),
+    var radius = d3.scale.sqrt(),
         color = d3.scale.category10().domain(d3.range(10)),
         // svg eles for radius update
         legendCircles, legendLabels,
@@ -86,14 +47,15 @@ $(function(){
     var force = d3.layout.force()
         .gravity(0)
         .charge(0)
-        .on("tick", tick);
+        .on("tick", function(e) {
+            var cluster = forceExt.cluster(10 * e.alpha * e.alpha),
+                collide = forceExt.collide(0.5);
 
-    function tick(e) {
-        var cluster = forceExt.cluster(10 * e.alpha * e.alpha),
-            collide = forceExt.collide(0.5);
+            cutsCircles.tick(cluster, collide);
+        });
 
-        cutsCircles.tick(cluster, collide);
-    }
+    var forceExt = d3.layout.forceExtension()
+        .radius(radius);
 
     var cutsCircles = OpenBudget.circles({
             forceLayout: force,
@@ -106,9 +68,6 @@ $(function(){
         })
         .types(types)
         .colorScale(color);
-
-    var forceExt = d3.layout.forceExtension()
-        .radius(radius);
 
     var tooltip = OpenBudget.tooltip()
         .types(types);
@@ -193,12 +152,11 @@ $(function(){
 
     // called after new data is loaded
     function setup(data) {
-        all = layers(data);
+        var all = layers(data);
         levels = [
             all.filter(function(d) { return d.depth === 1; }),
             all.filter(function(d) { return d.depth === 2; })
         ];
-        maxCluster = levels[0].length;
 
         d3.select('.legend').selectAll('li').remove();
         var lis = d3.select('.legend').selectAll('li')
@@ -216,6 +174,7 @@ $(function(){
                 return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
             });
 
+        // var maxCluster = levels[0].length;
         // only needed if maxCluster > 10
         // color.domain(d3.range(maxCluster));
     }
@@ -247,7 +206,7 @@ $(function(){
 
         nodes = cutsCircles.nodes();
 
-        maxValue = d3.max(nodes, function(d) {
+        var maxValue = d3.max(nodes, function(d) {
             return d.value;
         });
 
