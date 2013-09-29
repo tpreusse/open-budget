@@ -6,6 +6,7 @@
 //= require experiment/circles
 //= require experiment/table
 //= require experiment/layers
+//= require experiment/legend
 //= require foundation
 
 $(function(){
@@ -18,16 +19,29 @@ $(function(){
         return formatCHF(n / Math.pow(10, 6));
     }
 
+    // ToDo: move to meta or auto detect
     var types = {
-        'budgets': {
-            format: formatMioCHF,
-            suffix: 'Mio. CHF'
+            'budgets': {
+                format: formatMioCHF,
+                suffix: 'Mio. CHF'
+            },
+            'positions': {
+                format: d3.format(',.1f'),
+                suffix: 'Vollzeitstellen'
+            }
         },
-        'positions': {
-            format: d3.format(',.1f'),
-            suffix: 'Vollzeitstellen'
-        }
-    };
+        legendData = {
+            'budgets': [
+                {value: 50000000, name: '50 Mio.', color:'gray'},
+                {value: 10000000, name: '10 Mio.', color:'gray'},
+                {value: 1000000, name: '1 Mio.', color:'gray'}
+            ],
+            'positions': [
+                {value: 100, name: '100 Stellen', color:'gray'},
+                {value: 10, name: '10 Stellen', color:'gray'},
+                {value: 1, name: '1 Stellen', color:'gray'}
+            ]
+        };
 
     $('.segmented-control').segmentedControl();
 
@@ -39,10 +53,7 @@ $(function(){
         height;
 
     var radius = d3.scale.sqrt(),
-        color = d3.scale.category10().domain(d3.range(10)),
-        // svg eles for radius update
-        legendCircles, legendLabels,
-        legendData;
+        color = d3.scale.category10().domain(d3.range(10));
 
     var force = d3.layout.force()
         .gravity(0)
@@ -72,40 +83,14 @@ $(function(){
     var tooltip = OpenBudget.tooltip()
         .types(types);
 
+    var legend = OpenBudget.legend();
+
     var svg = d3.select("svg.main");
 
     var legendG = svg.append("g");
 
     var mainG = svg.append("g")
         .classed('main', 1);
-
-    function resize() {
-        width = $(window).width();
-        height = Math.max($(window).height() / 100 * 75, 520);
-
-        svg.style('width', Math.round(width) + 'px');
-        svg.style('height', Math.round(height) + 'px');
-
-        var radiusHeight = height;
-        if(width < 768) {
-            radiusHeight -= 200;
-        }
-
-        radius.range([0, radiusHeight/8]);
-
-        force
-            .size([width, height]);
-        forceExt
-            .size([width, height]);
-
-        // will lead to fatal error otherwise
-        if(nodes.length) {
-            force.start();
-
-            updateRadius();
-        }
-    }
-    $(window).resize(_.debounce(resize, 166)); // 166 = 5 * 33.3 = every 5th frame
 
     // controls for level, year and data
     var $levelControl = $('.segmented-control.levels'),
@@ -150,6 +135,37 @@ $(function(){
         }
     }
 
+    function resize() {
+        width = $(window).width();
+        height = Math.max($(window).height() / 100 * 75, 520);
+
+        svg.style('width', Math.round(width) + 'px');
+        svg.style('height', Math.round(height) + 'px');
+
+        var radiusHeight = height;
+        if(width < 768) {
+            radiusHeight -= 200;
+        }
+
+        radius.range([0, radiusHeight/8]);
+
+        force
+            .size([width, height]);
+        forceExt
+            .size([width, height]);
+
+        legend
+            .height(height);
+
+        // will lead to fatal error otherwise
+        if(nodes.length) {
+            force.start();
+
+            updateRadius();
+        }
+    }
+    $(window).resize(_.debounce(resize, 166)); // 166 = 5 * 33.3 = every 5th frame
+
     // called after new data is loaded
     function setup(data) {
         var all = layers(data);
@@ -158,6 +174,7 @@ $(function(){
             all.filter(function(d) { return d.depth === 2; })
         ];
 
+        // cluster legend
         d3.select('.legend').selectAll('li').remove();
         var lis = d3.select('.legend').selectAll('li')
             .data(levels[0]);
@@ -212,29 +229,9 @@ $(function(){
 
         radius.domain([0, maxValue]);
 
-        legendData = activeType == 'positions' ? [
-            {value: 100, name: '100 Stellen', color:'gray'},
-            {value: 10, name: '10 Stellen', color:'gray'},
-            {value: 1, name: '1 Stellen', color:'gray'}
-        ] : [
-            {value: 50000000, name: '50 Mio.', color:'gray'},
-            {value: 10000000, name: '10 Mio.', color:'gray'},
-            {value: 1000000, name: '1 Mio.', color:'gray'}
-        ];
-        legendCircles = legendG.selectAll('circle').data(legendData);
-
-        legendCircles.enter().append('circle')
-            .classed('legend', 1)
-            .attr('cx', 0);
-
-        legendLabels = legendG.selectAll('text').data(legendData);
-
-        legendLabels.enter().append('text')
-            .attr('x', -10);
-
-        legendLabels
-            .text(function(d) { return d.name; });
-
+        legendG
+            .datum(legendData[activeType])
+            .call(legend);
 
         d3.select('table.main')
             .datum(level)
@@ -249,26 +246,9 @@ $(function(){
         resize();
     }
 
-    var firstRadiusUpdate = true;
     var updateRadius = _.debounce(function() {
         cutsCircles.updateRadius(radius);
-
-        legendCircles
-            .transition().duration(750)
-                .attr('r', function(d) { return radius(d.value); })
-                .attr('cy', function(d) { return -radius(d.value); });
-
-        legendLabels
-            .transition().duration(750)
-                .attr('y', function(d) { return -5 + (-radius(d.value)*2); });
-
-
-        legendR = radius(legendData[0].value);
-        legendG
-            .transition().duration(firstRadiusUpdate ? 0 : 750)
-                .attr("transform", "translate("+(legendR + 20)+","+(height - 20)+")");
-
-        if(firstRadiusUpdate) firstRadiusUpdate = false;
+        legend.updateRadius(radius);
     }, 300, true);
 
 });
