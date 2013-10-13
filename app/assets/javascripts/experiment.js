@@ -76,9 +76,30 @@ $(function(){
 
     var table = OpenBudget.table({
             detailCallback: showDetail
-        })
-        .types(types)
-        .colorScale(color);
+        });
+    var tableNameColumn = {
+        foot: 'Total',
+        cells: [
+            {
+                value: function(d) { return color(d.cluster); },
+                creator: function(value) {
+                    this.append('span')
+                        .classed('circle', 1)
+                        .attr('title', function(d) { return d.parent.name; })
+                        .style('border-color', function() {
+                            return value;
+                        })
+                        .style('background-color', function() {
+                            var rgb = d3.rgb(value);
+                            return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
+                        });
+                }
+            },
+            {
+                value: function(d) { return (d.short_name ? d.short_name + ' ' : '') + d.name; }
+            }
+        ]
+    };
 
     var tooltip = OpenBudget.tooltip()
         .types(types);
@@ -201,9 +222,6 @@ $(function(){
         tooltip.activeType(activeType);
         tooltip.activeYear(activeYear);
 
-        table.activeType(activeType);
-        table.activeDepth(activeDepth);
-
         cutsCircles
             .valueAccessor(function(d) {
                 return d.cuts[activeType][activeYear];
@@ -233,8 +251,34 @@ $(function(){
             .datum(legendData[activeType])
             .call(legend);
 
+        tableNameColumn.label = OpenBudget.meta.hierarchy[activeDepth - 1];
+        var columns = [tableNameColumn];
+        ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
+            columns.push({
+                label: year,
+                foot: function(data) {
+                    var cell = this.cells[0];
+                    return cell.format.format(d3.sum(data, function(d) { return cell.value(d); }));
+                },
+                cells: [
+                    {
+                        value: function(d) { return d.cuts[activeType][year]; },
+                        format: types[activeType]
+                    }
+                ]
+            });
+        });
+        table.columns(columns);
+
         d3.select('table.main')
-            .datum(level)
+            .datum(level.filter(function(d) {
+                return d.cuts[activeType] && (
+                    d.cuts[activeType]['2014'] ||
+                    d.cuts[activeType]['2015'] ||
+                    d.cuts[activeType]['2016'] ||
+                    d.cuts[activeType]['2017']
+                );
+            }))
             .call(table);
 
         force

@@ -1,90 +1,91 @@
+OpenBudget.tableColumnSpec = {
+    label: '',
+    foot: '',
+    cells: [
+        {
+            value: function(d) { return d; },
+            format: {
+                format: function(v) { return v; },
+                suffix: ''
+            } || undefined,
+            creator: function(value, format) {} || undefined // this = d3.selection of <td>
+        }
+    ]
+};
+
 OpenBudget.table = function(config) {
     config = config || {};
 
-    var colorScale;
-
-    var types, activeType, activeDepth;
+    var columns = [];
 
     function table(selection) {
         selection.each(function(data) {
-            data = data.filter(function(d) {
-                return d.cuts[activeType] && (
-                    d.cuts[activeType]['2014'] ||
-                    d.cuts[activeType]['2015'] ||
-                    d.cuts[activeType]['2016'] ||
-                    d.cuts[activeType]['2017']
-                );
-            });
-
-
             var tableSelection = d3.select(this);
+
+            var ths = tableSelection.select('thead tr').selectAll('th').data(columns);
+            ths.enter().append('th');
+            ths.each(function(column) {
+                var th = d3.select(this);
+                th.text(column.label);
+                th.attr('colspan', column.cells.length);
+                column.cells.forEach(function(cell) {
+                    if(cell.format) {
+                        th.append('br');
+                        th.append('span')
+                            .classed('format', 1)
+                            .text('(' + cell.format.suffix + ')');
+                    }
+                });
+            });
+            ths.exit().remove();
+
+            var footTds = tableSelection.select('tfoot tr').selectAll('td').data(columns);
+            footTds.enter().append('td');
+            footTds.attr('colspan', function(column) { return column.cells.length; });
+            footTds.text(function(column) {
+                if(typeof column.foot === 'function') {
+                    return column.foot(data);
+                }
+                else {
+                    return column.foot;
+                }
+            });
+            footTds.exit().remove();
+
+            // consider selection matching instead of rm & create all
             tableSelection.select('tbody').selectAll('tr').remove();
 
-            tableSelection.select('th:nth-child(1)')
-                .text(OpenBudget.meta.hierarchy[activeDepth - 1]);
-
-            tableSelection.select('thead').selectAll('tr')
-                .selectAll('th')
-                    .selectAll('.format')
-                        .text('(' + types[activeType].suffix + ')');
-
-            var trs = tableSelection.select('tbody')
-                .selectAll('tr').data(data)
-                    .enter().append('tr')
+            var trs = tableSelection.select('tbody').selectAll('tr')
+                .data(data).enter()
+                    .append('tr')
                         .attr('class', function(d) {
                             return d.detail ? 'has-detail' : '';
                         });
 
             trs.on('click', config.detailCallback);
 
-            trs.append('td')
-                .append('span')
-                    .classed('circle', 1)
-                    .attr('title', function(d) { return d.parent.name; })
-                    .style('border-color', function(d) {
-                        return colorScale(d.cluster);
-                    })
-                    .style('background-color', function(d) {
-                        var rgb = d3.rgb(colorScale(d.cluster));
-                        return 'rgba('+rgb.r+','+rgb.g+','+rgb.b+',0.1)';
+            columns.forEach(function(column) {
+                column.cells.forEach(function(cell) {
+                    trs.append('td').each(function(d) {
+                        var td = d3.select(this),
+                            value = cell.value(d);
+
+                        if(cell.creator) {
+                            cell.creator.call(td, value, cell.format);
+                        }
+                        else {
+                            td.text(cell.format ? cell.format.format(value) : value);
+                        }
                     });
 
-            trs.append('td')
-                .text(function(d) { return (d.short_name ? d.short_name + ' ' : '') + d.name; });
-
-            ['2014', '2015', '2016', '2017'].forEach(function(year, index) {
-                var total = d3.sum(data, function(d) { return d.cuts[activeType][year]; });
-                tableSelection.select('tfoot td:nth-child('+ (index + 2) +')')
-                    .text(types[activeType].format(total));
-
-                trs.append('td')
-                    .text(function(d) { return types[activeType].format(d.cuts[activeType][year]); });
-
+                });
             });
         });
     }
 
-    table.colorScale = function(value) {
-        if (!arguments.length) return colorScale;
-        colorScale = value;
-        return table;
-    };
-
-    table.types = function(value) {
-        if (!arguments.length) return types;
-        types = value;
-        return table;
-    };
-
-    table.activeType = function(value) {
-        if (!arguments.length) return activeType;
-        activeType = value;
-        return table;
-    };
-
-    table.activeDepth = function(value) {
-        if (!arguments.length) return activeDepth;
-        activeDepth = value;
+    table.columns = function(value) {
+        if (!arguments.length) return columns;
+        columns = value;
         return table;
     };
 
