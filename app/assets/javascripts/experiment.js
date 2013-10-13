@@ -18,6 +18,7 @@ $(function(){
     function formatMioCHF(n) {
         return formatCHF(n / Math.pow(10, 6));
     }
+    var formatPercent = d3.format('+.2');
 
     // ToDo: move to meta or auto detect
     var types = {
@@ -74,6 +75,8 @@ $(function(){
         })
         .colorScale(color);
 
+    var nameLabel = function(d) { return (d.short_name ? d.short_name + ' ' : '') + d.name; };
+
     var table = OpenBudget.table({
             detailCallback: showDetail
         });
@@ -96,13 +99,19 @@ $(function(){
                 }
             },
             {
-                value: function(d) { return (d.short_name ? d.short_name + ' ' : '') + d.name; }
+                value: nameLabel
             }
         ]
     };
 
     var tooltip = OpenBudget.tooltip()
-        .types(types);
+        .nameLabel(function(n, d) {
+            var directionName = d.depth == 2 ? d.parent.name : d.name;
+            return '<span class="name" style="color:' + n.color + '">' + directionName + '</span>' +
+            (d.depth == 2 ?
+                '<br /><span class="name">'+ nameLabel(d) +'</span>' : ''
+            );
+        });
 
     var legend = OpenBudget.legend();
 
@@ -219,8 +228,15 @@ $(function(){
 
     // called when level or year changes
     function updateVis() {
-        tooltip.activeType(activeType);
-        tooltip.activeYear(activeYear);
+        tooltip.valueLabel(function(n, d) {
+            return 'Sparmassnahme ' + activeYear + ': ' + types[activeType].format(n.value) + ' ' + types[activeType].suffix;
+        });
+        tooltip.value2Label(function(n, d) {
+            if(n.value2) {
+                return 'Budget 2012: ' + types[activeType].format(n.value2) + ' ' + types[activeType].suffix +
+                ', ' + formatPercent(n.diff) + '%';
+            }
+        });
 
         cutsCircles
             .valueAccessor(function(d) {

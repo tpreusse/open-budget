@@ -1,35 +1,30 @@
 OpenBudget.tooltip = function() {
-    var types, activeType;
-
     var touch = Modernizr.touch;
 
     var $body, $tip, $tipInner;
-    var formatPercent = d3.format('+.2');
 
-    function tooltip() {
+    function tooltip() {}
 
-    }
-
-    tooltip.types = function(value) {
-        if (!arguments.length) return types;
-        types = value;
+    var nameLabel, valueLabel, value2Label;
+    tooltip.nameLabel = function(value) {
+        if (!arguments.length) return nameLabel;
+        nameLabel = value;
         return tooltip;
     };
 
-    tooltip.activeType = function(value) {
-        if (!arguments.length) return activeType;
-        activeType = value;
+    tooltip.valueLabel = function(value) {
+        if (!arguments.length) return valueLabel;
+        valueLabel = value;
         return tooltip;
     };
 
-    tooltip.activeYear = function(value) {
-        if (!arguments.length) return activeYear;
-        activeYear = value;
+    tooltip.value2Label = function(value) {
+        if (!arguments.length) return value2Label;
+        value2Label = value;
         return tooltip;
     };
 
     // private
-
     var updatePos = function(e) {
         if(e.originalEvent.changedTouches) {
             e = e.originalEvent.changedTouches[0];
@@ -63,16 +58,12 @@ OpenBudget.tooltip = function() {
             directionName = d.name;
         }
 
+        var value2LabelHtml = value2Label ? value2Label(n, d) : undefined;
+
         $tipInner.html(
-            '<span class="name" style="color:'+n.color+'">'+directionName+'</span><br />'+
-            (d.depth == 2 ?
-                '<span class="name">'+ (d.short_name ? d.short_name + ' ' : '') + d.name+'</span><br />' : ''
-            ) +
-            'Sparmassnahme '+activeYear+': ' + types[activeType].format(n.value) + ' ' + types[activeType].suffix +
-            (n.value2 ? '<br />' +
-                'Budget 2012: ' + types[activeType].format(n.value2) + ' ' + types[activeType].suffix +
-                ', ' + formatPercent(n.diff) + '%' : ''
-            )
+            nameLabel(n, d) + '<br />' +
+            valueLabel(n, d) +
+            (value2LabelHtml ? '<br />' + value2LabelHtml : '')
         );
 
         updatePos(e);
