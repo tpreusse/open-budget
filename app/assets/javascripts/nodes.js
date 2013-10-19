@@ -265,7 +265,12 @@ OpenBudget.nodes = (function() {
 
             var dataUrl = OpenBudget.data.meta.data_url;
             if(dataUrl) {
-                d3.json(dataUrl, ready);
+                $.ajax({
+                    dataType: "json",
+                    url: dataUrl,
+                    success: ready,
+                    cache: false
+                });
             }
             else {
                 ready(OpenBudget.data.nodes);
@@ -302,7 +307,12 @@ OpenBudget.nodes = (function() {
 
             var cacheUrl = OpenBudget.data.meta.cache_url;
             if(cacheUrl) {
-                d3.json(cacheUrl, ready);
+                $.ajax({
+                    dataType: "json",
+                    url: cacheUrl,
+                    success: ready,
+                    cache: false
+                });
             }
             else {
                 ready(OpenBudget.data.cache);
@@ -318,7 +328,12 @@ OpenBudget.nodes = (function() {
 
             var dataUrl = OpenBudget.data.meta.data_url;
             if(dataUrl) {
-                d3.json(dataUrl, ready);
+                $.ajax({
+                    dataType: "json",
+                    url: dataUrl,
+                    success: ready,
+                    cache: false
+                });
             }
             else {
                 ready(OpenBudget.data.nodes);
