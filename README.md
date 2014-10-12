@@ -1,4 +1,4 @@
-New developers, designers and ideator are welcomed to join.
+New developers, designers and ideator are welcome to join.
 
 ## Amateur: How to use
 * stay tuned for cloud hosted solution
@@ -18,8 +18,8 @@ New developers, designers and ideator are welcomed to join.
 * `bundle config --local without js`
 * or use `therubyracer` but I haven't had time to test it
 
-### Starte the server
-* `bundle install` (needs to run everytime Gemfile changes)
+### Start the server
+* `bundle install` (needs to run every time the Gemfile changes)
 * `rails s thin`
 * create your own data file in the format of public/data/bern/data.json
 * send pull request with cool stuff
