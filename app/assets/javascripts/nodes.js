@@ -189,11 +189,14 @@ OpenBudget.nodes = (function() {
 
             var colorScale = d3.scale.linear()
                 .domain([-100, 0, 100]).clamp(true)
-                .range(['rgb(230,20,20)', 'rgb(255,255,230)', 'rgb(20,230,20)']);
+                .range(['rgb(20,230,20)', 'rgb(255,255,230)', 'rgb(230,20,20)']);
                 //.range(['rgb(255,77,77)', 'rgb(255,255,230)', 'rgb(77,255,77)']);
 
             _.each(nodes, function(d) {
-                var rgb = d3.rgb(colorScale(d.diff));
+                var diff = d.diff;
+                if(d.type == 'revenue')
+                    diff = -diff;
+                var rgb = d3.rgb(colorScale(diff));
                 d.fill = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
                 d.stroke = rgb.darker().toString();
             });
